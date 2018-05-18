@@ -4,7 +4,7 @@ This is a polls creation app which allows you to sign up and create your custom 
 
 It is one of the 10 projects of the FCC Back End Development Certification Program. You can find more info about the required user stories here:
 
-- [Build a Voting App]("https://www.freecodecamp.org/challenges/build-a-voting-app")
+- [Build a Voting App](https://www.freecodecamp.org/challenges/build-a-voting-app)
 
 ## User stories
 
@@ -17,9 +17,9 @@ It is one of the 10 projects of the FCC Back End Development Certification Progr
 - As an unauthenticated or authenticated user, I can see the results of polls in chart form. (This could be implemented using Chart.js or Google Charts.)
 -  As an authenticated user, if I don't like the options on a poll, I can create a new option.
 
-# simple-react-full-stack
+# Architecture
 
-This is a boilerplate to build a full stack web application using React, Node.js, Express and Webpack. It is also configured with webpack-dev-server, eslint, prettier and babel.
+This is a full stack web application using React, Node.js, Express and Webpack. It is also configured with webpack-dev-server, eslint, prettier and babel.
 
 -   [simple-react-full-stack](#simple-react-full-stack)
     -   [Introduction](#introduction)
@@ -256,3 +256,6 @@ This starts a server and listens on port 8080 for connections. The app responds 
     ```
 
 Above, we have modified editor configurations. Alternatively, this can be configured at the project level by following [this article](https://medium.com/@netczuk/your-last-eslint-config-9e35bace2f99).
+
+**Designed by**
+[Juan David Tabares Arce](http://juandavidarce.co/)
