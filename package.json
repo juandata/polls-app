@@ -1,8 +1,7 @@
 {
-  "name": "simple-react-full-stack",
+  "name": "polls-creation-app",
   "version": "1.0.0",
-  "description":
-    "Boilerplate to build a full stack web application using React, Node.js, Express and Webpack.",
+  "description": "Polls Creation APP built as a full stack web application using React, Node.js, Express and Webpack.",
   "main": "src/server/index.js",
   "scripts": {
     "start": "node src/server/index.js",
@@ -11,9 +10,10 @@
     "server": "nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "author": "Sandeep Raveesh",
+  "author": "Juan David Tabares Arce",
   "license": "ISC",
   "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
     "express": "^4.16.3",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"

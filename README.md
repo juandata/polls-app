@@ -1,23 +1,42 @@
+# Polls-Creation-App
+
+This is a polls creation app which allows you to sign up and create your custom polls. You can share them with your friends and edit them anytime you want.
+
+It is one of the 10 projects of the FCC Back End Development Certification Program. You can find more info about the required user stories here:
+
+- [Build a Voting App]("https://www.freecodecamp.org/challenges/build-a-voting-app")
+
+## User stories
+
+- As an authenticated user, I can keep my polls and come back later to access them.
+- As an authenticated user, I can share my polls with my friends.
+- As an authenticated user, I can see the aggregate results of my polls.
+- As an authenticated user, I can delete polls that I decide I don't want anymore.
+- As an authenticated user, I can create a poll with any number of possible items.
+- As an unauthenticated or authenticated user, I can see and vote on everyone's polls.
+- As an unauthenticated or authenticated user, I can see the results of polls in chart form. (This could be implemented using Chart.js or Google Charts.)
+-  As an authenticated user, if I don't like the options on a poll, I can create a new option.
+
 # simple-react-full-stack
 
 This is a boilerplate to build a full stack web application using React, Node.js, Express and Webpack. It is also configured with webpack-dev-server, eslint, prettier and babel.
 
-- [simple-react-full-stack](#simple-react-full-stack)
-    - [Introduction](#introduction)
-        - [Development mode](#development-mode)
-        - [Production mode](#production-mode)
-    - [Quick Start](#quick-start)
-    - [Documentation](#documentation)
-        - [Folder Structure](#folder-structure)
-        - [Babel](#babel)
-        - [ESLint](#eslint)
-        - [Webpack](#webpack)
-        - [Webpack dev server](#webpack-dev-server)
-        - [Nodemon](#nodemon)
-        - [Express](#express)
-        - [Concurrently](#concurrently)
-        - [VSCode + ESLint + Prettier](#vscode-eslint-prettier)
-            - [Installation guide](#installation-guide)
+-   [simple-react-full-stack](#simple-react-full-stack)
+    -   [Introduction](#introduction)
+        -   [Development mode](#development-mode)
+        -   [Production mode](#production-mode)
+    -   [Quick Start](#quick-start)
+    -   [Documentation](#documentation)
+        -   [Folder Structure](#folder-structure)
+        -   [Babel](#babel)
+        -   [ESLint](#eslint)
+        -   [Webpack](#webpack)
+        -   [Webpack dev server](#webpack-dev-server)
+        -   [Nodemon](#nodemon)
+        -   [Express](#express)
+        -   [Concurrently](#concurrently)
+        -   [VSCode + ESLint + Prettier](#vscode-eslint-prettier)
+            -   [Installation guide](#installation-guide)
 
 ## Introduction
 
@@ -79,7 +98,7 @@ Babel requires plugins to do the transformation. Presets are the set of plugins 
 
 [ESLint](https://eslint.org/) is a pluggable and configurable linter tool for identifying and reporting on patterns in JavaScript.
 
-[.eslintrc.json file](<(https://eslint.org/docs/user-guide/configuring)>) (alternatively configurations can we wriiten in Javascript or YAML as well) is used describe the configurations required for ESLint. Below is the .eslintrc.json file which I am using.
+[.eslintrc.json file]((https://eslint.org/docs/user-guide/configuring)) (alternatively configurations can we wriiten in Javascript or YAML as well) is used describe the configurations required for ESLint. Below is the .eslintrc.json file which I am using.
 
 ```javascript
 {
