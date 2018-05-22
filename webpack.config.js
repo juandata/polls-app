@@ -9,7 +9,6 @@ module.exports = {
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
-    publicPath: '/'
   },
   module: {
     rules: [
@@ -27,7 +26,6 @@ module.exports = {
     ]
   },
   devServer: {
-    historyApiFallback: true,
     port: 3000,
     open: true,
     proxy: {
