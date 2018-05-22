@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom'
 import './app.css';
 
+//components
+
+import {SignUp} from './pages/SignUp';
+
+function Diff(props) {
+  return <h1>Diff component</h1>;
+}
+
 class Greeting extends Component {
   constructor(props) {
     super(props);
@@ -15,28 +23,35 @@ class Greeting extends Component {
   render(){
     return (
       <div>
-        {this.state.username ? (
-          <h1>Hello {this.state.username}</h1>
-        ) : (
-          <h1>Loading.. please wait!</h1>
-        )}
+        <h1>hello</h1>
+        <SignUp />
       </div>
     );
   }
 }
 
-function OtherComp(props){
-  return <h1>This is other component</h1>;
-}
+
 
 export default class App extends Component {
   render() {
     return (
       <Switch>
         <Route exact path="/" component={Greeting} />
-        <Route path="/other" component={OtherComp} />
+        <Route path="/signup" component={SignUp} />
+        <Route path="/other" component={Diff} />
       </Switch>
 
     );
   }
 }
+/*
+<div>
+  {this.state.username ? (
+    <div>
+    <h1>Hello {this.state.username}</h1>
+    <SignUp/>
+    </div>
+  ) : (
+    <h1>Loading.. please wait!</h1>
+  )}
+</div>*/
