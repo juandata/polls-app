@@ -8,6 +8,10 @@ import {SignUp} from './pages/SignUp';
 import {Login} from './pages/Login';
 import {Error} from './pages/Error';
 import {BootstrapTest} from './templates/BootstrapTest';
+import {Bootstrap1} from './templates/Bootstrap1';
+import {BasicTemplate} from './templates/Bootstrap4';
+
+
 
 
 
@@ -24,7 +28,7 @@ class Greeting extends Component {
     .then(user => this.setState({ username: user.username }));
   }
   render(){
-    return <BootstrapTest />;
+    return <Bootstrap1 />;
   }
 }
 
@@ -37,6 +41,7 @@ export default class App extends Component {
         <Route exact path="/" component={Greeting} />
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
+        <Route path="/template" component={BasicTemplate} />
         <Route component={Error} />
       </Switch>
 
