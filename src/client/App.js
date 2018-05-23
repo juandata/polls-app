@@ -7,6 +7,8 @@ import './app.css';
 import {SignUp} from './pages/SignUp';
 import {Login} from './pages/Login';
 import {Error} from './pages/Error';
+import {BootstrapTest} from './templates/BootstrapTest';
+
 
 
 
@@ -23,10 +25,7 @@ class Greeting extends Component {
   }
   render(){
     return (
-      <div>
-        <h1>hello</h1>
-        <SignUp />
-      </div>
+    <BootstrapTest />
     );
   }
 }
@@ -39,7 +38,7 @@ export default class App extends Component {
       <Switch>
         <Route exact path="/" component={Greeting} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/other" component={Login} />
+        <Route path="/login" component={Login} />
         <Route component={Error} />
       </Switch>
 

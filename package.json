@@ -8,17 +8,21 @@
     "build": "webpack --mode production",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "des": "concurrently \"npm run build\" \"npm run dev\""
+
   },
   "author": "Juan David Tabares Arce",
   "license": "ISC",
   "dependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
+    "bootstrap": "^4.1.1",
     "express": "^4.16.3",
     "mongodb": "^3.1.0-beta4",
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1",
-    "react-router-dom": "^4.2.2"
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-router-dom": "^4.2.2",
+    "reactstrap": "^6.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
