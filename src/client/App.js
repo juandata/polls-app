@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom'
-import './app.css';
+import './assets/css/app.css';
 
 //components
 
@@ -24,9 +24,7 @@ class Greeting extends Component {
     .then(user => this.setState({ username: user.username }));
   }
   render(){
-    return (
-    <BootstrapTest />
-    );
+    return <BootstrapTest />;
   }
 }
 
