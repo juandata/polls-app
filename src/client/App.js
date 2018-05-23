@@ -5,10 +5,11 @@ import './app.css';
 //components
 
 import {SignUp} from './pages/SignUp';
+import {Login} from './pages/Login';
+import {Error} from './pages/Error';
 
-function Diff(props) {
-  return <h1>Diff component</h1>;
-}
+
+
 
 class Greeting extends Component {
   constructor(props) {
@@ -38,7 +39,8 @@ export default class App extends Component {
       <Switch>
         <Route exact path="/" component={Greeting} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/other" component={Diff} />
+        <Route path="/other" component={Login} />
+        <Route component={Error} />
       </Switch>
 
     );
