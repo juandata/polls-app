@@ -1,0 +1,10 @@
+
+.logo {
+  width: 150px;
+}
+.logo-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+  flex-wrap: wrap;
+}

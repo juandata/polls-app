@@ -1,0 +1,22 @@
+.header {
+  font-size: 5em;
+}
+.fork {
+  position: absolute;
+  width: 210px;
+  right: 0px;
+  top: 0px;
+}
+@media (max-width: 360px ) {
+.header {
+  font-size:-webkit-xxx-large;
+}
+.logo {
+  margin-top: 20px;
+}
+}
+@media (max-width: 1200px ){
+  .fork {
+  width : 130px;
+}
+}

@@ -1,8 +1,16 @@
+/*
+main color: #0061d4cf
+text1 color : #ffffea
+
+*/
 h1 {
-  color: green;
+  color: #ffffea;
   text-align: center;
+  -webkit-text-stroke: black 1px;
 }
-.box {
-  background-color: #0000ff2e;
-  border: solid 0.2px;
+
+.jumbotron.text-center {
+    margin: auto;
+    padding: 1em;
+    background-color: #0061d4cf;
 }

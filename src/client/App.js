@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom'
+
 import './assets/css/app.css';
+
+import Header from './atoms/Header';
+
 
 //components
 
@@ -10,12 +14,6 @@ import {Error} from './pages/Error';
 import {BootstrapTest} from './templates/BootstrapTest';
 import {Bootstrap1} from './templates/Bootstrap1';
 import {BasicTemplate} from './templates/Bootstrap4';
-
-
-
-
-
-
 
 class Greeting extends Component {
   constructor(props) {
@@ -32,18 +30,20 @@ class Greeting extends Component {
   }
 }
 
-
-
-export default class App extends Component {
+ export default class App extends Component {
   render() {
     return (
+      <React.Fragment>
+      <Header />
       <Switch>
         <Route exact path="/" component={Greeting} />
+        <Route exact path="/test" component={BootstrapTest} />
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
         <Route path="/template" component={BasicTemplate} />
         <Route component={Error} />
       </Switch>
+      </React.Fragment>
 
     );
   }

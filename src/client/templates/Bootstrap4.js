@@ -1,19 +1,9 @@
 import React from 'react';
+import Footer from '../atoms/Footer';
 
-const styles = {
-  marginBottom : {marginBottom : "0"},
-  marginTop : {marginTop : "30px"},
-
-
-}
-export function BasicTemplate(props){
+function PlaceHolder(props){
   return (
     <React.Fragment>
-    <div className="jumbotron text-center" style={styles.marginBottom}>
-      <h1>My First Bootstrap 4 Page</h1>
-      <p>Resize this responsive page to see the effect!</p>
-    </div>
-
     <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
       <a className="navbar-brand" href="#">Navbar</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -34,7 +24,7 @@ export function BasicTemplate(props){
       </div>
     </nav>
 
-    <div className="container" style={styles.marginTop}>
+    <div className="container">
       <div className="row">
         <div className="col-sm-4">
           <h2>About Me</h2>
@@ -74,9 +64,17 @@ export function BasicTemplate(props){
         </div>
       </div>
     </div>
+    </React.Fragment>
+  )
+}
 
-    <div className="jumbotron text-center" style={styles.marginBottom}>
-    <p>Footer</p>
+export function BasicTemplate(props){
+  return (
+    <React.Fragment>
+    <div className="thebody">
+    <PlaceHolder />
+    <PlaceHolder />
+    <Footer />
     </div>
     </ React.Fragment>
   )

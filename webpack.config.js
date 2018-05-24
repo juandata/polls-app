@@ -22,14 +22,20 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
-      }
+      },
+      {
+           test: /\.(png|jp(e*)g|svg)$/,
+           use: [{
+               loader: 'url-loader'
+           }]
+       }
     ]
   },
   devServer: {
     port: 3000,
     open: true,
     proxy: {
-      '/api': 'http://localhost:8080'
+      '/' : 'http://localhost:8080'
     }
   },
   plugins: [
