@@ -3,6 +3,17 @@ main color: #0061d4cf
 text1 color : #ffffea
 
 */
+html, #root, body {
+  height: 100%;
+}
+body {
+  overflow-y: hidden;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  height: -webkit-fill-available;
+}
 h1 {
   color: #ffffea;
   text-align: center;

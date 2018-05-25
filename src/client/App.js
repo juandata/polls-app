@@ -4,6 +4,8 @@ import { Switch, Route } from 'react-router-dom'
 import './assets/css/app.css';
 
 import Header from './atoms/Header';
+import Nav from './atoms/Nav';
+
 
 
 //components
@@ -35,6 +37,7 @@ class Greeting extends Component {
     return (
       <React.Fragment>
       <Header />
+      <Nav />
       <Switch>
         <Route exact path="/" component={Greeting} />
         <Route exact path="/test" component={BootstrapTest} />

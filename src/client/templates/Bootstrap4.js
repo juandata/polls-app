@@ -1,29 +1,11 @@
 import React from 'react';
 import Footer from '../atoms/Footer';
 
+import '../assets/css/Bootstrap4.css';
+
 function PlaceHolder(props){
   return (
     <React.Fragment>
-    <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a className="navbar-brand" href="#">Navbar</a>
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <a className="nav-link" href="#">Link</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Link</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Link</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
     <div className="container">
       <div className="row">
         <div className="col-sm-4">
@@ -71,7 +53,7 @@ function PlaceHolder(props){
 export function BasicTemplate(props){
   return (
     <React.Fragment>
-    <div className="thebody">
+    <div className="body">
     <PlaceHolder />
     <PlaceHolder />
     <Footer />
