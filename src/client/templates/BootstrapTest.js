@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button, Container, Row, Col, Jumbotron } from "reactstrap";
+import { Alert, Button, Row, Col, Jumbotron } from "react-bootstrap";
 
 const Box = props => <div className="box">{props.children} </div>;
 
@@ -33,7 +33,7 @@ export function BootstrapTest(props) {
      </Alert>
     </div>
 
-    <Container>
+    <div>
        <Row>
          <Col>
            <Box> .col </Box>
@@ -106,7 +106,7 @@ export function BootstrapTest(props) {
            <Box> .col-sm-12 .col-md-6 .col-md-offset-3 </Box>
          </Col>
        </Row>
-    </Container>
+    </div>
 
 
      <div className="jumbotron text-center">

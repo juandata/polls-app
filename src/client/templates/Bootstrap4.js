@@ -1,7 +1,5 @@
 import React from 'react';
-import Footer from '../atoms/Footer';
 
-import '../assets/css/Bootstrap4.css';
 
 function PlaceHolder(props){
   return (
@@ -53,11 +51,8 @@ function PlaceHolder(props){
 export function BasicTemplate(props){
   return (
     <React.Fragment>
-    <div className="body">
     <PlaceHolder />
     <PlaceHolder />
-    <Footer />
-    </div>
     </ React.Fragment>
   )
 }

@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom';
+
+import logic from './logic';
 
 import './assets/css/app.css';
 
 import Header from './atoms/Header';
 import Nav from './atoms/Nav';
-import Bnav from './atoms/Bnav';
+//import NavBar from '.atoms/NavBar';
+import Footer from './atoms/Footer';
+import NavBar from './atoms/NavBar';
 
 
 
 //components
+import {GeneralPolls} from './templates/GeneralPolls';
+import {BreadCumb} from './atoms/BreadCumb';
 
 import {SignUp} from './pages/SignUp';
 import {Login} from './pages/Login';
@@ -35,19 +41,26 @@ class Greeting extends Component {
 
  export default class App extends Component {
   render() {
+    let lastUrl = logic.getUrl;
     return (
       <React.Fragment>
       <Header />
-      <Nav />
+      <NavBar />
+      <BreadCumb currentPage={lastUrl} />
+      <div className="body">
       <Switch>
         <Route exact path="/" component={Greeting} />
+        <Route path="/GeneralPolls" component={GeneralPolls} />
+        //Pruebas abajo
         <Route exact path="/test" component={BootstrapTest} />
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
         <Route path="/template" component={BasicTemplate} />
-        <Route path="/Bnav" component={Bnav} />
+        <Route path="/NavBar" component={NavBar} />
         <Route component={Error} />
       </Switch>
+      <Footer />
+      </div>
       </React.Fragment>
 
     );

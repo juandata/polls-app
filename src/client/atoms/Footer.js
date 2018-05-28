@@ -10,6 +10,7 @@ import webpack from '../assets/img/webpack.svg';
 
 export default function Footer(props){
   return (
+    <footer>
     <div className="jumbotron text-center">
     <h4>Powered by</h4>
     <div className="logo-container">
@@ -20,5 +21,6 @@ export default function Footer(props){
      <img src={webpack} className="rounded logo" alt="Webpack" />
      </div>
     </div>
+    </footer>
   )
 }
