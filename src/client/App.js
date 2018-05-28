@@ -5,6 +5,7 @@ import './assets/css/app.css';
 
 import Header from './atoms/Header';
 import Nav from './atoms/Nav';
+import Bnav from './atoms/Bnav';
 
 
 
@@ -44,6 +45,7 @@ class Greeting extends Component {
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
         <Route path="/template" component={BasicTemplate} />
+        <Route path="/Bnav" component={Bnav} />
         <Route component={Error} />
       </Switch>
       </React.Fragment>
