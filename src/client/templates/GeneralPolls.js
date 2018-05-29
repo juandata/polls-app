@@ -9,7 +9,7 @@ export function GeneralPolls(props){
   <div>
     <PageHeader className="header-margins">
       Check All the Public Polls Created by the Users
-    </PageHeader>;
+    </PageHeader>
     < Masonery polls={20} />
     <Grid fluid={true}>
       <Row className="show-grid">

@@ -7,18 +7,21 @@ import './assets/css/app.css';
 
 import Header from './atoms/Header';
 import Nav from './atoms/Nav';
-//import NavBar from '.atoms/NavBar';
-import Footer from './atoms/Footer';
 import NavBar from './atoms/NavBar';
+import Footer from './atoms/Footer';
+import Login from './atoms/Login';
+import Register from './atoms/Register';
 
 
 
 //components
 import {GeneralPolls} from './templates/GeneralPolls';
 import {BreadCumb} from './atoms/BreadCumb';
+import {Barchart} from './atoms/d3practice';
 
+import {PollsView} from './atoms/PollsView';
 import {SignUp} from './pages/SignUp';
-import {Login} from './pages/Login';
+//import {Login} from './pages/Login';
 import {Error} from './pages/Error';
 import {BootstrapTest} from './templates/BootstrapTest';
 import {Bootstrap1} from './templates/Bootstrap1';
@@ -49,8 +52,13 @@ class Greeting extends Component {
       <BreadCumb currentPage={lastUrl} />
       <div className="body">
       <Switch>
-        <Route exact path="/" component={Greeting} />
+        <Route exact path="/" component={GeneralPolls} />
         <Route path="/GeneralPolls" component={GeneralPolls} />
+        <Route path="/Login" component={Login} />
+        <Route path="/Register" component={Register} />
+        <Route path="/PollsView"render={()=> < PollsView title="Polls Title" /> } />
+        <Route path="/d3" component= {Barchart} />
+
         //Pruebas abajo
         <Route exact path="/test" component={BootstrapTest} />
         <Route path="/signup" component={SignUp} />

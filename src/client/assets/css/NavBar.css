@@ -1,3 +1,5 @@
 .navbar {
   min-height: inherit;
+  margin-bottom: auto;
+  border-radius: inherit;
 }

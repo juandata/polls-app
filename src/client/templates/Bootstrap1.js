@@ -1,6 +1,4 @@
 import React from 'react';
-
-import '../assets/css/bootstrapPractice.css';
 /*
 Grid Structure Bootstrap 4
     .col- (extra small devices - screen width less than 576px)

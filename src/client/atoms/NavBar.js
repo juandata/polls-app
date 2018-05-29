@@ -4,25 +4,25 @@ import '../assets/css/NavBar.css'
 
 export default function NavBar(props){
   return(
-  <Navbar inverse collapseOnSelect>
+  <Navbar inverse collapseOnSelect fluid={true}>
   <Navbar.Header>
     <Navbar.Brand>
-      <a href="#brand">Polls Creation App</a>
+      <a href="/">Polls Creation App</a>
     </Navbar.Brand>
     <Navbar.Toggle />
   </Navbar.Header>
   <Navbar.Collapse>
     <Nav>
-      <NavItem eventKey={1} href="#">
+      <NavItem eventKey={1} href="/Login">
           Login
         </NavItem>
-        <NavItem eventKey={2} href="#">
+        <NavItem eventKey={2} href="/Register">
           Register
         </NavItem>
-        <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1}>Action</MenuItem>
-          <MenuItem eventKey={3.2}>Another action</MenuItem>
-          <MenuItem eventKey={3.3}>Something else here</MenuItem>
+        <NavDropdown eventKey={3} title="Know more..." id="basic-nav-dropdown">
+          <MenuItem eventKey={3.1}>About</MenuItem>
+          <MenuItem eventKey={3.2}>Hire me!</MenuItem>
+          <MenuItem eventKey={3.3}>Questions?</MenuItem>
           <MenuItem divider />
           <MenuItem eventKey={3.3}>Separated link</MenuItem>
         </NavDropdown>
