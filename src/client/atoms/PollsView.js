@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as d3 from "d3";
 import { Grid, Row, Col, Thumbnail, Button, Media, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import {Barchart} from './d3practice';
+
 import thumbnail from '../assets/img/thumbnaildiv.png';
 
 function SmallThumbnail(props){
@@ -26,15 +28,19 @@ function SmallThumbnail(props){
 export class PollsView extends React.Component {
   constructor(props){
     super(props);
-    this.state = {n : "You have not voted yet"};
+    this.state = {n : "You have not voted yet", s: "nothing yet"};
     this.upd = this.upd.bind(this);
   }
+
   upd(e){
     const sel = e.target.value;
-    this.setState({
-      n : "You voted for " + sel
-    });
-    console.log(sel);
+    fetch('/mongo')
+    .then(function(response) {
+        return response.text();
+      }).then(function(text){
+        console.log(text);
+      });
+
   }
   render (){
         return(
@@ -60,6 +66,8 @@ export class PollsView extends React.Component {
             <Col xs={12} md={8}>
               Graph Area <br/>
               {this.state.n}
+              <Barchart data="data"/>
+              <h1>{this.state.s}</h1>
             </Col>
           </Row>
         </Grid>
