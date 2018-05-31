@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import * as d3 from "d3";
 import { Grid, Row, Col, Thumbnail, Button, Media, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import {Barchart} from './d3practice';
+import logic from '../logic';
 
 import thumbnail from '../assets/img/thumbnaildiv.png';
 
@@ -24,7 +25,7 @@ function SmallThumbnail(props){
   </Media>
   )
 }
-
+var el;
 export class PollsView extends React.Component {
   constructor(props){
     super(props);
@@ -33,14 +34,31 @@ export class PollsView extends React.Component {
   }
 
   upd(e){
+    const url = logic.getUrl;
     const sel = e.target.value;
-    fetch('/mongo')
+    var content = "hola soy el body!!!";
+    var myHeaders = new Headers();
+    var texto = "soy el body!";
+    var headers: {
+    'Accept': 'text/plain',
+    'Content-Type': 'text/plain'
+  }
+    //myHeaders.append("Content-Type", "text/plain");
+    //myHeaders.append("X-Custom-Header", "ProcessThisImmediately");
+    //var miInit = { method : "POST", headers: myHeaders, mode: 'cors' }
+
+    fetch('/mongo', {
+      headers,
+      method: "POST",
+      body: sel
+    })
     .then(function(response) {
         return response.text();
-      }).then(function(text){
-        console.log(text);
-      });
-
+      })
+    .then(function(text){
+        return text
+      })
+    .then( resp => this.setState({n : sel, s : resp}))
   }
   render (){
         return(

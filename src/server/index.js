@@ -2,6 +2,7 @@
 const express = require('express');
 const path  = require("path");
 const app = express();
+const bodyParser = require('body-parser');
 const routes = [
   "/", "/signup", "/other"
 ];
@@ -10,13 +11,18 @@ var MongoClient = mongodb.MongoClient;
 const address = "mongodb://pollsapp:Fray2017@ds231740.mlab.com:31740/pollsapp";
 
 app.use(express.static('dist'));
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.text()); // for parsing application/json
+app.use(bodyParser.json()); // for parsing application/json
+
 app.get('/api/getUsername', (req, res) => res.send({
   username: "Hola soy express"
 }));
-app.get("/mongo", function(req, res){
-    connectToMongo("created from react wow!!");
-    res.send("it was easy to made the request!")
 
+app.post("/mongo", function(req, res){
+    /*connectToMongo("created from react wow!!");*/
+    console.log(req.body);
+    res.send(req.body);
 });
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
