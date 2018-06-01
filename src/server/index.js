@@ -6,9 +6,17 @@ const bodyParser = require('body-parser');
 const routes = [
   "/", "/signup", "/other"
 ];
-var mongodb = require('mongodb');
-var MongoClient = mongodb.MongoClient;
 const address = "mongodb://pollsapp:Fray2017@ds231740.mlab.com:31740/pollsapp";
+//var mongodb = require('mongodb');
+//var MongoClient = mongodb.MongoClient;
+var mongoose = require('mongoose');
+var pollsSquema = mongoose.Schema({
+  name: String,
+  description : String,
+  options : Array
+});
+var PollCreated = mongoose.model('Polls', pollsSquema);
+console.log("do i get started???");
 
 app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -21,8 +29,34 @@ app.get('/api/getUsername', (req, res) => res.send({
 
 app.post("/mongo", function(req, res){
     /*connectToMongo("created from react wow!!");*/
-    console.log(req.body);
-    res.send(req.body);
+    var bodyParsed = JSON.parse(req.body);
+    mongoose.connect(address);
+    var db = mongoose.connection;
+    db.on('error', function() {
+      console.error.bind(console, 'connection error:')
+      res.send("There was a connection error, please try again later or verify your connection")
+    });
+    db.once('open', function() {
+        var newPoll = new PollCreated({
+        name: bodyParsed.pollName,
+        description : bodyParsed.description,
+        options : bodyParsed.options
+      });
+      newPoll.save(function (err, fluffy) {
+        if (err) return console.error(err);
+        console.log("Poll saved to mongo");
+      });
+    });
+    /*
+    Kitten.find(function (err, kittens) {
+      if (err) return console.error(err);
+      console.log(kittens);
+    })
+    Kitten.find({ name: /^fluff/ },function (err, kittens) {
+      if (err) return console.error(err);
+      console.log(kittens);
+    })*/
+
 });
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
