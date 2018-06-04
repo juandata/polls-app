@@ -2,21 +2,23 @@ import React from 'react';
 import Textarea from "react-textarea-autosize";
 import '../assets/css/CreatePoll.css'
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader} from 'react-bootstrap';
-
+import PollCreated from './PollCreated';
 var elemento = < Options value="No options added yet"  />;
 var boton = <Button className="register" type="submit" bsStyle="primary" bsSize="large" block disabled
 >Create Poll</Button>;
 let estado = null, nameMessage = "Name";
+let theState;
 export default class CreatePoll extends React.Component{
   constructor(props){
     super(props);
+    theState = this;
     this.getOptions = this.getOptions.bind(this);
     this.submitOptions = this.submitOptions.bind(this);
     this.clearOptions = this.clearOptions.bind(this);
     this.sendPoll = this.sendPoll.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
-    this.state = {options : ["No options added yet" ], change : false, disabled : true, valor : "", view :"Form"};
+    this.state = {user : "juandata", options : ["No options added yet" ], change : false, disabled : true, valor : "", view :"Form"};
   }
   handleChange(e) {
    this.setState({ valor: e.target.value });
@@ -26,7 +28,7 @@ export default class CreatePoll extends React.Component{
    if (longi > 0) estado = 'success';
    else  estado = 'error';
    this.setState({change : !this.state.change});
- }
+  }
   getOptions(e){
     var op = e.target.value;
     var splited = op.split(/[\n\r]/g)
@@ -79,11 +81,14 @@ export default class CreatePoll extends React.Component{
   sendPoll(){
     let name = document.getElementById("pollName").value;
     var descr = document.getElementById("description").value;
-    let theView = "";
+    var jsonOpt = [];
+     this.state.options.map(function(el, ind){
+      jsonOpt.push([el, 0]);
+    });
     var pollInfo = {
       pollName : name,
       description : descr,
-      options : this.state.options
+      options : jsonOpt
     }
     var headers: {
     'Accept': 'application/json',
@@ -95,11 +100,19 @@ export default class CreatePoll extends React.Component{
       body: JSON.stringify(pollInfo)
     })
       .then(function(response) {
-          return response.text();
+        console.log(response);
+          return response.json();
         })
-      .then(function(text){
-          console.log(text);
-          return text
+      .then(function(jsonr){
+          console.log(jsonr);
+          var respuesta = jsonr.hasOwnProperty('error');
+          console.log(respuesta);
+          if(respuesta){
+            theState.setState({view : "Error"})
+          } else {
+              theState.setState({view : "Created"})
+          }
+          return jsonr;
         })
   }
   render(){
@@ -108,54 +121,61 @@ export default class CreatePoll extends React.Component{
     onClick={this.sendPoll}>Create Poll</Button> :
     <Button className="register" type="submit" bsStyle="primary" bsSize="large" block disabled
     >Create Poll</Button>;
-    return (
-      <div className="container">
-        <PageHeader className="header-margins">
-          Create your poll
-        </PageHeader>
-        <Form  horizontal>
-          <FormGroup controlId="pollName" validationState={estado} onChange={this.handleChange}>
-            <Col componentClass={ControlLabel} sm={2} >
-              Name
-            </Col>
-            <Col sm={10}>
-              <FormControl type="text" placeholder={nameMessage} />
-            </Col>
-          </FormGroup>
+    if(this.state.view == "Form"){
+      return (
+        <div className="container">
+          <PageHeader className="header-margins">
+            Create your poll
+          </PageHeader>
+          <Form  horizontal>
+            <FormGroup controlId="pollName" validationState={estado} onChange={this.handleChange}>
+              <Col componentClass={ControlLabel} sm={2} >
+                Name
+              </Col>
+              <Col sm={10}>
+                <FormControl type="text" placeholder={nameMessage} />
+              </Col>
+            </FormGroup>
 
-          <FormGroup controlId="description" onFocus={this.handleFocus}>
-            <Col componentClass={ControlLabel} sm={2}>
-            <ControlLabel>Description</ControlLabel>
-            </Col>
-            <Col sm={10}>
-            <FormControl componentClass="textarea" placeholder="Description" />
-            </Col >
-          </FormGroup>
+            <FormGroup controlId="description" onFocus={this.handleFocus}>
+              <Col componentClass={ControlLabel} sm={2}>
+              <ControlLabel>Description</ControlLabel>
+              </Col>
+              <Col sm={10}>
+              <FormControl componentClass="textarea" placeholder="Description" />
+              </Col >
+            </FormGroup>
 
-          <FormGroup >
-            <Col componentClass={ControlLabel} sm={2}>
-            <ControlLabel>Options</ControlLabel>
-            </Col>
-            <Col sm={6}>
-            <Textarea placeholder="separate each option with enter" minRows={3} style={{minWidth: "100%"}}
-            useCacheForDOMMeasurements value={this.state.value} onChange={this.getOptions} id="text-area"/>
-            </Col >
-            <Col sm={2}>
-              <Button type="submit" onClick={this.submitOptions}>Add options</Button><br/><br/>
-              <Button type="submit" onClick={this.clearOptions}>Clear</Button>
-            </Col>
-            <Col sm={2}>
-            { elemento }
-            </Col>
-          </FormGroup>
-        </Form>
-        {boton}
-      </div>
-    )
+            <FormGroup >
+              <Col componentClass={ControlLabel} sm={2}>
+              <ControlLabel>Options</ControlLabel>
+              </Col>
+              <Col sm={6}>
+              <Textarea placeholder="separate each option with enter" minRows={3} style={{minWidth: "100%"}}
+              useCacheForDOMMeasurements value={this.state.value} onChange={this.getOptions} id="text-area"/>
+              </Col >
+              <Col sm={2}>
+                <Button type="submit" onClick={this.submitOptions}>Add options</Button><br/><br/>
+                <Button type="submit" onClick={this.clearOptions}>Clear</Button>
+              </Col>
+              <Col sm={2}>
+              { elemento }
+              </Col>
+            </FormGroup>
+          </Form>
+          {boton}
+        </div>
+      )
+    } else if (this.state.view == "Created"){
+      return < PollCreated /> ;
+    }
+    else {
+      return <h1>There was a connection error, please try again later or verify your connection</h1>;
+    }
+
   }
 
 }
-
 function Options(props){
     if(props.value == "No options added yet"){
       return (<h6>Your poll options will appear here once added, confirm pressing the button below: Create Poll </h6>)

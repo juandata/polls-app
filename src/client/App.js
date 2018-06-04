@@ -12,6 +12,8 @@ import Footer from './atoms/Footer';
 import Login from './atoms/Login';
 import Register from './atoms/Register';
 import CreatePoll from './atoms/CreatePoll';
+import PollCreated from './atoms/PollCreated';
+
 
 
 
@@ -57,8 +59,9 @@ class Greeting extends Component {
         <Route path="/GeneralPolls" component={GeneralPolls} />
         <Route path="/Login" component={Login} />
         <Route path="/Register" component={Register} />
-        <Route path="/PollsView"render={()=> < PollsView title="Polls Title" /> } />
+        <Route path="/PollsView"render={()=> < PollsView /> } />
         <Route path="/CreatePoll" component={CreatePoll} />
+        <Route path="/PollCreated" component={PollCreated} />
         <Route path="/d3" component= {Barchart} />
 
         //Pruebas abajo

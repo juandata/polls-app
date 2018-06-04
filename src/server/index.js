@@ -15,8 +15,7 @@ var pollsSquema = mongoose.Schema({
   description : String,
   options : Array
 });
-var PollCreated = mongoose.model('Polls', pollsSquema);
-console.log("do i get started???");
+
 
 app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -29,12 +28,18 @@ app.get('/api/getUsername', (req, res) => res.send({
 
 app.post("/mongo", function(req, res){
     /*connectToMongo("created from react wow!!");*/
+    let PollCreated = mongoose.model('javier', pollsSquema);
     var bodyParsed = JSON.parse(req.body);
     mongoose.connect(address);
-    var db = mongoose.connection;
+    let db = mongoose.connection;
     db.on('error', function() {
+      var bodyError = {
+        error : "There was a connection error, please try again later or verify your connection"
+      }
+      console.log("There was a connection error, please try again later or verify your connection");
+      res.send(bodyError);
       console.error.bind(console, 'connection error:')
-      res.send("There was a connection error, please try again later or verify your connection")
+
     });
     db.once('open', function() {
         var newPoll = new PollCreated({
@@ -42,21 +47,40 @@ app.post("/mongo", function(req, res){
         description : bodyParsed.description,
         options : bodyParsed.options
       });
-      newPoll.save(function (err, fluffy) {
+      newPoll.save(function (err, polls) {
         if (err) return console.error(err);
         console.log("Poll saved to mongo");
+        res.send(polls);
       });
     });
-    /*
-    Kitten.find(function (err, kittens) {
-      if (err) return console.error(err);
-      console.log(kittens);
-    })
-    Kitten.find({ name: /^fluff/ },function (err, kittens) {
-      if (err) return console.error(err);
-      console.log(kittens);
-    })*/
+});
+app.post("/getMongo", function(req, res){
+  //var bodyParsed = JSON.parse(req.body);
+  let PollCreated = mongoose.model('kiarauser', pollsSquema);
+  console.log(req.body);
+  mongoose.connect(address);
+  var database = mongoose.connection;
+  database.on('error', function(){
+    var bodyError = {
+      error : "There was a connection error, please try again later or verify your connection"
+    }
+    console.log("There was a connection error, please try again later or verify your connection");
+    res.send(bodyError);
+    console.error.bind(console, 'connection error:')
 
+  });
+  database.once('open', function(){
+    //get all
+    PollCreated.find(function(err, polls){
+      if (err) return console.error(err);
+      //console.log("connected successfully", polls);
+    });
+    //filter search
+    PollCreated.find({_id : req.body}, function(err, poll){
+      console.log("connected successfully", poll);
+      res.json(poll)
+    });
+  })
 });
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
