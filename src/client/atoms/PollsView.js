@@ -27,24 +27,26 @@ let pollTemplate = {
   name : "No Poll Found",
   description : "Description of the Poll",
   options : ["1", "2", "3"]
-}
+}, headers: {
+'Accept': 'application/json',
+'Content-Type': 'application/json'
+};
 export class PollsView extends React.Component {
   constructor(props){
     super(props);
-    this.state = {poll : pollTemplate, vote : "you have not voted yet", id : "5b15c2463a52ea006c3a8b27" };
+    this.state = {poll : pollTemplate, vote : "you have not voted yet", id : "5b170a4939c381336861e152", user : "goodUser" };
     this.upd = this.upd.bind(this);
   }
   componentWillMount(){
     const url = logic.getUrl;
-    const id = this.state.id;
-    var headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-    };
+    const bodyReq = {
+      id : this.state.id,
+      user : this.state.user
+    }
     fetch('/getMongo', {
       headers,
       method: "POST",
-      body: id
+      body: JSON.stringify(bodyReq)
     })
     .then(function(response) {
         return response.json();
@@ -56,6 +58,22 @@ export class PollsView extends React.Component {
   }
   upd(e){
     this.setState({vote : e.target.value});
+    const bodyReq = {
+      id : this.state.id,
+      user : this.state.user,
+      vote : e.target.value
+    }
+    fetch('/voteMongo', {
+      headers,
+      method : "POST",
+      body : JSON.stringify(bodyReq)
+    })
+    .then(function(response){
+      return response.json();
+    }).
+    then(function(jsonresp){
+      console.log(jsonresp);
+    });
   }
   render (){
         return(
@@ -67,9 +85,12 @@ export class PollsView extends React.Component {
               <ControlLabel>Your vote matters</ControlLabel>
               <FormControl componentClass="select" placeholder="select"  onChange={this.upd}>
               <option value="select"  >I´d like to vote for...</option>
-                {this.state.poll.options.map(function(el, ind){
-                   return <option value={el[0]} key={ind}>{el[0]}</option>
-                })}
+              {
+                Object.entries(this.state.poll.options).map(function(el, ind){
+                  return <option value={el[0]} key={ind}> {el[0]}</option>;
+                })
+
+              }
               </FormControl>
             </FormGroup>
             < SmallThumbnail title={this.state.poll.name} descr={this.state.poll.description}/>
@@ -80,11 +101,10 @@ export class PollsView extends React.Component {
               <h1>You voted for : {this.state.vote}</h1>
               <h2>The voting count is: </h2>
               <ul>
-                {
-                  this.state.poll.options.map(function(el, ind){
-                    return <li key={ind}>{el[0]} : {el[1]}</li>
-                  })
-                }
+              {Object.entries(this.state.poll.options).map(function(el, ind){
+                return <li key={ind}>{el[0]} : {el[1]}</li>;
+              })
+              }
               </ul>
               <h2>the id is: </h2>
               {this.state.poll._id}

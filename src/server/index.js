@@ -13,7 +13,7 @@ var mongoose = require('mongoose');
 var pollsSquema = mongoose.Schema({
   name: String,
   description : String,
-  options : Array
+  options : mongoose.Schema.Types.Mixed
 });
 
 
@@ -25,11 +25,11 @@ app.use(bodyParser.json()); // for parsing application/json
 app.get('/api/getUsername', (req, res) => res.send({
   username: "Hola soy express"
 }));
-
+//let PollCreated = mongoose.model('javier', pollsSquema);
 app.post("/mongo", function(req, res){
     /*connectToMongo("created from react wow!!");*/
-    let PollCreated = mongoose.model('javier', pollsSquema);
     var bodyParsed = JSON.parse(req.body);
+    let PollCreated = mongoose.model(bodyParsed.user, pollsSquema, bodyParsed.user );
     mongoose.connect(address);
     let db = mongoose.connection;
     db.on('error', function() {
@@ -45,7 +45,8 @@ app.post("/mongo", function(req, res){
         var newPoll = new PollCreated({
         name: bodyParsed.pollName,
         description : bodyParsed.description,
-        options : bodyParsed.options
+        options : bodyParsed.options,
+        user : bodyParsed.user
       });
       newPoll.save(function (err, polls) {
         if (err) return console.error(err);
@@ -55,9 +56,9 @@ app.post("/mongo", function(req, res){
     });
 });
 app.post("/getMongo", function(req, res){
-  //var bodyParsed = JSON.parse(req.body);
-  let PollCreated = mongoose.model('kiarauser', pollsSquema);
-  console.log(req.body);
+  var bodyParsed = JSON.parse(req.body);
+  //get the document that belong to the user
+  let PollCreated = mongoose.model(bodyParsed.user, pollsSquema, bodyParsed.user);
   mongoose.connect(address);
   var database = mongoose.connection;
   database.on('error', function(){
@@ -73,14 +74,43 @@ app.post("/getMongo", function(req, res){
     //get all
     PollCreated.find(function(err, polls){
       if (err) return console.error(err);
-      //console.log("connected successfully", polls);
     });
-    //filter search
-    PollCreated.find({_id : req.body}, function(err, poll){
-      console.log("connected successfully", poll);
+    //filter search, get the document with the id
+    PollCreated.find({_id : bodyParsed.id}, function(err, poll){
       res.json(poll)
     });
   })
+});
+app.post("/voteMongo", function(req, res){
+  var bodyParsed = JSON.parse(req.body);
+  //get the document that belong to the user
+  let PollCreated = mongoose.model(bodyParsed.user, pollsSquema);
+  mongoose.connect(address);
+  var database = mongoose.connection;
+  database.on('error', function(){
+    var bodyError = {
+      error : "There was a connection error, please try again later or verify your connection"
+    }
+    console.log("There was a connection error, please try again later or verify your connection");
+    res.send(bodyError);
+    console.error.bind(console, 'connection error:')
+
+  });
+  database.once('open', function(){
+    //console.log("connected to MongoDB", bodyParsed);
+    //var query = {'username':req.user.username};
+    //req.newData.username = req.user.username;
+    /*PollCreated.findById(bodyParsed.id, function (err, updPoll) {
+      if (err) return handleError(err);
+    });*/
+    PollCreated.update(
+      {_id: bodyParsed.id},
+      {$set: {'options.armagedon': 1}},
+      function(err, saved){
+        console.log("saved", saved);
+        res.json(saved);
+      });
+      })
 });
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));

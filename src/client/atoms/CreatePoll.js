@@ -18,7 +18,7 @@ export default class CreatePoll extends React.Component{
     this.sendPoll = this.sendPoll.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
-    this.state = {user : "juandata", options : ["No options added yet" ], change : false, disabled : true, valor : "", view :"Form"};
+    this.state = {user : "goodUser", options : ["No options added yet" ], change : false, disabled : true, valor : "", view :"Form"};
   }
   handleChange(e) {
    this.setState({ valor: e.target.value });
@@ -81,15 +81,18 @@ export default class CreatePoll extends React.Component{
   sendPoll(){
     let name = document.getElementById("pollName").value;
     var descr = document.getElementById("description").value;
-    var jsonOpt = [];
+    var jsonOpt = {};
      this.state.options.map(function(el, ind){
-      jsonOpt.push([el, 0]);
+       console.log(el);
+       return jsonOpt[el] = 0;
     });
     var pollInfo = {
       pollName : name,
       description : descr,
-      options : jsonOpt
+      options : jsonOpt,
+      user : this.state.user
     }
+    console.log(pollInfo);
     var headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
