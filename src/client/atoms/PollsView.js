@@ -34,7 +34,7 @@ let pollTemplate = {
 export class PollsView extends React.Component {
   constructor(props){
     super(props);
-    this.state = {poll : pollTemplate, vote : "you have not voted yet", id : "5b170a4939c381336861e152", user : "goodUser" };
+    this.state = {poll : pollTemplate, vote : "you have not voted yet", id : "5b183459f7856c1f8c5502d7", user : "goodUser" };
     this.upd = this.upd.bind(this);
   }
   componentWillMount(){
@@ -58,10 +58,12 @@ export class PollsView extends React.Component {
   }
   upd(e){
     this.setState({vote : e.target.value});
+    let currVal = this.state.poll.options[e.target.value];
     const bodyReq = {
       id : this.state.id,
       user : this.state.user,
-      vote : e.target.value
+      vote : "options." + e.target.value,
+      voteVal : currVal
     }
     fetch('/voteMongo', {
       headers,
@@ -71,9 +73,7 @@ export class PollsView extends React.Component {
     .then(function(response){
       return response.json();
     }).
-    then(function(jsonresp){
-      console.log(jsonresp);
-    });
+    then(resp => this.setState({poll: resp } ) );
   }
   render (){
         return(
@@ -97,7 +97,7 @@ export class PollsView extends React.Component {
             </Col>
             <Col xs={12} md={8}>
               Graph Area <br/>
-              <Barchart data="data"/>
+              <Barchart data={this.state.poll.options} />
               <h1>You voted for : {this.state.vote}</h1>
               <h2>The voting count is: </h2>
               <ul>

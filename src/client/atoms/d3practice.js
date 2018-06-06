@@ -1,88 +1,94 @@
 import React from 'react';
 import * as d3 from "d3";
 
-
+let prop;
 import '../assets/css/d3.css'
 export class Barchart extends React.Component {
   constructor(props){
     super(props);
+    prop = this;
   }
-  componentDidMount(){
-    function drawShapes(){
-      var svgWidth = 600, svgHeight = 500;
-      var svg = d3.select(".canvas")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight)
-        .attr("class", "svg-container")
-      var line = svg.append("line")
-        .attr("x1", 100)
-        .attr("x2", 500)
-        .attr("y1", 50)
-        .attr("y2", 50)
-        .attr("stroke", "red");
-      var rect = svg.append("rect")
-        .attr("x", 100)
-        .attr("y", 100)
-        .attr("width", 200)
-        .attr("height", 100)
-        .attr("fill", "#9B95FF");
-      var circle = svg.append("circle")
-        .attr("cx", 200)
-        .attr("cy", 300)
-        .attr("r", 80)
-        .attr("fill", "#7CE8D5");
-      }
-    //drawShapes();
-    function drawPie(){
+
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    //console.log(prevProps, prevState, snapshot, prop.props.data);
       // javascript
-      var data = [
-          {"platform": "Android", "percentage": 40.11},
-          {"platform": "Windows", "percentage": 36.69},
-          {"platform": "iOS", "percentage": 13.06}
-      ];
+      //let length = Object.keys(this.props.data).length;
+      let ot = prop.props.data;
+      let len = Object.keys(ot).length;
+      let data = Object.entries(ot);
+      Object.entries(ot).map(function(el, ind){
+      })
+      console.log(data);
+      //practice
+      d3.select('.test').append('span').html("Hello World! <span style='color: red'>from D3.js</span>")
+      .attr('style', 'background-color : gray;')
+      .style('border', ' solid blue 3px');
+      //draw a pie chart based on data
+      d3.select('#list').selectAll('ul').data(data).enter().append('li')
+      .text(function(d){return d[0] + ' : ' + d[1]})
 
-      var svgWidth = 500, svgHeight = 300, radius =  Math.min(svgWidth, svgHeight) / 2;
-      var svg = d3.select('.pie')
-          .attr("width", svgWidth)
-          .attr("height", svgHeight);
+      //pie chart example
+      var width = 300;
+      var height = 300;
+      var svg = d3.select("#svgcontainer")
+         .append("svg").attr("width", width).attr("height", height);
+     svg.append("line")
+     .attr("x1", 100)
+     .attr("y1", 100)
+     .attr("x2", 200)
+     .attr("y2", 200)
+     .style("stroke", "rgb(255,0,0)")
+     .style("stroke-width", 2);
 
-      //Create group element to hold pie chart
-      var g = svg.append("g")
-          .attr("transform", "translate(" + radius + "," + radius + ")") ;
-      var color = d3.scaleOrdinal(d3.schemeCategory10);
-      var pie = d3.pie().value(function(d) {
-           return d.percentage;
-      });
-      var path = d3.arc()
-          .outerRadius(radius)
-          .innerRadius(0);
-      var arc = g.selectAll("arc")
-          .data(pie(data))
-          .enter()
-          .append("g");
-      arc.append("path")
-          .attr("d", path)
-          .attr("fill", function(d) { return color(d.data.percentage); });
-      var label = d3.arc()
-          .outerRadius(radius)
-          .innerRadius(0);
-      arc.append("text")
-          .attr("transform", function(d) {
-              return "translate(" + label.centroid(d) + ")";
+
+       //adding incoming data to a svg bar chart
+        var width = 200,
+        scaleFactor = 10,
+        barHeight = 20;
+        d3.select('#dataChart').html("<span></span>");
+         var graph = d3.select('#dataChart').append('svg').attr('width', width)
+        .attr("height", barHeight * data.length);
+        var bar = graph.selectAll("g")
+               .data(data)
+               .enter().append("g")
+               .attr("transform", function(d, i) {
+                   return "translate(0," + i * barHeight + ")";
+               });
+               bar.append("rect")
+          .attr("width", function(d) {
+              return d[1] * scaleFactor;
           })
-          .attr("text-anchor", "middle")
-          .text(function(d) { return d.data.platform+":"+d.data.percentage+"%"; });
-    }
-    drawPie();
+          .attr("height", barHeight - 1);
+          bar.append("text")
+         .attr("x", function(d) { return (d[1]*scaleFactor); })
+         .attr("y", barHeight / 2)
+         .attr("dy", ".35em")
+         .text(function(d) { return d[0]; });
+      }
+  componentDidMount(){
+    var data = [4, 8, 15, 16, 23, 42];
+    d3.select(".chart")
+      .selectAll("div")
+      .data(data)
+        .enter()
+        .append("div")
+        .style("width", function(d) { return d + "%"; })
+        .style("background-color", function(d){ return "green"})
+        .style("border", function(d){ return "solid 1px"})
+        .text(function(d) { return d; });
   }
 
   render(){
-
     return(
       <div>
-      <svg className="pie"></svg>
-      <svg className="canvas"></svg>
-      <h1>{this.props.data}</h1>
+      <div id="dataChart"></div>
+      <div id = "svgcontainer"></div>
+      <div className='test'></div>
+      <ul id = "list">
+      </ul>
+      <div className='chart'></div>
+      <h1>datos aqui</h1>
       </div>
     )
   }
@@ -188,4 +194,41 @@ var barChart = svg.selectAll("rect")
   </g>
 </svg>
 <svg className="chart2"></svg>
+*/
+
+/*
+//console.log(data2);
+var svgWidth = 500, svgHeight = 300, radius =  Math.min(svgWidth, svgHeight) / 2;
+var svg = d3.select('.pie')
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+//Create group element to hold pie chart
+var g = svg.append("g")
+    .attr("transform", "translate(" + radius + "," + radius + ")") ;
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+var pie = d3.pie().value(function(d) {
+     return d.percentage;
+});
+var path = d3.arc()
+    .outerRadius(radius)
+    .innerRadius(0);
+var arc = g.selectAll("arc")
+    .data(pie(data))
+    .enter()
+    .append("g");
+arc.append("path")
+    .attr("d", path)
+    .attr("fill", function(d) { return color(d.data.percentage); });
+var label = d3.arc()
+    .outerRadius(radius)
+    .innerRadius(0);
+arc.append("text")
+    .attr("transform", function(d) {
+        return "translate(" + label.centroid(d) + ")";
+    })
+    .attr("text-anchor", "middle")
+    .text(function(d) { return d.data.platform+":"+d.data.percentage+"%"; });
+}
+drawPie();
 */

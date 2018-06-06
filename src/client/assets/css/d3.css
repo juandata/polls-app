@@ -1,31 +1,9 @@
-.chart rect {
-  fill: steelblue;
-}
+svg rect {
+       fill: orange;
+   }
 
-.chart text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: end;
-}
-
-.chart2 rect {
-  fill: steelblue;
-}
-
-.chart2 text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: end;
-}
-.chart3 rect {
-  fill: steelblue;
-}
-
-.chart3 text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: end;
-}
-.svg-container {
-    background-color: #FFC988;
-    }
+   svg text {
+       fill:white;
+       font: 10px sans-serif;
+       text-anchor: end;
+   }

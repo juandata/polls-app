@@ -84,7 +84,7 @@ app.post("/getMongo", function(req, res){
 app.post("/voteMongo", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
-  let PollCreated = mongoose.model(bodyParsed.user, pollsSquema);
+  let PollCreated = mongoose.model(bodyParsed.user, pollsSquema, bodyParsed.user);
   mongoose.connect(address);
   var database = mongoose.connection;
   database.on('error', function(){
@@ -97,19 +97,14 @@ app.post("/voteMongo", function(req, res){
 
   });
   database.once('open', function(){
-    //console.log("connected to MongoDB", bodyParsed);
-    //var query = {'username':req.user.username};
-    //req.newData.username = req.user.username;
-    /*PollCreated.findById(bodyParsed.id, function (err, updPoll) {
-      if (err) return handleError(err);
-    });*/
-    PollCreated.update(
-      {_id: bodyParsed.id},
-      {$set: {'options.armagedon': 1}},
-      function(err, saved){
-        console.log("saved", saved);
-        res.json(saved);
-      });
+      //update
+      var updVote = {}, voto = bodyParsed.vote;
+      updVote[voto] = bodyParsed.voteVal + 1;
+      PollCreated.findByIdAndUpdate({_id :bodyParsed.id }, updVote, {new : true}, function(err, upd) {
+        if (err) console.log("there was an error!!")
+        console.log(upd);
+        res.json(upd);
+        });
       })
 });
 app.use(function(req, res) {
