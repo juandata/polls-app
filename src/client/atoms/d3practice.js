@@ -11,79 +11,107 @@ export class Barchart extends React.Component {
 
 
   componentDidUpdate(prevProps, prevState, snapshot){
-    //console.log(prevProps, prevState, snapshot, prop.props.data);
-      // javascript
-      //let length = Object.keys(this.props.data).length;
-      let ot = prop.props.data;
-      let len = Object.keys(ot).length;
-      let data = Object.entries(ot);
-      Object.entries(ot).map(function(el, ind){
-      })
-      console.log(data);
-      //practice
-      d3.select('.test').append('span').html("Hello World! <span style='color: red'>from D3.js</span>")
-      .attr('style', 'background-color : gray;')
-      .style('border', ' solid blue 3px');
-      //draw a pie chart based on data
-      d3.select('#list').selectAll('ul').data(data).enter().append('li')
-      .text(function(d){return d[0] + ' : ' + d[1]})
+        let ot = prop.props.data;
+        let len = Object.keys(ot).length;
+        let data = Object.entries(ot);
+        Object.entries(ot).map(function(el, ind){
+        })
+        let data0 = [];
+        data.map(function(el, ind){
+          data0.push(el[1]);
+        })
+        let perc = 100 / data0.reduce(function(acc, val) { return acc + val; });
+        if(perc === Infinity){
+          /*data0= [];
+          perc = 100 / len;
+          data.map(function(el, ind){
 
-      //pie chart example
-      var width = 300;
-      var height = 300;
-      var svg = d3.select("#svgcontainer")
-         .append("svg").attr("width", width).attr("height", height);
-     svg.append("line")
-     .attr("x1", 100)
-     .attr("y1", 100)
-     .attr("x2", 200)
-     .attr("y2", 200)
-     .style("stroke", "rgb(255,0,0)")
-     .style("stroke-width", 2);
+            data0.push(1);
+          })*/
+          let circ = 150;
+          let svg = d3.select("#pie-chart"),
+              width = svg.attr("width"),
+              height = svg.attr("height"),
+              radius = Math.min(width, height) / 2;
+          var circle = svg.append('g').attr('class', 'circle');
+                          circle.append("circle")
+                                .attr("cx", (circ + 100))
+                                .attr("cy", circ)
+                                .attr("r", circ)
+                                .attr('fill','gray')
+                                .attr('stroke','#008080')
+                                .attr('class','ourmission')
+                          circle.append('text')
+                                .attr('x', (circ + 100))
+                                .attr('y', circ)
+                                .attr('text-anchor', 'middle')
+                                .text('There are no votes yet');
+        }
+        else {
+          var t = d3.transition()
+          .duration(2000);
+         let svg = d3.select("#pie-chart"),
+             width = svg.attr("width"),
+             height = svg.attr("height"),
+             radius = Math.min(width, height) / 2,
+             g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+         let color = d3.scaleOrdinal(['red','green','blue','black','purple']);
+         // Generate the pie
+         let pie = d3.pie();
+         // Generate the arcs
+         let arc = d3.arc()
+                     .innerRadius(0)
+                     .outerRadius(radius);
+                      //Generate groups
+         let arcs = g.selectAll("arc")
+                         .data(pie(data0))
+                         .enter()
+                         .append("g")
+                         .attr("class", "arc");
+
+             //Draw arc paths
+             arcs.append("path")
+            .attr("fill", function(d, i) {
+                 return color(i);
+               })
+             .attr("d", arc)
+             arcs.append("text")
+             .attr("transform", function(d) {
+                     return "translate(" + arc.centroid(d) + ")";
+             })
+             .text(function(d,i) {
+                if(d.value == 0){ return ""} else {
+               return  data[i][0] ;
+             }
+             });
+             arcs.append("text")
+             .attr("transform", function(d) {
+                     return "translate(" + arc.centroid(d)[0] + "," + (arc.centroid(d)[1] + 10)   + ")";
+             })
+             .text(function(d,i) {
+               if(d.value == 0){ return ""} else {
+                 if(d.value > 1){return  d.value + " votes"; } else {return  d.value + " vote";}
+             }
+             });
+             arcs.append("text")
+             .attr("transform", function(d) {
+                     return "translate(" + arc.centroid(d)[0] + "," + (arc.centroid(d)[1] + 20)   + ")";
+             })
+             .text(function(d,i) {
+               if(d.value == 0){ return ""} else {
+               return  (d.value * perc).toFixed(1) + " %" ;
+                }
+              });
 
 
-       //adding incoming data to a svg bar chart
-        var width = 200,
-        scaleFactor = 10,
-        barHeight = 20;
-        d3.select('#dataChart').html("<span></span>");
-         var graph = d3.select('#dataChart').append('svg').attr('width', width)
-        .attr("height", barHeight * data.length);
-        var bar = graph.selectAll("g")
-               .data(data)
-               .enter().append("g")
-               .attr("transform", function(d, i) {
-                   return "translate(0," + i * barHeight + ")";
-               });
-               bar.append("rect")
-          .attr("width", function(d) {
-              return d[1] * scaleFactor;
-          })
-          .attr("height", barHeight - 1);
-          bar.append("text")
-         .attr("x", function(d) { return (d[1]*scaleFactor); })
-         .attr("y", barHeight / 2)
-         .attr("dy", ".35em")
-         .text(function(d) { return d[0]; });
       }
-  componentDidMount(){
-    var data = [4, 8, 15, 16, 23, 42];
-    d3.select(".chart")
-      .selectAll("div")
-      .data(data)
-        .enter()
-        .append("div")
-        .style("width", function(d) { return d + "%"; })
-        .style("background-color", function(d){ return "green"})
-        .style("border", function(d){ return "solid 1px"})
-        .text(function(d) { return d; });
-  }
+    }
+
 
   render(){
     return(
       <div>
-      <div id="dataChart"></div>
-      <div id = "svgcontainer"></div>
+      <svg width="500" height="300" id="pie-chart"> </svg>
       <div className='test'></div>
       <ul id = "list">
       </ul>
@@ -96,7 +124,7 @@ export class Barchart extends React.Component {
 /*
 
 //tutoriales
-var data = [4, 8, 15, 16, 23, 42];
+let data = [4, 8, 15, 16, 23, 42];
 d3.select(".chart")
   .selectAll("div")
   .data(data)
@@ -108,18 +136,18 @@ d3.select(".chart")
     .text(function(d) { return d; });
 
     //second implementation with svg
-   var width = 420,
+   let width = 420,
    barHeight = 20;
 
-   var x = d3.scaleLinear()
+   let x = d3.scaleLinear()
        .domain([0, d3.max(data)])
        .range([0, width]);
 
-   var chart = d3.select(".chart2")
+   let chart = d3.select(".chart2")
        .attr("width", width)
        .attr("height", barHeight * data.length);
 
-   var bar = chart.selectAll("g")
+   let bar = chart.selectAll("g")
        .data(data)
      .enter().append("g")
        .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
@@ -140,17 +168,17 @@ function type(d) {
 
 //tutorial video
 // javascript
-var dataset = [80, 100, 56, 120, 180, 30, 40, 120, 160];
+let dataset = [80, 100, 56, 120, 180, 30, 40, 120, 160];
 
-var svgWidth = 500, svgHeight = 300, barPadding = 5;
-var barWidth = (svgWidth / dataset.length);
+let svgWidth = 500, svgHeight = 300, barPadding = 5;
+let barWidth = (svgWidth / dataset.length);
 
 
-var svg = d3.select('svg')
+let svg = d3.select('svg')
 .attr("width", svgWidth)
 .attr("height", svgHeight);
 
-var barChart = svg.selectAll("rect")
+let barChart = svg.selectAll("rect")
 .data(dataset)
 .enter()
 .append("rect")
@@ -162,7 +190,7 @@ var barChart = svg.selectAll("rect")
 })
 .attr("width", barWidth - barPadding)
 .attr("transform", function (d, i) {
-   var translate = [barWidth * i, 0];
+   let translate = [barWidth * i, 0];
    return "translate("+ translate +")";
 });
 <svg></svg>
@@ -198,29 +226,29 @@ var barChart = svg.selectAll("rect")
 
 /*
 //console.log(data2);
-var svgWidth = 500, svgHeight = 300, radius =  Math.min(svgWidth, svgHeight) / 2;
-var svg = d3.select('.pie')
+let svgWidth = 500, svgHeight = 300, radius =  Math.min(svgWidth, svgHeight) / 2;
+let svg = d3.select('.pie')
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
 //Create group element to hold pie chart
-var g = svg.append("g")
+let g = svg.append("g")
     .attr("transform", "translate(" + radius + "," + radius + ")") ;
-var color = d3.scaleOrdinal(d3.schemeCategory10);
-var pie = d3.pie().value(function(d) {
+let color = d3.scaleOrdinal(d3.schemeCategory10);
+let pie = d3.pie().value(function(d) {
      return d.percentage;
 });
-var path = d3.arc()
+let path = d3.arc()
     .outerRadius(radius)
     .innerRadius(0);
-var arc = g.selectAll("arc")
+let arc = g.selectAll("arc")
     .data(pie(data))
     .enter()
     .append("g");
 arc.append("path")
     .attr("d", path)
     .attr("fill", function(d) { return color(d.data.percentage); });
-var label = d3.arc()
+let label = d3.arc()
     .outerRadius(radius)
     .innerRadius(0);
 arc.append("text")

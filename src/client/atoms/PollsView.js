@@ -34,7 +34,7 @@ let pollTemplate = {
 export class PollsView extends React.Component {
   constructor(props){
     super(props);
-    this.state = {poll : pollTemplate, vote : "you have not voted yet", id : "5b183459f7856c1f8c5502d7", user : "goodUser" };
+    this.state = {poll : pollTemplate, vote : "you have not voted yet", id : "5b199ff716526b334c629aec", user : "goodUser" };
     this.upd = this.upd.bind(this);
   }
   componentWillMount(){
@@ -84,7 +84,7 @@ export class PollsView extends React.Component {
             <FormGroup controlId="formControlsSelect">
               <ControlLabel>Your vote matters</ControlLabel>
               <FormControl componentClass="select" placeholder="select"  onChange={this.upd}>
-              <option value="select"  >I´d like to vote for...</option>
+              <option >I´d like to vote for...</option>
               {
                 Object.entries(this.state.poll.options).map(function(el, ind){
                   return <option value={el[0]} key={ind}> {el[0]}</option>;
@@ -95,7 +95,7 @@ export class PollsView extends React.Component {
             </FormGroup>
             < SmallThumbnail title={this.state.poll.name} descr={this.state.poll.description}/>
             </Col>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={8} style={{textAlign : "center"}}>
               Graph Area <br/>
               <Barchart data={this.state.poll.options} />
               <h1>You voted for : {this.state.vote}</h1>

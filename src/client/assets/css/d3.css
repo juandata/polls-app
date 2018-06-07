@@ -5,5 +5,18 @@ svg rect {
    svg text {
        fill:white;
        font: 10px sans-serif;
-       text-anchor: end;
    }
+
+   .arc text {
+             font: 10px sans-serif;
+             text-anchor: middle;
+         }
+
+         .arc path {
+             stroke: #fff;
+         }
+
+         .title {
+             fill: teal;
+             font-weight: bold;
+           }
