@@ -57,8 +57,8 @@ export class PollsView extends React.Component {
     .then( resp => this.setState({poll: resp[0] } ) )
   }
   upd(e){
-    this.setState({vote : e.target.value});
     let currVal = this.state.poll.options[e.target.value];
+    let voto = e.target.value;
     const bodyReq = {
       id : this.state.id,
       user : this.state.user,
@@ -73,7 +73,7 @@ export class PollsView extends React.Component {
     .then(function(response){
       return response.json();
     }).
-    then(resp => this.setState({poll: resp } ) );
+    then(resp => this.setState({poll: resp, vote : voto } ) );
   }
   render (){
         return(

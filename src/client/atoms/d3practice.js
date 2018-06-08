@@ -11,6 +11,7 @@ export class Barchart extends React.Component {
 
 
   componentDidUpdate(prevProps, prevState, snapshot){
+    console.log("updated", prevProps, prevState, snapshot);
         let ot = prop.props.data;
         let len = Object.keys(ot).length;
         let data = Object.entries(ot);
@@ -68,6 +69,7 @@ export class Barchart extends React.Component {
                          .enter()
                          .append("g")
                          .attr("class", "arc");
+
 
              //Draw arc paths
              arcs.append("path")
