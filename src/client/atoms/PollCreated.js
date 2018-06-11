@@ -1,5 +1,4 @@
 import React from 'react';
-import Textarea from "react-textarea-autosize";
 import '../assets/css/CreatePoll.css'
 import { PageHeader, Button} from 'react-bootstrap';
 

@@ -7,8 +7,7 @@ var elemento = < Options value="No options added yet"  />;
 var boton = <Button className="register" type="submit" bsStyle="primary" bsSize="large" block disabled
 >Create Poll</Button>;
 let estado = null, nameMessage = "Name";
-let theState;
-export default class CreatePoll extends React.Component{
+ export default class CreatePoll extends React.Component{
   constructor(props){
     super(props);
     theState = this;
@@ -92,7 +91,6 @@ export default class CreatePoll extends React.Component{
       options : jsonOpt,
       user : this.state.user
     }
-    console.log(pollInfo);
     var headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'

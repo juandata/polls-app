@@ -10,6 +10,14 @@ const address = "mongodb://pollsapp:Fray2017@ds231740.mlab.com:31740/pollsapp";
 //var mongodb = require('mongodb');
 //var MongoClient = mongodb.MongoClient;
 var mongoose = require('mongoose');
+var userSquema = mongoose.Schema({
+    name  : String,
+    lastName : String,
+    userName: String,
+    email : String,
+    pass : String,
+    gender : String
+});
 var pollsSquema = mongoose.Schema({
   name: String,
   description : String,
@@ -106,6 +114,66 @@ app.post("/voteMongo", function(req, res){
         res.json(upd);
         });
       })
+});
+app.post("/submitUser", function(req, res){
+  var bodyParsed = JSON.parse(req.body);
+  //get the document that belong to the user
+  let UserCreated = mongoose.model("users", userSquema);
+  mongoose.connect(address);
+  var database = mongoose.connection;
+  database.on('error', function(){
+    var bodyError = {
+      error : "There was a connection error, please try again later or verify your connection"
+    }
+    console.log("There was a connection error, please try again later or verify your connection");
+    res.send(bodyError);
+    console.error.bind(console, 'connection error:')
+
+  });
+  database.once('open', function(resp) {
+    /*To find all the documents in the model:
+    UserCreated.find(function(err, users){
+      if (err) return console.error(err);
+      console.log(users);
+    });*/
+    //filtering the search
+  UserCreated.find({
+      //userName : bodyParsed.userName, email : bodyParsed.email
+       userName : bodyParsed.userName
+    },
+    function(err, doc){
+      if (err) return console.error(err);
+      if(!doc.length > 0){
+        searchEmail(bodyParsed.email);
+      } else {
+          console.log("Choose another userName");
+          res.send("Username already exists");
+    }
+    })
+  });
+  function searchEmail(userEmail){
+    UserCreated.find({email : userEmail}, function(err, docs){
+      if (err) return console.error(err);
+        if(!docs.length > 0){
+          let newUser = new UserCreated({
+              name  : bodyParsed.name,
+              lastName : bodyParsed.lastName,
+              userName: bodyParsed.userName,
+              email : bodyParsed.email,
+              pass : bodyParsed.password,
+              gender : bodyParsed.gender
+            });
+              newUser.save(function (err, user) {
+              if (err) return console.error(err);
+              console.log("User saved to mongo");
+              res.send("Success");
+            });
+        } else {
+          res.send("Email already exists");
+        }
+    });
+
+  }
 });
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));

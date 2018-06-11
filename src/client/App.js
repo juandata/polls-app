@@ -15,8 +15,6 @@ import CreatePoll from './atoms/CreatePoll';
 import PollCreated from './atoms/PollCreated';
 
 
-
-
 //components
 import {GeneralPolls} from './templates/GeneralPolls';
 import {BreadCumb} from './atoms/BreadCumb';
