@@ -62,7 +62,6 @@ export class Masonery extends React.Component {
         );
         masInst.push(theRow)
       }
-      console.log(masInst);
   }
   render (){
         return(

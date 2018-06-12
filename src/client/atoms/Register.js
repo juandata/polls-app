@@ -2,6 +2,14 @@ import React from 'react';
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader} from 'react-bootstrap';
 let state;
 import UserRegistered from './UserRegistered';
+
+//redux stuff
+import {changeView} from '../redux/actions';
+import store from '../redux/store';
+//import {bindActionCreators} from 'redux';
+//import {connect} from 'react-redux';
+
+
 export default class Register extends React.Component{
   constructor(props){
     super(props);
@@ -13,8 +21,8 @@ export default class Register extends React.Component{
       value: '', view : 'Form', userMessage : 'Username', emailMessage : "Email", options : []
     };
   }
-  componentDidMount(){
-
+  componentWillMount(){
+      console.log(store.getState());
   }
   componentDidUpdate(prevProps, prevState, snapshot){
 
@@ -61,6 +69,7 @@ export default class Register extends React.Component{
           .then(function(txt){
             if(txt === "Success" ) {
               state.setState({view : "Success", options : info})
+              store.dispatch(changeView());
             }
             else if (txt === "Username already exists"){
               state.setState({userMessage : "The user already exists, please choose another one."})
@@ -88,6 +97,7 @@ export default class Register extends React.Component{
    this.setState({ value: e.target.value, target : e.target.id });
       }
   render(){
+    console.log("the store state is ", store.getState());
     if(this.state.view === "Form"){
       return (
         <div className="container">
@@ -168,3 +178,12 @@ export default class Register extends React.Component{
   }
 
 }
+/*
+function mapStateToProps(state) {
+  return {
+
+  };
+};
+
+export default connect(mapStateToProps)(UserList);
+*/
