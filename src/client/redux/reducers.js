@@ -1,5 +1,5 @@
 const initialState = {
-  view : 'Form', userMessage : 'Username', emailMessage : "Email", options : []
+  view : 'Form'
 }
 
 export default (state = initialState, action) => {

@@ -11,6 +11,7 @@ import NavBar from './atoms/NavBar';
 import Footer from './atoms/Footer';
 import Login from './atoms/Login';
 import Register from './atoms/Register';
+//import RegisterUser from './containers/RegisterUser';
 import CreatePoll from './atoms/CreatePoll';
 import PollCreated from './atoms/PollCreated';
 

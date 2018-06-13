@@ -7,10 +7,10 @@ import UserRegistered from './UserRegistered';
 import {changeView} from '../redux/actions';
 import store from '../redux/store';
 //import {bindActionCreators} from 'redux';
-//import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 
 
-export default class Register extends React.Component{
+export  class Register extends React.Component{
   constructor(props){
     super(props);
     state = this;
@@ -18,7 +18,7 @@ export default class Register extends React.Component{
     this.handleClick = this.handleClick.bind(this);
     this.getValidationState = this.getValidationState.bind(this);
     this.state = {
-      value: '', view : 'Form', userMessage : 'Username', emailMessage : "Email", options : []
+      value: '', userMessage : 'Username', emailMessage : "Email", options : []
     };
   }
   componentWillMount(){
@@ -97,8 +97,8 @@ export default class Register extends React.Component{
    this.setState({ value: e.target.value, target : e.target.id });
       }
   render(){
-    console.log("the store state is ", store.getState());
-    if(this.state.view === "Form"){
+    console.log("the store state is ", store.getState().form);
+    if(this.props.view === "Form"){
       return (
         <div className="container">
         <PageHeader className="header-margins">
@@ -178,12 +178,19 @@ export default class Register extends React.Component{
   }
 
 }
-/*
+
 function mapStateToProps(state) {
   return {
-
+    view : state.view
   };
 };
+
+export default connect(mapStateToProps)(Register)
+/*
+
+const mapStateToProps = (state) => ({
+  store.getState().form
+})
 
 export default connect(mapStateToProps)(UserList);
 */
