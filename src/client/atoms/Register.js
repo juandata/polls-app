@@ -1,10 +1,19 @@
+//Crypto node
+const crypto = require('crypto');
+
+const secret = 'abcdefg';
+const hash = crypto.createHmac('sha256', secret)
+                   .update('I love cupcakes')
+                   .digest('hex');
+console.log(hash);
+
 import React from 'react';
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader} from 'react-bootstrap';
 let state;
 import UserRegistered from './UserRegistered';
 
 //redux stuff
-import {changeView} from '../redux/actions';
+import {changeView, userErrorMessage, emailErrorMessage} from '../redux/actions';
 import store from '../redux/store';
 //import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -18,12 +27,10 @@ export  class Register extends React.Component{
     this.handleClick = this.handleClick.bind(this);
     this.getValidationState = this.getValidationState.bind(this);
     this.state = {
-      value: '', userMessage : 'Username', emailMessage : "Email", options : []
+      value: '', options : []
     };
   }
-  componentWillMount(){
-      console.log(store.getState());
-  }
+
   componentDidUpdate(prevProps, prevState, snapshot){
 
   }
@@ -72,16 +79,18 @@ export  class Register extends React.Component{
               store.dispatch(changeView());
             }
             else if (txt === "Username already exists"){
-              state.setState({userMessage : "The user already exists, please choose another one."})
+              //state.setState({userMessage : "The user already exists, please choose another one."})
               let userName = document.getElementById("formHorizontalUserName");
               userName.value = "";
-              userName.parentNode.parentNode.setAttribute('class', 'form-group has-error')
+              userName.parentNode.parentNode.setAttribute('class', 'form-group has-error');
+              store.dispatch(userErrorMessage());
             }
             else if (txt === "Email already exists"){
-              state.setState({emailMessage : "The Email already exists, please add another one."})
+              //state.setState({emailMessage : "The Email already exists, please add another one."})
               let userName = document.getElementById("formHorizontalEmail");
               userName.value = "";
-              userName.parentNode.parentNode.setAttribute('class', 'form-group has-error')
+              userName.parentNode.parentNode.setAttribute('class', 'form-group has-error');
+              store.dispatch(emailErrorMessage());
             }
           })
       }
@@ -97,7 +106,7 @@ export  class Register extends React.Component{
    this.setState({ value: e.target.value, target : e.target.id });
       }
   render(){
-    console.log("the store state is ", store.getState().form);
+    console.log(store.getState());
     if(this.props.view === "Form"){
       return (
         <div className="container">
@@ -126,7 +135,7 @@ export  class Register extends React.Component{
               Username
             </Col>
             <Col sm={10}>
-              <FormControl type="text" placeholder={this.state.userMessage} onChange={this.handleChange} />
+              <FormControl type="text" placeholder={this.props.userMessage} onChange={this.handleChange} />
             </Col>
           </FormGroup>
           <FormGroup controlId="formControlsSelect" validationState={this.getValidationState("formControlsSelect")}>
@@ -143,7 +152,7 @@ export  class Register extends React.Component{
               Email
             </Col>
             <Col sm={10}>
-              <FormControl type="email" placeholder={this.state.emailMessage} onChange={this.handleChange} />
+              <FormControl type="email" placeholder={this.props.emailMessage} onChange={this.handleChange} />
             </Col>
           </FormGroup>
           <FormGroup controlId="formHorizontalPassword" validationState={this.getValidationState("formHorizontalPassword")}>
@@ -181,16 +190,10 @@ export  class Register extends React.Component{
 
 function mapStateToProps(state) {
   return {
-    view : state.view
+    view : state.changeView.view,
+    userMessage : state.errorMessage.userMessage,
+    emailMessage: state.errorMessage.emailMessage
   };
 };
 
 export default connect(mapStateToProps)(Register)
-/*
-
-const mapStateToProps = (state) => ({
-  store.getState().form
-})
-
-export default connect(mapStateToProps)(UserList);
-*/

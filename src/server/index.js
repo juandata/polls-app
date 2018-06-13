@@ -169,6 +169,7 @@ app.post("/submitUser", function(req, res){
               res.send("Success");
             });
         } else {
+          console.log("Add another Email");
           res.send("Email already exists");
         }
     });
@@ -179,7 +180,7 @@ app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
 })
 app.listen(8080, () => console.log('Listening on port 8080!'));
-
+/*
 function connectToMongo(voto){
 MongoClient.connect(address, function(err, db) {
   //(Focus on This Variable)
@@ -197,4 +198,4 @@ MongoClient.connect(address, function(err, db) {
     });
   }
 });
-}
+}*/
