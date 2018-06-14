@@ -11,10 +11,11 @@ let getLastUrlPar = (lasturl) => {
   let url = window.location.href;
   let lastPar = url.split('/').pop();
   return lastPar;
-}
+};
+
 
 module.exports = {
   first : getDim(),
   second : other(),
-  getUrl : getLastUrlPar()
+  getUrl : getLastUrlPar(),
 }

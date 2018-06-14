@@ -1,10 +1,73 @@
 import React from 'react';
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader} from 'react-bootstrap';
-
+import {setAuth} from '../utils/setAuthorizationHeader';
+let theHeader;
 export default class Login extends React.Component{
   constructor(props){
     super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.getValidationState = this.getValidationState.bind(this);
+    this.state = {value : ''}
   }
+  handleClick(e){
+    e.preventDefault();
+    let formArr = ["formHorizontalEmail", "formHorizontalPassword"],info = [], inputValues = 0;
+      formArr.map(function(el, ind){
+        let elem = document.getElementById(el);
+        info.push(elem.value);
+        if(elem.value.length < 1) {
+        let  parElem = elem.parentNode.parentNode;
+        parElem.setAttribute('class', 'form-group has-error');
+        }
+      });
+      info.map(function(el, ind){
+        if(el.length == 0){
+          inputValues += 1;
+        }
+      });
+      if(inputValues == 0){
+        var userInfo = {
+          email : info[0],
+          password : info[1]
+        };
+        var headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          };
+        fetch('/LoginUser', {
+          headers,
+          method: "POST",
+          body: JSON.stringify(userInfo)
+          })
+          .then(function(response) {
+            return response.json();
+            })
+          .then(function(json){
+            localStorage.setItem('token1',json.token);
+            localStorage.setItem('token2', json.token2);
+            return setAuth(json.token);
+          }).then(function(header){
+            theHeader = header;
+            fetch('/PrivateRoute', {
+              theHeader,
+              method: "Post",
+              body : JSON.stringify({soy : 'body'})}
+            ).then(function(res){
+                return res.text();
+              }).then(function(txt){
+                console.log("the response is", txt);
+              })
+            })
+      }
+  }
+  getValidationState(e) {
+    if(e == this.state.target){
+    let length = this.state.value.length;
+    if (length > 0) return 'success';
+    else return null;
+      }
+    }
+
   render(){
     return (
       <div className="container">
@@ -12,7 +75,7 @@ export default class Login extends React.Component{
         Please login with your username and password
       </PageHeader>
       <Form  horizontal>
-        <FormGroup controlId="formHorizontalEmail">
+        <FormGroup controlId="formHorizontalEmail" validationState={this.getValidationState("formHorizontalEmail")}>
           <Col componentClass={ControlLabel} sm={2}>
             Email
           </Col>
@@ -21,12 +84,12 @@ export default class Login extends React.Component{
           </Col>
         </FormGroup>
 
-        <FormGroup controlId="formHorizontalPassword">
+        <FormGroup controlId="formHorizontalPassword" validationState={this.getValidationState("formHorizontalPassword")}>
           <Col componentClass={ControlLabel} sm={2}>
             Password
           </Col>
           <Col sm={10}>
-            <FormControl type="password" placeholder="Password" />
+            <FormControl type="password" placeholder="Password"  />
           </Col>
         </FormGroup>
 
@@ -38,7 +101,7 @@ export default class Login extends React.Component{
 
         <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Button type="submit">Sign in</Button>
+            <Button type="submit" onClick={this.handleClick}>Sign in</Button>
           </Col>
         </FormGroup>
       </Form>

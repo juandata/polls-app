@@ -2,6 +2,7 @@
 const express = require('express');
 const path  = require("path");
 const app = express();
+var _   = require('lodash'), config  = require('./config'), jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const routes = [
   "/", "/signup", "/other"
@@ -23,13 +24,21 @@ var pollsSquema = mongoose.Schema({
   description : String,
   options : mongoose.Schema.Types.Mixed
 });
-
+function createAccessToken() {
+  return jwt.sign({
+    iss: config.issuer,
+    aud: config.audience,
+    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+    scope: 'full_access',
+    sub: "lalaland|gonto",
+    alg: 'HS256'
+  }, config.secret);
+}
 
 app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.text()); // for parsing application/json
 app.use(bodyParser.json()); // for parsing application/json
-
 app.get('/api/getUsername', (req, res) => res.send({
   username: "Hola soy express"
 }));
@@ -176,6 +185,27 @@ app.post("/submitUser", function(req, res){
 
   }
 });
+app.post("/LoginUser", function(req, res){
+  var bodyParsed = JSON.parse(req.body);
+  let otro = {
+    hola : "hola",
+    juan : "juan"
+  }
+  //authentication
+  jwt.sign(otro, config.secret, { expiresIn: '1h' }, function(err, token){
+    if (err) res.send("there was an error");
+    let token2 = createAccessToken();
+    bodyParsed.token = token; bodyParsed.token2 = token2;
+    res.json(bodyParsed);
+  });
+
+})
+app.post("/PrivateRoute", function(req, res){
+  var bodyParsed = JSON.parse(req.body);
+  console.log(req);
+  res.send("Request to private Route");
+
+})
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
 })
