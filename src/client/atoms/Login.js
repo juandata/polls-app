@@ -25,6 +25,7 @@ export default class Login extends React.Component{
           inputValues += 1;
         }
       });
+      //only send request if both inputs have values.
       if(inputValues == 0){
         var userInfo = {
           email : info[0],
@@ -43,21 +44,23 @@ export default class Login extends React.Component{
             return response.json();
             })
           .then(function(json){
+            console.log(json);
             localStorage.setItem('token1',json.token);
             localStorage.setItem('token2', json.token2);
-            return setAuth(json.token);
-          }).then(function(header){
-            theHeader = header;
+          })// send auth header to private route
+          .then(function(){
             fetch('/PrivateRoute', {
-              theHeader,
-              method: "Post",
-              body : JSON.stringify({soy : 'body'})}
-            ).then(function(res){
-                return res.text();
-              }).then(function(txt){
-                console.log("the response is", txt);
-              })
-            })
+              headers: new Headers({
+               'Authorization': 'Bearer '+ localStorage.token1
+             }),
+                method: "Post",
+                body : JSON.stringify({soy : 'body'})}
+              ).then(function(res){
+                  return res.text();
+                }).then(function(txt){
+                  console.log("the response is", txt);
+                })
+          })
       }
   }
   getValidationState(e) {

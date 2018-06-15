@@ -1,4 +1,5 @@
-
+//let searchMongo = require('./utils/searchMongo');
+let theModule = require('./utils/searchMongo');
 const express = require('express');
 const path  = require("path");
 const app = express();
@@ -39,10 +40,6 @@ app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.text()); // for parsing application/json
 app.use(bodyParser.json()); // for parsing application/json
-app.get('/api/getUsername', (req, res) => res.send({
-  username: "Hola soy express"
-}));
-//let PollCreated = mongoose.model('javier', pollsSquema);
 app.post("/mongo", function(req, res){
     /*connectToMongo("created from react wow!!");*/
     var bodyParsed = JSON.parse(req.body);
@@ -182,50 +179,21 @@ app.post("/submitUser", function(req, res){
           res.send("Email already exists");
         }
     });
-
   }
-});
+});//receive the email and password to create a jwt and send it to the client.
 app.post("/LoginUser", function(req, res){
   var bodyParsed = JSON.parse(req.body);
-  let otro = {
-    hola : "hola",
-    juan : "juan"
-  }
-  //authentication
-  jwt.sign(otro, config.secret, { expiresIn: '1h' }, function(err, token){
-    if (err) res.send("there was an error");
-    let token2 = createAccessToken();
-    bodyParsed.token = token; bodyParsed.token2 = token2;
-    res.json(bodyParsed);
-  });
+  let moduleAnswer = theModule.searhMongoDB(bodyParsed.email, bodyParsed.password);
+  console.log(moduleAnswer);
+  resjson = { token : 'token'}
+  res.json(resjson)
 
 })
 app.post("/PrivateRoute", function(req, res){
-  var bodyParsed = JSON.parse(req.body);
-  console.log(req);
+  //THIS SHOULD BE AUTHENTICATED
   res.send("Request to private Route");
-
 })
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
 })
 app.listen(8080, () => console.log('Listening on port 8080!'));
-/*
-function connectToMongo(voto){
-MongoClient.connect(address, function(err, db) {
-  //(Focus on This Variable)
-  if (err) {
-    console.log('Unable to connect to the mongoDB server. Error:', err);
-    return "Unable to connect";
-  } else {
-    console.log('Connection established to mlab.com');
-    // do some work here with the database.
-    var database = db.db("pollsapp");
-    database.createCollection(voto, function(err, res) { //se usa el método createCollection
-      if (err) throw err;
-      db.close();
-      return "Connection established to mlab.com";
-    });
-  }
-});
-}*/
