@@ -1,13 +1,22 @@
 import React from 'react';
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader} from 'react-bootstrap';
 import {setAuth} from '../utils/setAuthorizationHeader';
-let theHeader;
-export default class Login extends React.Component{
+import isEmpty from 'lodash/isEmpty';
+let jwt = require('jsonwebtoken');
+let theHeader,estado;
+//redux stuff
+import {getUserInfo} from '../redux/actions';
+import store from '../redux/store';
+//import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+export class Login extends React.Component{
   constructor(props){
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.getValidationState = this.getValidationState.bind(this);
-    this.state = {value : ''}
+    this.state = {value : ''};
+    estado = this;
   }
   handleClick(e){
     e.preventDefault();
@@ -44,9 +53,7 @@ export default class Login extends React.Component{
             return response.json();
             })
           .then(function(json){
-            console.log(json);
             localStorage.setItem('token1',json.token);
-            localStorage.setItem('token2', json.token2);
           })// send auth header to private route
           .then(function(){
             fetch('/PrivateRoute', {
@@ -54,11 +61,19 @@ export default class Login extends React.Component{
                'Authorization': 'Bearer '+ localStorage.token1
              }),
                 method: "Post",
-                body : JSON.stringify({soy : 'body'})}
+                body : JSON.stringify({token : localStorage.token1})}
               ).then(function(res){
-                  return res.text();
-                }).then(function(txt){
-                  console.log("the response is", txt);
+                  return res.json();
+                }).then(function(jsonans){
+                  let expir = new Date(jsonans.exp * 1000);
+                  let currTime = new Date();
+                  let compDates = expir > currTime; //if true, the token is still witihn its live time (one hour);
+                  if (compDates) {
+                    store.dispatch(getUserInfo(jsonans));
+                  } else {
+                    currentView = undefined; localStorage.removeItem('token1');
+                  }
+
                 })
           })
       }
@@ -70,8 +85,9 @@ export default class Login extends React.Component{
     else return null;
       }
     }
-
   render(){
+
+    if (isEmpty(this.props.userInfo))
     return (
       <div className="container">
       <PageHeader className="header-margins">
@@ -114,6 +130,17 @@ export default class Login extends React.Component{
       <Button className="register" href="/Register" bsStyle="primary" bsSize="large" block>Register</Button>
       </div>
     )
+    else {
+      console.log(this.props.userInfo)
+    return(<h1>Welcome User! </h1>)
+    }
   }
 
 }
+function mapStateToProps(state) {
+  return {
+    isAuthenticated : state.userInfo.isAuthenticated,
+    userInfo: state.userInfo.userInfo
+  };
+};
+export default connect(mapStateToProps)(Login)

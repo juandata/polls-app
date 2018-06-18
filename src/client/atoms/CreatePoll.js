@@ -6,7 +6,7 @@ import PollCreated from './PollCreated';
 var elemento = < Options value="No options added yet"  />;
 var boton = <Button className="register" type="submit" bsStyle="primary" bsSize="large" block disabled
 >Create Poll</Button>;
-let estado = null, nameMessage = "Name";
+let estado = null, nameMessage = "Name", theState;
  export default class CreatePoll extends React.Component{
   constructor(props){
     super(props);

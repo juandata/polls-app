@@ -1,5 +1,5 @@
 //let searchMongo = require('./utils/searchMongo');
-let theModule = require('./utils/searchMongo');
+//let theModule = require('./utils/searchMongo');
 const express = require('express');
 const path  = require("path");
 const app = express();
@@ -25,13 +25,15 @@ var pollsSquema = mongoose.Schema({
   description : String,
   options : mongoose.Schema.Types.Mixed
 });
+let UserCreated = mongoose.model("users", userSquema);
+
 function createAccessToken() {
   return jwt.sign({
     iss: config.issuer,
     aud: config.audience,
-    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+    exp: Math.floor(Date.now() / 1000) + (60 * 10),
     scope: 'full_access',
-    sub: "lalaland|gonto",
+    sub: "the subject",
     alg: 'HS256'
   }, config.secret);
 }
@@ -124,7 +126,6 @@ app.post("/voteMongo", function(req, res){
 app.post("/submitUser", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
-  let UserCreated = mongoose.model("users", userSquema);
   mongoose.connect(address);
   var database = mongoose.connection;
   database.on('error', function(){
@@ -183,15 +184,52 @@ app.post("/submitUser", function(req, res){
 });//receive the email and password to create a jwt and send it to the client.
 app.post("/LoginUser", function(req, res){
   var bodyParsed = JSON.parse(req.body);
-  let moduleAnswer = theModule.searhMongoDB(bodyParsed.email, bodyParsed.password);
-  console.log(moduleAnswer);
-  resjson = { token : 'token'}
-  res.json(resjson)
-
+  mongoose.connect(address);
+  let database = mongoose.connection;
+  database.on('error', function(){
+    var bodyError = {
+      error : "There was a connection error, please try again later or verify your connection"
+    }
+    console.log("There was a connection error, please try again later or verify your connection");
+    res.send(bodyError);
+    console.error.bind(console, 'connection error:')
+  });
+  database.once('open', function(resp){
+     UserCreated.find({
+          email : bodyParsed.email
+      },
+   function(err, doc){
+        if (err) { console.error(err); return ans = "error";}
+        if(!doc.length > 0){
+            resjson = { token : "Email does not exist"}
+            res.json(resjson)
+          }
+        else {
+          //email exists in the database, lets search for the Password
+          //this should be encrypted
+          UserCreated.find({pass : bodyParsed.password}, function(err, docs){
+            if (err) return console.error(err);
+              if(!docs.length > 0){
+                resjson = { token : "Password is wrong"}
+                res.json(resjson)
+              } else {
+                //here I create the auth token, this only happens if the user sends the correct email with the Password
+                //the password should be encrypted!
+                let token = createAccessToken();
+                resjson = {}; resjson.token = token;
+                res.json(resjson)
+              }
+          });
+      }
+    });
+  })
 })
 app.post("/PrivateRoute", function(req, res){
   //THIS SHOULD BE AUTHENTICATED
-  res.send("Request to private Route");
+  var bodyParsed = JSON.parse(req.body);
+  let decoded = jwt.decode(bodyParsed.token)
+  console.log(decoded);
+  res.json(decoded);
 })
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));

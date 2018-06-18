@@ -1,12 +1,15 @@
 import { combineReducers } from 'redux'
-
+import isEmpty from 'lodash/isEmpty';
 const initialState = {
   view : 'Form'
 }
 const intState = {
    userMessage : 'Username', emailMessage : "Email"
 }
-
+const objState = {
+  isAuthenticated : false,
+  userInfo : {}
+};
 
  let changeView = (state = initialState, action) => {
     switch(action.type){
@@ -35,7 +38,22 @@ let errorMessage = (state = intState, action) => {
      return state;
    }
 }
+
+let userInfo = (state = objState, action ) => {
+  switch (action.type) {
+    case  "get_user_info" :
+      console.log("get user info");
+      return Object.assign({}, state, {
+        isAuthenticated : !isEmpty(action.user),
+        userInfo : action.user
+      })
+    default:
+    return state;
+
+  }
+}
 export const reducer = combineReducers({
   changeView,
-  errorMessage
+  errorMessage,
+  userInfo
 })
