@@ -6,22 +6,14 @@ import store from '../redux/store';
 //import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
- class WelcomeUser extends React.Component {
-  componentWillMount(){
-  store.dispatch(getUserInfo());
-  }
-
-  render() {
+ export default function WelcomeUser(props) {
     return (
       <div>
-        <h1>Welcome {this.props.user} </h1>
+        <h1>Welcome {props.name} {props.lastName} </h1>
         <h2>Your polls are :</h2>
         <ul>
 
         </ul>
       </div>
     );
-  }
 }
-
-export default connect(mapStateToProps)(WelcomeUser)

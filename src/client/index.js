@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 import App from './App';
-if(localStorage.token1){
+ if(localStorage.token1){
   let decoded = jwt.decode(localStorage.token1);
   let expir = new Date(decoded.exp * 1000);
   let currTime = new Date();

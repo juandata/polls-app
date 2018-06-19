@@ -31,7 +31,7 @@ function createAccessToken() {
   return jwt.sign({
     iss: config.issuer,
     aud: config.audience,
-    exp: Math.floor(Date.now() / 1000) + (60 * 10),
+    exp: Math.floor(Date.now() / 1000) + (60 * 2),
     scope: 'full_access',
     sub: "the subject",
     alg: 'HS256'
@@ -198,16 +198,30 @@ app.post("/LoginUser", function(req, res){
      UserCreated.find({
           email : bodyParsed.email
       },
-   function(err, doc){
-        if (err) { console.error(err); return ans = "error";}
-        if(!doc.length > 0){
-            resjson = { token : "Email does not exist"}
-            res.json(resjson)
-          }
-        else {
+         function(err, doc){
+              if (err) { console.error(err); return ans = "error";}
+              if(!doc.length > 0){
+                  resjson = { token : "Email does not exist"}
+                  res.json(resjson)
+                }
+              else {
+                if(doc[0].pass == bodyParsed.password){
+                  //if we get here is because the user has been authenticated with credentials.
+                  let token = createAccessToken();
+                  resjson = {}; resjson.token = token;
+                  resjson.name = doc[0].name;
+                  resjson.lastName = doc[0].lastName;
+                  resjson.userName = doc[0].userName;
+                  resjson.email = doc[0].email;
+                  resjson.id = doc[0]._id;
+                  res.json(resjson)
+                } else {
+                  resjson = { token : "Password is wrong"}
+                  res.json(resjson)
+                }
           //email exists in the database, lets search for the Password
           //this should be encrypted
-          UserCreated.find({pass : bodyParsed.password}, function(err, docs){
+          /*UserCreated.find({pass : bodyParsed.password}, function(err, docs){
             if (err) return console.error(err);
               if(!docs.length > 0){
                 resjson = { token : "Password is wrong"}
@@ -217,9 +231,10 @@ app.post("/LoginUser", function(req, res){
                 //the password should be encrypted!
                 let token = createAccessToken();
                 resjson = {}; resjson.token = token;
+                console.log(docs);
                 res.json(resjson)
               }
-          });
+          });*/
       }
     });
   })
@@ -227,8 +242,9 @@ app.post("/LoginUser", function(req, res){
 app.post("/PrivateRoute", function(req, res){
   //THIS SHOULD BE AUTHENTICATED
   var bodyParsed = JSON.parse(req.body);
-  let decoded = jwt.decode(bodyParsed.token)
+  let decoded = jwt.decode(bodyParsed.token);
   console.log(decoded);
+  console.log(bodyParsed);
   res.json(decoded);
 })
 app.use(function(req, res) {

@@ -4,13 +4,15 @@ const initialState = {
   view : 'Form'
 }
 const intState = {
-   userMessage : 'Username', emailMessage : "Email"
+   userMessage : 'Username', emailMessage : "Email", passMessage : 0
 }
-const objState = {
+const userState = {
   isAuthenticated : false,
   userInfo : {}
 };
-
+const tokenState = {
+  tokenInfo : {}
+}
  let changeView = (state = initialState, action) => {
     switch(action.type){
       case 'change_view' :
@@ -34,12 +36,22 @@ let errorMessage = (state = intState, action) => {
      return Object.assign({}, state, {
        emailMessage : 'The Email already exists, please add another one.'
      });
+     case 'wrong_password' :
+     console.log('wrong_password');
+     return Object.assign({}, state, {
+       passMessage : 1
+     });
+     case 'reset_tooltip' :
+     console.log('reset_tooltip');
+     return Object.assign({}, state, {
+       passMessage : 0
+     });
      default :
      return state;
    }
 }
 
-let userInfo = (state = objState, action ) => {
+let userInfo = (state = userState, action ) => {
   switch (action.type) {
     case  "get_user_info" :
       console.log("get user info");
@@ -52,8 +64,21 @@ let userInfo = (state = objState, action ) => {
 
   }
 }
+let tokenInfo = (state = tokenState, action ) => {
+  switch (action.type) {
+    case  "get_token_info" :
+      console.log("get_token_info");
+      return Object.assign({}, state, {
+        tokenInfo : action.info
+      })
+    default:
+    return state;
+
+  }
+}
 export const reducer = combineReducers({
   changeView,
   errorMessage,
-  userInfo
+  userInfo,
+  tokenInfo
 })

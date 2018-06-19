@@ -1,22 +1,35 @@
 import React from 'react';
-import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader} from 'react-bootstrap';
+import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {setAuth} from '../utils/setAuthorizationHeader';
 import isEmpty from 'lodash/isEmpty';
 let jwt = require('jsonwebtoken');
 let theHeader,estado;
 //redux stuff
-import {getUserInfo} from '../redux/actions';
+import {getUserInfo, getTokenInfo, wrongPassMessage, resetTooltip} from '../redux/actions';
 import store from '../redux/store';
 //import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
+import WelcomeUser from './WelcomeUser';
+
+function Atooltip(props){
+  return (
+    <Tooltip placement="bottom" id="tooltip-bottom" style={{opacity : props.opacity, right : "50%"}}>
+      <strong>Wrong Password</strong> Please verify.
+    </Tooltip>
+  )
+}
 export class Login extends React.Component{
   constructor(props){
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.getValidationState = this.getValidationState.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
     this.state = {value : ''};
     estado = this;
+  }
+  handleFocus(){
+    store.dispatch(resetTooltip());
   }
   handleClick(e){
     e.preventDefault();
@@ -53,29 +66,44 @@ export class Login extends React.Component{
             return response.json();
             })
           .then(function(json){
-            localStorage.setItem('token1',json.token);
-          })// send auth header to private route
-          .then(function(){
-            fetch('/PrivateRoute', {
-              headers: new Headers({
-               'Authorization': 'Bearer '+ localStorage.token1
-             }),
-                method: "Post",
-                body : JSON.stringify({token : localStorage.token1})}
-              ).then(function(res){
-                  return res.json();
-                }).then(function(jsonans){
-                  let expir = new Date(jsonans.exp * 1000);
-                  let currTime = new Date();
-                  let compDates = expir > currTime; //if true, the token is still witihn its live time (one hour);
-                  if (compDates) {
-                    store.dispatch(getUserInfo(jsonans));
-                  } else {
-                    currentView = undefined; localStorage.removeItem('token1');
-                  }
+            if(json.token == "Email does not exist" ){
+              let email = document.getElementById("formHorizontalEmail");
+              email.value = "The email you provided is not linked to any account";
+              email.parentNode.parentNode.setAttribute('class', 'form-group has-error');
+              //store.dispatch(userErrorMessage());
+            }
+            else if ( json.token == "Password is wrong") {
+              let password = document.getElementById("formHorizontalPassword");
+              password.parentNode.parentNode.setAttribute('class', 'form-group has-error');
+               store.dispatch(wrongPassMessage());
+            }
+            else {
+              localStorage.setItem('token1',json.token);
+                store.dispatch(getUserInfo(json))
+                fetch('/PrivateRoute', {
+                  headers: new Headers({
+                   'Authorization': 'Bearer '+ localStorage.token1
+                 }),
+                    method: "Post",
+                    body : JSON.stringify(json)}
+                  ).then(function(res){
+                      return res.json();
+                    }).then(function(jsonans){
+                      console.log("the final answer is", jsonans);
+                      let expir = new Date(jsonans.exp * 1000);
+                      let currTime = new Date();
+                      let compDates = expir > currTime; //if true, the token is still witihn its live time (one hour);
+                      if (compDates) {
+                        store.dispatch(getTokenInfo(jsonans));
+                      } else {
+                        currentView = undefined; localStorage.removeItem('token1');
+                      }
 
-                })
-          })
+                    })
+            }
+          })// send auth header to private route
+
+
       }
   }
   getValidationState(e) {
@@ -87,7 +115,7 @@ export class Login extends React.Component{
     }
   render(){
 
-    if (isEmpty(this.props.userInfo))
+    if (isEmpty(this.props.tokenInfo))
     return (
       <div className="container">
       <PageHeader className="header-margins">
@@ -108,7 +136,8 @@ export class Login extends React.Component{
             Password
           </Col>
           <Col sm={10}>
-            <FormControl type="password" placeholder="Password"  />
+            <FormControl type="password" placeholder="Password" onFocus={this.handleFocus} />
+            <Atooltip opacity={this.props.tooltipOpacity} />
           </Col>
         </FormGroup>
 
@@ -132,7 +161,7 @@ export class Login extends React.Component{
     )
     else {
       console.log(this.props.userInfo)
-    return(<h1>Welcome User! </h1>)
+    return(<WelcomeUser name={this.props.userInfo.name} lastName={this.props.userInfo.lastName} />)
     }
   }
 
@@ -140,7 +169,9 @@ export class Login extends React.Component{
 function mapStateToProps(state) {
   return {
     isAuthenticated : state.userInfo.isAuthenticated,
-    userInfo: state.userInfo.userInfo
+    userInfo: state.userInfo.userInfo,
+    tooltipOpacity : state.errorMessage.passMessage,
+    tokenInfo : state.tokenInfo.tokenInfo
   };
 };
 export default connect(mapStateToProps)(Login)
