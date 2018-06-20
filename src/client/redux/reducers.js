@@ -13,6 +13,9 @@ const userState = {
 const tokenState = {
   tokenInfo : {}
 }
+const layoutState = {
+  login : false
+}
  let changeView = (state = initialState, action) => {
     switch(action.type){
       case 'change_view' :
@@ -76,9 +79,21 @@ let tokenInfo = (state = tokenState, action ) => {
 
   }
 }
+let changeLayout = (state = layoutState, action) => {
+  switch (action.type) {
+    case "ghange_layout" :
+    console.log("ghange_layout");
+    return Object.assign({}, state, {
+      login : true
+    })
+    default :
+    return state
+  }
+}
 export const reducer = combineReducers({
   changeView,
   errorMessage,
   userInfo,
-  tokenInfo
+  tokenInfo,
+  changeLayout
 })

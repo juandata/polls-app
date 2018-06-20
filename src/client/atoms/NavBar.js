@@ -1,8 +1,31 @@
 import React from 'react';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import '../assets/css/NavBar.css'
+import store from '../redux/store';
+import {connect} from 'react-redux';
+function handleSelect(selectedKey) {
+  //alert(`selected ${selectedKey}`);
+  switch (selectedKey){
+    case  1 :
+    localStorage.removeItem('token1'); localStorage.removeItem('id'); //the user logout
+    default :
+    return null;
+  }
+}
+function Register(props){
+  if(!props.login){
+    return (
+      <NavItem eventKey={2} href="/Register">
+        Register
+      </NavItem>
+    )
+  } else {
+    return <span></span>
+  }
 
-export default function NavBar(props){
+}
+function NavBar(props){
+  let login = props.login ? "Logout" : "Login";
   return(
   <Navbar inverse collapseOnSelect fluid={true}>
   <Navbar.Header>
@@ -12,19 +35,17 @@ export default function NavBar(props){
     <Navbar.Toggle />
   </Navbar.Header>
   <Navbar.Collapse>
-    <Nav>
-      <NavItem eventKey={1} href="/Login">
-          Login
+    <Nav onSelect={handleSelect}>
+      <NavItem eventKey={1} href={"/" + login} >
+          {login}
         </NavItem>
-        <NavItem eventKey={2} href="/Register">
-          Register
-        </NavItem>
+        <Register login={props.login}  />
         <NavDropdown eventKey={3} title="Know more..." id="basic-nav-dropdown">
           <MenuItem eventKey={3.1}>About</MenuItem>
           <MenuItem eventKey={3.2}>Hire me!</MenuItem>
           <MenuItem eventKey={3.3}>Questions?</MenuItem>
           <MenuItem divider />
-          <MenuItem eventKey={3.3}>Separated link</MenuItem>
+          <MenuItem eventKey={3.4}>Separated link</MenuItem>
         </NavDropdown>
       </Nav>
       <Nav pullRight>
@@ -39,3 +60,10 @@ export default function NavBar(props){
    </Navbar>
   )
 }
+
+function mapStateToProps(state) {
+  return {
+    login : state.changeLayout.login
+  };
+};
+export default connect(mapStateToProps)(NavBar)

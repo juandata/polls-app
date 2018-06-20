@@ -45,7 +45,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.post("/mongo", function(req, res){
     /*connectToMongo("created from react wow!!");*/
     var bodyParsed = JSON.parse(req.body);
-    let PollCreated = mongoose.model(bodyParsed.user, pollsSquema, bodyParsed.user );
+    let PollCreated = mongoose.model(bodyParsed.id, pollsSquema, bodyParsed.id );
     mongoose.connect(address);
     let db = mongoose.connection;
     db.on('error', function() {
@@ -74,7 +74,7 @@ app.post("/mongo", function(req, res){
 app.post("/getMongo", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
-  let PollCreated = mongoose.model(bodyParsed.user, pollsSquema, bodyParsed.user);
+  let PollCreated = mongoose.model(bodyParsed.id, pollsSquema, bodyParsed.id);
   mongoose.connect(address);
   var database = mongoose.connection;
   database.on('error', function(){

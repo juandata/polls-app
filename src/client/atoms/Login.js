@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 let jwt = require('jsonwebtoken');
 let theHeader,estado;
 //redux stuff
-import {getUserInfo, getTokenInfo, wrongPassMessage, resetTooltip} from '../redux/actions';
+import {getUserInfo, getTokenInfo, wrongPassMessage, resetTooltip, changeLayout} from '../redux/actions';
 import store from '../redux/store';
 //import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -76,9 +76,11 @@ export class Login extends React.Component{
               let password = document.getElementById("formHorizontalPassword");
               password.parentNode.parentNode.setAttribute('class', 'form-group has-error');
                store.dispatch(wrongPassMessage());
+
             }
             else {
               localStorage.setItem('token1',json.token);
+              localStorage.setItem('id', json.id);
                 store.dispatch(getUserInfo(json))
                 fetch('/PrivateRoute', {
                   headers: new Headers({
@@ -89,12 +91,12 @@ export class Login extends React.Component{
                   ).then(function(res){
                       return res.json();
                     }).then(function(jsonans){
-                      console.log("the final answer is", jsonans);
                       let expir = new Date(jsonans.exp * 1000);
                       let currTime = new Date();
                       let compDates = expir > currTime; //if true, the token is still witihn its live time (one hour);
                       if (compDates) {
                         store.dispatch(getTokenInfo(jsonans));
+                        store.dispatch(changeLayout());
                       } else {
                         currentView = undefined; localStorage.removeItem('token1');
                       }
@@ -114,7 +116,6 @@ export class Login extends React.Component{
       }
     }
   render(){
-
     if (isEmpty(this.props.tokenInfo))
     return (
       <div className="container">
@@ -160,8 +161,7 @@ export class Login extends React.Component{
       </div>
     )
     else {
-      console.log(this.props.userInfo)
-    return(<WelcomeUser name={this.props.userInfo.name} lastName={this.props.userInfo.lastName} />)
+    return(<WelcomeUser info={this.props.userInfo} />)
     }
   }
 
@@ -171,7 +171,8 @@ function mapStateToProps(state) {
     isAuthenticated : state.userInfo.isAuthenticated,
     userInfo: state.userInfo.userInfo,
     tooltipOpacity : state.errorMessage.passMessage,
-    tokenInfo : state.tokenInfo.tokenInfo
+    tokenInfo : state.tokenInfo.tokenInfo,
+    login : state.changeLayout.login
   };
 };
 export default connect(mapStateToProps)(Login)

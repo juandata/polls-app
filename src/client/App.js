@@ -23,11 +23,14 @@ import {Barchart} from './atoms/d3practice';
 
 import {PollsView} from './atoms/PollsView';
 import {SignUp} from './pages/SignUp';
+import WelcomeUser from './atoms/WelcomeUser';
 //import {Login} from './pages/Login';
 import {Error} from './pages/Error';
 import {BootstrapTest} from './templates/BootstrapTest';
 import {Bootstrap1} from './templates/Bootstrap1';
 import {BasicTemplate} from './templates/Bootstrap4';
+
+
 
 class Greeting extends Component {
   constructor(props) {
@@ -57,10 +60,12 @@ class Greeting extends Component {
         <Route exact path="/" component={GeneralPolls} />
         <Route path="/GeneralPolls" component={GeneralPolls} />
         <Route path="/Login" component={Login} />
+        <Route path="/Logout" component={Login} />
         <Route path="/Register" component={Register} />
         <Route path="/PollsView"render={()=> < PollsView /> } />
         <Route path="/CreatePoll" component={CreatePoll} />
-        <Route path="/PollCreated" component={PollCreated} />
+        <Route path="/CreatePoll" component={CreatePoll} />
+        <Route path="/WelcomeUser" component={WelcomeUser} />
         <Route path="/d3" component= {Barchart} />
 
         //Pruebas abajo

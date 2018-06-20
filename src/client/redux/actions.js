@@ -43,3 +43,8 @@ export function getTokenInfo(info){
     info
   }
 }
+export const changeLayout  = () => {
+  return {
+    type : "ghange_layout"
+  }
+};
