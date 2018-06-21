@@ -17,7 +17,7 @@ import ShowUserPolls from './ShowUserPolls';
            <Button bsStyle="primary">Share it!</Button>
          </p>
        </Jumbotron>
-       <ShowUserPolls  />
+       <ShowUserPolls polls={props.info.polls.length} pollsInfo={props.info}/>
        </Grid>
      );
    }

@@ -17,7 +17,8 @@ import App from './App';
   if (compDates) {
     //do nothing
   } else {
-    localStorage.removeItem('token1');
+    //remove all the localStorage user related data
+    localStorage.removeItem('token1');localStorage.removeItem('id');
   }
 }
 ReactDOM.render(<Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>, document.getElementById('root'));

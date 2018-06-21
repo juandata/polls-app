@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const routes = [
   "/", "/signup", "/other"
 ];
+var ObjectId = require('mongodb').ObjectID;
 const address = "mongodb://pollsapp:Fray2017@ds231740.mlab.com:31740/pollsapp";
 //var mongodb = require('mongodb');
 //var MongoClient = mongodb.MongoClient;
@@ -25,13 +26,20 @@ var pollsSquema = mongoose.Schema({
   description : String,
   options : mongoose.Schema.Types.Mixed
 });
+var databaseSquema = mongoose.Schema({
+  _id : String,
+  name : String,
+  options : mongoose.Schema.Types.Mixed,
+  _v : Number
+
+});
 let UserCreated = mongoose.model("users", userSquema);
 
 function createAccessToken() {
   return jwt.sign({
     iss: config.issuer,
     aud: config.audience,
-    exp: Math.floor(Date.now() / 1000) + (60 * 2),
+    exp: Math.floor(Date.now() / 1000) + (60 * 15),
     scope: 'full_access',
     sub: "the subject",
     alg: 'HS256'
@@ -74,7 +82,7 @@ app.post("/mongo", function(req, res){
 app.post("/getMongo", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
-  let PollCreated = mongoose.model(bodyParsed.id, pollsSquema, bodyParsed.id);
+  let PollsSet = mongoose.model(bodyParsed.userid, databaseSquema);
   mongoose.connect(address);
   var database = mongoose.connection;
   database.on('error', function(){
@@ -88,12 +96,23 @@ app.post("/getMongo", function(req, res){
   });
   database.once('open', function(){
     //get all
-    PollCreated.find(function(err, polls){
+      /*PollsSet.find(function(err, polls){
       if (err) return console.error(err);
-    });
-    //filter search, get the document with the id
-    PollCreated.find({_id : bodyParsed.id}, function(err, poll){
-      res.json(poll)
+      console.log(polls);
+    });*/
+      /*PollsSet.find({ "_id.$oid" : "5b2abd911eecb41c2c67c1c5"}, function(err, docs){
+      if (err) return console.error(err);
+      console.log(docs);
+    });*/
+    //var fileId = mongoose.Types.ObjectId("5b2abd911eecb41c2c67c1c5");
+    PollsSet.find(function(err, docs){
+    if (err) return console.error(err);
+
+      docs.map(function(el, ind){
+        if(el._id == bodyParsed.id){
+          res.json(el);
+        }
+      });
     });
   })
 });
@@ -195,6 +214,9 @@ app.post("/LoginUser", function(req, res){
     console.error.bind(console, 'connection error:')
   });
   database.once('open', function(resp){
+    //if we get here is because the user has been authenticated with credentials.
+    //search for polls database of userid
+
      UserCreated.find({
           email : bodyParsed.email
       },
@@ -206,15 +228,19 @@ app.post("/LoginUser", function(req, res){
                 }
               else {
                 if(doc[0].pass == bodyParsed.password){
-                  //if we get here is because the user has been authenticated with credentials.
-                  let token = createAccessToken();
-                  resjson = {}; resjson.token = token;
-                  resjson.name = doc[0].name;
-                  resjson.lastName = doc[0].lastName;
-                  resjson.userName = doc[0].userName;
-                  resjson.email = doc[0].email;
-                  resjson.id = doc[0]._id;
-                  res.json(resjson)
+                  let DatabaseData = mongoose.model("" + doc[0]._id + "",databaseSquema);
+                  DatabaseData.find(function(err, polls){
+                    if (err) console.log("the error is ", err);
+                    let token = createAccessToken();
+                    resjson = {}; resjson.token = token;
+                    resjson.name = doc[0].name;
+                    resjson.lastName = doc[0].lastName;
+                    resjson.userName = doc[0].userName;
+                    resjson.email = doc[0].email;
+                    resjson.id = doc[0]._id;
+                    resjson.polls = polls;
+                    res.json(resjson)
+                  });
                 } else {
                   resjson = { token : "Password is wrong"}
                   res.json(resjson)
@@ -236,6 +262,7 @@ app.post("/LoginUser", function(req, res){
               }
           });*/
       }
+
     });
   })
 })
@@ -243,8 +270,6 @@ app.post("/PrivateRoute", function(req, res){
   //THIS SHOULD BE AUTHENTICATED
   var bodyParsed = JSON.parse(req.body);
   let decoded = jwt.decode(bodyParsed.token);
-  console.log(decoded);
-  console.log(bodyParsed);
   res.json(decoded);
 })
 app.use(function(req, res) {

@@ -78,7 +78,7 @@ export class Login extends React.Component{
                store.dispatch(wrongPassMessage());
 
             }
-            else {
+            else { 
               localStorage.setItem('token1',json.token);
               localStorage.setItem('id', json.id);
                 store.dispatch(getUserInfo(json))

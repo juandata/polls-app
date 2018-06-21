@@ -45,6 +45,13 @@ export function getTokenInfo(info){
 }
 export const changeLayout  = () => {
   return {
-    type : "ghange_layout"
+    type : "change_layout"
   }
 };
+
+export function showPoll(id){
+  return {
+    type : "show_poll",
+    id
+  }
+}

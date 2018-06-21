@@ -16,6 +16,10 @@ const tokenState = {
 const layoutState = {
   login : false
 }
+const changePoll = {
+  showPoll : false,
+  id : ""
+}
  let changeView = (state = initialState, action) => {
     switch(action.type){
       case 'change_view' :
@@ -81,10 +85,22 @@ let tokenInfo = (state = tokenState, action ) => {
 }
 let changeLayout = (state = layoutState, action) => {
   switch (action.type) {
-    case "ghange_layout" :
-    console.log("ghange_layout");
+    case "change_layout" :
+    console.log("change_layout");
     return Object.assign({}, state, {
       login : true
+    })
+    default :
+    return state
+  }
+}
+let showPoll = (state = changePoll, action) => {
+  switch (action.type) {
+    case "show_poll" :
+    console.log("show_poll");
+    return Object.assign({}, state, {
+      showPoll : true,
+      id : action.id
     })
     default :
     return state
@@ -95,5 +111,6 @@ export const reducer = combineReducers({
   errorMessage,
   userInfo,
   tokenInfo,
-  changeLayout
+  changeLayout,
+  showPoll
 })

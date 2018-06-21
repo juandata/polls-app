@@ -34,14 +34,14 @@ let pollTemplate = {
 export class PollsView extends React.Component {
   constructor(props){
     super(props);
-    this.state = {poll : pollTemplate, vote : "you have not voted yet", id : "5b199ff716526b334c629aec", user : "goodUser" };
+    this.state = {poll : pollTemplate, vote : "you have not voted yet" };
     this.upd = this.upd.bind(this);
   }
   componentWillMount(){
     const url = logic.getUrl;
     const bodyReq = {
-      id : localStorage.id,
-      user : this.state.user
+      id : this.props.id,
+      userid : this.props.userid
     }
     fetch('/getMongo', {
       headers,
@@ -52,9 +52,10 @@ export class PollsView extends React.Component {
         return response.json();
       })
     .then(function(json){
+      console.log(json);
         return json
       })
-    .then( resp => this.setState({poll: resp[0] } ) )
+    .then( resp => this.setState({poll: resp } ) )
   }
   upd(e){
     let currVal = this.state.poll.options[e.target.value];

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {ThumbnailHOC} from './ThumbnailHOC';
+import ThumbnailHOC from './ThumbnailHOC';
  export default function ShowUserPolls(props) {
      return (
-    < ThumbnailHOC polls={12} pollsPerRow={3}/>
+    < ThumbnailHOC polls={props.polls} pollsPerRow={3} pollsInfo={props.pollsInfo}/>
      );
    }
