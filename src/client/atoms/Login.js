@@ -66,6 +66,7 @@ export class Login extends React.Component{
             return response.json();
             })
           .then(function(json){
+            console.log(json);
             if(json.token == "Email does not exist" ){
               let email = document.getElementById("formHorizontalEmail");
               email.value = "The email you provided is not linked to any account";
@@ -78,7 +79,7 @@ export class Login extends React.Component{
                store.dispatch(wrongPassMessage());
 
             }
-            else { 
+            else {
               localStorage.setItem('token1',json.token);
               localStorage.setItem('id', json.id);
                 store.dispatch(getUserInfo(json))
@@ -108,13 +109,13 @@ export class Login extends React.Component{
 
       }
   }
-  getValidationState(e) {
-    if(e == this.state.target){
-    let length = this.state.value.length;
-    if (length > 0) return 'success';
-    else return null;
+    getValidationState(e) {
+      if(e == this.state.target){
+      let length = this.state.value.length;
+      if (length > 0) return 'success';
+      else return null;
+        }
       }
-    }
   render(){
     if (isEmpty(this.props.tokenInfo))
     return (

@@ -64,7 +64,7 @@ class Greeting extends Component {
         <Route path="/Register" component={Register} />
         <Route path="/PollsView"render={()=> < PollsView /> } />
         <Route path="/CreatePoll" component={CreatePoll} />
-        <Route path="/CreatePoll" component={CreatePoll} />
+        <Route path="/PollCreated" component={PollCreated} />
         <Route path="/WelcomeUser" component={WelcomeUser} />
         <Route path="/d3" component= {Barchart} />
 

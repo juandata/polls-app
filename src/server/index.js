@@ -29,19 +29,21 @@ var pollsSquema = mongoose.Schema({
 var databaseSquema = mongoose.Schema({
   _id : mongoose.Schema.Types.ObjectId,
   name : String,
+  description : String,
   options : mongoose.Schema.Types.Mixed,
   _v : Number
-
 });
 let UserCreated = mongoose.model("users", userSquema);
 
-function createAccessToken() {
+function createAccessToken(userInfo, polls) {
   return jwt.sign({
     iss: config.issuer,
     aud: config.audience,
     exp: Math.floor(Date.now() / 1000) + (60 * 15),
     scope: 'full_access',
     sub: "the subject",
+    userInfo,
+    polls,
     alg: 'HS256'
   }, config.secret);
 }
@@ -95,16 +97,6 @@ app.post("/getMongo", function(req, res){
 
   });
   database.once('open', function(){
-    //get all
-      /*PollsSet.find(function(err, polls){
-      if (err) return console.error(err);
-      console.log(polls);
-    });*/
-      /*PollsSet.find({ "_id.$oid" : "5b2abd911eecb41c2c67c1c5"}, function(err, docs){
-      if (err) return console.error(err);
-      console.log(docs);
-    });*/
-    //var fileId = mongoose.Types.ObjectId("5b2abd911eecb41c2c67c1c5");
     PollsSet.find(function(err, docs){
     if (err) return console.error(err);
 
@@ -237,7 +229,7 @@ app.post("/LoginUser", function(req, res){
                   let DatabaseData = mongoose.model("" + doc[0]._id + "",databaseSquema);
                   DatabaseData.find(function(err, polls){
                     if (err) console.log("the error is ", err);
-                    let token = createAccessToken();
+                    let token = createAccessToken(doc[0], polls);
                     resjson = {}; resjson.token = token;
                     resjson.name = doc[0].name;
                     resjson.lastName = doc[0].lastName;
@@ -251,22 +243,7 @@ app.post("/LoginUser", function(req, res){
                   resjson = { token : "Password is wrong"}
                   res.json(resjson)
                 }
-          //email exists in the database, lets search for the Password
-          //this should be encrypted
-          /*UserCreated.find({pass : bodyParsed.password}, function(err, docs){
-            if (err) return console.error(err);
-              if(!docs.length > 0){
-                resjson = { token : "Password is wrong"}
-                res.json(resjson)
-              } else {
-                //here I create the auth token, this only happens if the user sends the correct email with the Password
-                //the password should be encrypted!
-                let token = createAccessToken();
-                resjson = {}; resjson.token = token;
-                console.log(docs);
-                res.json(resjson)
-              }
-          });*/
+
       }
 
     });
