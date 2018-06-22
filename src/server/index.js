@@ -53,7 +53,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.post("/mongo", function(req, res){
     /*connectToMongo("created from react wow!!");*/
     var bodyParsed = JSON.parse(req.body);
-    let PollCreated = mongoose.model(bodyParsed.id, pollsSquema, bodyParsed.id );
+    let PollCreated = mongoose.model(bodyParsed.id, pollsSquema, bodyParsed.id);
     mongoose.connect(address);
     let db = mongoose.connection;
     db.on('error', function() {
