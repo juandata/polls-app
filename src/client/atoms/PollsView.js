@@ -61,7 +61,8 @@ export class PollsView extends React.Component {
     let currVal = this.state.poll.options[e.target.value];
     let voto = e.target.value;
     const bodyReq = {
-      id : localStorage.userInfo.id,
+      userid : this.props.userid,
+      id : this.props.id,
       vote : "options." + e.target.value,
       voteVal : currVal
     }

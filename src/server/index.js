@@ -27,7 +27,7 @@ var pollsSquema = mongoose.Schema({
   options : mongoose.Schema.Types.Mixed
 });
 var databaseSquema = mongoose.Schema({
-  _id : String,
+  _id : mongoose.Schema.Types.ObjectId,
   name : String,
   options : mongoose.Schema.Types.Mixed,
   _v : Number
@@ -119,7 +119,7 @@ app.post("/getMongo", function(req, res){
 app.post("/voteMongo", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
-  let PollCreated = mongoose.model(bodyParsed.user, pollsSquema, bodyParsed.user);
+  let PollVoted = mongoose.model(bodyParsed.userid, databaseSquema);
   mongoose.connect(address);
   var database = mongoose.connection;
   database.on('error', function(){
@@ -135,13 +135,19 @@ app.post("/voteMongo", function(req, res){
       //update
       var updVote = {}, voto = bodyParsed.vote;
       updVote[voto] = bodyParsed.voteVal + 1;
-      PollCreated.findByIdAndUpdate({_id :bodyParsed.id }, updVote, {new : true}, function(err, upd) {
+      console.log(bodyParsed);
+      /*PollVoted.find(function(err, docs){
+        if (err) return console.error(err);
+        console.log(docs);
+      });*/
+       PollVoted.findByIdAndUpdate({_id : bodyParsed.id }, updVote, {new : true}, function(err, upd) {
         if (err) console.log("there was an error!!")
-        console.log(upd);
+        console.log("the updated is ", upd);
         res.json(upd);
-        });
-      })
-});
+      });
+    })
+
+      });
 app.post("/submitUser", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
