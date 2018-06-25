@@ -1,8 +1,10 @@
 import React from 'react';
-
+var randomID = require("random-id");
 import { Grid, Row, Col, Thumbnail, Button,  } from 'react-bootstrap';
 import thumbnail from '../assets/img/thumbnaildiv.png';
 import {PollsView} from './PollsView';
+import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 import store from '../redux/store';
 import {connect} from 'react-redux';
@@ -11,11 +13,13 @@ var masInst = []; var pollCol = [];
  class ThumbnailHOC extends React.Component {
   constructor(props){
     super(props);
-    this.changeView = this.changeView.bind(this);
+    this.sendId = this.sendId.bind(this);
   }
-  changeView(e){
+  sendId(e){
     var theid = e.target.id;
-    store.dispatch(showPoll(theid));
+    var userid = store.getState().userInfo.userInfo.id;
+    console.log(store.getState(), userid);
+    store.dispatch(showPoll(theid, userid));
   }
   componentWillMount(){
     let pollsArr = this.props.pollsInfo.polls;
@@ -26,12 +30,14 @@ var masInst = []; var pollCol = [];
     let rowDiv = 12 / division;
           for(polls; 0 != polls; polls --){
             let unitPoll = (
-              <Col xs={12} md={rowDiv}>
-                  <Thumbnail src={thumbnail}  alt="242x200">
+              <Col xs={12} md={rowDiv} key={pollsArr[polls -1]._id}>
+                  <Thumbnail src={thumbnail}  alt="242x200" >
                     <h3>{pollsArr[polls - 1].name}</h3>
                     <p>{pollsArr[polls - 1].description}</p>
                     <p>
-                      <Button bsStyle="primary" onClick={this.changeView} id={pollsArr[polls -1]._id}>ver</Button>&nbsp;
+                    <Link to="/PollsView" >
+                          <Button bsStyle="primary" onClick={this.sendId} id={pollsArr[polls -1]._id}>ver</Button>&nbsp;
+                      </Link>
                       <Button bsStyle="default">compartir</Button>
                     </p>
                   </Thumbnail>
@@ -40,8 +46,9 @@ var masInst = []; var pollCol = [];
             pollCol.push(unitPoll);
 
           }
+          let id = randomID(10);
           let theRow = (
-            <Row>
+            <Row key={id}>
               {pollCol}
             </Row>
           );
@@ -49,14 +56,14 @@ var masInst = []; var pollCol = [];
 
   }
   render (){
-    console.log(this.props.id);
-      if(this.props.showPoll == false){
+    console.log(this.props.id, this.props.userid);
+      //if(this.props.showPoll == false){
         return(
           masInst
         )
-      } else {
-        return <PollsView id={this.props.id} userid={this.props.pollsInfo.id} />;
-      }
+      //} else {
+        //return <PollsView id={this.props.id} userid={this.props.pollsInfo.id} />;
+      //}
 
  }
 }
@@ -64,7 +71,9 @@ var masInst = []; var pollCol = [];
 function mapStateToProps(state) {
   return {
     showPoll : state.showPoll.showPoll,
-    id : state.showPoll.id
+    id : state.showPoll.id,
+    userid : state.showPoll.userid
+
   };
 };
-export default connect(mapStateToProps)(ThumbnailHOC)
+export default withRouter(connect(mapStateToProps)(ThumbnailHOC))

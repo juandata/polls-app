@@ -7,6 +7,10 @@ import logic from '../logic';
 import Login from './Login';
 import thumbnail from '../assets/img/thumbnaildiv.png';
 
+//redux stuff
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+
 function SmallThumbnail(props){
   return (
     <Media>
@@ -31,51 +35,53 @@ let pollTemplate = {
 'Accept': 'application/json',
 'Content-Type': 'application/json'
 };
-export class PollsView extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {poll : pollTemplate, vote : "you have not voted yet" };
-    this.upd = this.upd.bind(this);
-  }
-  componentWillMount(){
-    const url = logic.getUrl;
-    const bodyReq = {
-      id : this.props.id,
-      userid : this.props.userid
-    }
-    fetch('/getMongo', {
-      headers,
-      method: "POST",
-      body: JSON.stringify(bodyReq)
-    })
-    .then(function(response) {
-        return response.json();
-      })
-    .then(function(json){
-      console.log(json);
-        return json
-      })
-    .then( resp => this.setState({poll: resp } ) )
-  }
-  upd(e){
-    let currVal = this.state.poll.options[e.target.value];
-    let voto = e.target.value;
-    const bodyReq = {
-      userid : this.props.userid,
-      id : this.props.id,
-      vote : "options." + e.target.value,
-      voteVal : currVal
-    }
-    fetch('/voteMongo', {
-      headers,
-      method : "POST",
-      body : JSON.stringify(bodyReq)
-    })
-    .then(function(response){
-      return response.json();
-    }).
-    then(resp => this.setState({poll: resp, vote : voto } ) );
-  }
+class PollsView extends React.Component {
+        constructor(props){
+          super(props);
+          this.state = {poll : pollTemplate, vote : "you have not voted yet" };
+          this.upd = this.upd.bind(this);
+        }
+        componentWillMount(){
+          const url = logic.getUrl;
+          console.log(this.props);
+          const bodyReq = {
+            id : this.props.id,
+            userid : this.props.userid
+          }
+          console.log(bodyReq);
+          fetch('/getMongo', {
+            headers,
+            method: "POST",
+            body: JSON.stringify(bodyReq)
+          })
+          .then(function(response) {
+              return response.json();
+            })
+          .then(function(json){
+            console.log(json);
+              return json
+            })
+          .then( resp => this.setState({poll: resp } ) )
+        }
+        upd(e){
+          let currVal = this.state.poll.options[e.target.value];
+          let voto = e.target.value;
+          const bodyReq = {
+            userid : this.props.userid,
+            id : this.props.id,
+            vote : "options." + e.target.value,
+            voteVal : currVal
+          }
+          fetch('/voteMongo', {
+            headers,
+            method : "POST",
+            body : JSON.stringify(bodyReq)
+          })
+          .then(function(response){
+            return response.json();
+          }).
+          then(resp => this.setState({poll: resp, vote : voto } ) );
+        }
   render (){
         if(localStorage.token1){
           return(
@@ -120,3 +126,12 @@ export class PollsView extends React.Component {
         }
  }
 }
+function mapStateToProps(state) {
+  return {
+    showPoll : state.showPoll.showPoll,
+    id : state.showPoll.id,
+    userid : state.showPoll.userid
+
+  };
+};
+export default withRouter(connect(mapStateToProps)(PollsView))

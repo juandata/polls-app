@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 import {setAuth} from '../utils/setAuthorizationHeader';
 import isEmpty from 'lodash/isEmpty';
 let jwt = require('jsonwebtoken');
@@ -32,7 +33,7 @@ export class Login extends React.Component{
     store.dispatch(resetTooltip());
   }
   handleClick(e){
-    e.preventDefault();
+    //e.preventDefault();
     let formArr = ["formHorizontalEmail", "formHorizontalPassword"],info = [], inputValues = 0;
       formArr.map(function(el, ind){
         let elem = document.getElementById(el);
@@ -117,7 +118,7 @@ export class Login extends React.Component{
         }
       }
   render(){
-    if (isEmpty(this.props.tokenInfo))
+    //if (isEmpty(this.props.tokenInfo))
     return (
       <div className="container">
       <PageHeader className="header-margins">
@@ -151,7 +152,9 @@ export class Login extends React.Component{
 
         <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Button type="submit" onClick={this.handleClick}>Sign in</Button>
+            <Link to="/WelcomeUser" onClick={this.handleClick}>
+                <Button bsStyle="primary" >Sign in</Button>
+            </Link>
           </Col>
         </FormGroup>
       </Form>
@@ -161,9 +164,9 @@ export class Login extends React.Component{
       <Button className="register" href="/Register" bsStyle="primary" bsSize="large" block>Register</Button>
       </div>
     )
-    else {
+    /*else {
     return(<WelcomeUser info={this.props.userInfo} />)
-    }
+  }*/
   }
 
 }

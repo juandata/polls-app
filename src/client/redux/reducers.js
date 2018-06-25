@@ -18,7 +18,8 @@ const layoutState = {
 }
 const changePoll = {
   showPoll : false,
-  id : ""
+  id : "",
+  userid : ""
 }
  let changeView = (state = initialState, action) => {
     switch(action.type){
@@ -100,7 +101,8 @@ let showPoll = (state = changePoll, action) => {
     console.log("show_poll");
     return Object.assign({}, state, {
       showPoll : true,
-      id : action.id
+      id : action.id,
+      userid : action.userid
     })
     default :
     return state

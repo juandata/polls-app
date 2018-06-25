@@ -21,7 +21,7 @@ import {GeneralPolls} from './templates/GeneralPolls';
 import {BreadCumb} from './atoms/BreadCumb';
 import {Barchart} from './atoms/d3practice';
 
-import {PollsView} from './atoms/PollsView';
+import PollsView from './atoms/PollsView';
 import {SignUp} from './pages/SignUp';
 import WelcomeUser from './atoms/WelcomeUser';
 //import {Login} from './pages/Login';

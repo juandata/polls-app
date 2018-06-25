@@ -49,9 +49,10 @@ export const changeLayout  = () => {
   }
 };
 
-export function showPoll(id){
+export function showPoll(id, userid){
   return {
     type : "show_poll",
-    id
+    id,
+    userid
   }
 }
