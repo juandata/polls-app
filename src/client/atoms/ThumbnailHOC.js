@@ -38,7 +38,7 @@ var masInst = []; var pollCol = [];
                     <h3>{pollsArr[polls - 1].name}</h3>
                     <p>{pollsArr[polls - 1].description}</p>
                     <p>
-                    <Link to="/PollsView" >
+                    <Link to={"/PollsView/" + pollsArr[polls - 1].name} >
                           <Button bsStyle="primary" onClick={this.sendId} id={pollsArr[polls -1]._id}>ver</Button>&nbsp;
                       </Link>
                       <Button bsStyle="default">compartir</Button>
