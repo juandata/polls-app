@@ -17,11 +17,14 @@ var masInst = []; var pollCol = [];
   }
   sendId(e){
     var theid = e.target.id;
-    var userid = store.getState().userInfo.userInfo.id;
+    console.log("the state in thumbnail is ", store.getState());
+    //var userid = store.getState().userInfo.userInfo.id;
+    var userid = localStorage.id;
     console.log(store.getState(), userid);
     store.dispatch(showPoll(theid, userid));
   }
   componentWillMount(){
+    masInst = [], pollCol = [];
     let pollsArr = this.props.pollsInfo.polls;
     /*pollsArr.map(function(el, ind){
     });*/

@@ -9,6 +9,8 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import {getUserInfo} from './redux/actions';
 
+var x = location.pathname;
+console.log(x);
 
 import App from './App';
  if(localStorage.token1){
