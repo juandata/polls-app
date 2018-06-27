@@ -6,9 +6,18 @@ import AppMediumMessage from './AppMediumMessage';
 import store from '../redux/store';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom'
+var _= require('lodash/lang');
 
    function WelcomeUser(props) {
-     console.log(props.info);
+     //var valor = _.isEmpty(props.info);
+     var valor = props.info.hasOwnProperty('userInfo');
+     console.log(props.info, valor);
+     let name, lastname;
+     if(!valor){
+       name = props.info.name; lastname = props.info.lastName;
+     } else {
+        name = props.info.userInfo.name; lastname = props.info.userInfo.lastName;
+     }
    if(localStorage.token1){
      let answer = props.info.polls.length == 0 ?
      <AppMediumMessage />
@@ -21,7 +30,7 @@ import { withRouter } from 'react-router-dom'
      return (
        <Grid>
        <Jumbotron>
-         <h1>Welcome {props.info.name} {props.info.lastName}</h1>
+         <h1>Welcome {name} {lastname}</h1>
          <p>
            I am glad you are back. This is a free service where you can create, edit and share custom polls with the world. <br/>
            If you like this app you can share it with your friends.

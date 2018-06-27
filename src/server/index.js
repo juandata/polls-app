@@ -33,7 +33,6 @@ var databaseSquema = mongoose.Schema({
   options : mongoose.Schema.Types.Mixed,
   _v : Number
 });
-let UserCreated = mongoose.model("users", userSquema);
 
 function createAccessToken(userInfo, polls) {
   return jwt.sign({
@@ -55,7 +54,8 @@ app.use(bodyParser.json()); // for parsing application/json
 app.post("/mongo", function(req, res){
     /*connectToMongo("created from react wow!!");*/
     var bodyParsed = JSON.parse(req.body);
-    let PollCreated = mongoose.model(bodyParsed.id, pollsSquema, bodyParsed.id);
+    delete mongoose.connection.models[bodyParsed.id];
+    let PollCreated = mongoose.model(bodyParsed.id, pollsSquema);
     mongoose.connect(address);
     let db = mongoose.connection;
     db.on('error', function() {
@@ -84,6 +84,7 @@ app.post("/mongo", function(req, res){
 app.post("/getMongo", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
+  delete mongoose.connection.models[bodyParsed.userid];
   let PollsSet = mongoose.model(bodyParsed.userid, databaseSquema);
   mongoose.connect(address);
   var database = mongoose.connection;
@@ -111,6 +112,7 @@ app.post("/getMongo", function(req, res){
 app.post("/voteMongo", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   //get the document that belong to the user
+  delete mongoose.connection.models[bodyParsed.userid];
   let PollVoted = mongoose.model(bodyParsed.userid, databaseSquema);
   mongoose.connect(address);
   var database = mongoose.connection;
@@ -142,6 +144,8 @@ app.post("/voteMongo", function(req, res){
       });
 app.post("/submitUser", function(req, res){
   var bodyParsed = JSON.parse(req.body);
+  delete mongoose.connection.models["users"];
+  let UserCreated = mongoose.model("users", userSquema);
   //get the document that belong to the user
   mongoose.connect(address);
   var database = mongoose.connection;
@@ -203,6 +207,7 @@ app.post("/LoginUser", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   mongoose.connect(address);
   let database = mongoose.connection;
+  delete mongoose.connection.models["users"];
   database.on('error', function(){
     var bodyError = {
       error : "There was a connection error, please try again later or verify your connection"
@@ -212,6 +217,7 @@ app.post("/LoginUser", function(req, res){
     console.error.bind(console, 'connection error:')
   });
   database.once('open', function(resp){
+    let UserCreated = mongoose.model("users", userSquema);
     //if we get here is because the user has been authenticated with credentials.
     //search for polls database of userid
 
@@ -226,6 +232,7 @@ app.post("/LoginUser", function(req, res){
                 }
               else {
                 if(doc[0].pass == bodyParsed.password){
+                  delete mongoose.connection.models["" + doc[0]._id + ""];
                   let DatabaseData = mongoose.model("" + doc[0]._id + "",databaseSquema);
                   DatabaseData.find(function(err, polls){
                     if (err) console.log("the error is ", err);

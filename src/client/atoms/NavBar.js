@@ -63,7 +63,7 @@ function NavBar(props){
 
 function mapStateToProps(state) {
   return {
-    login : state.changeLayout.login
+    login : state.userInfo.isAuthenticated
   };
 };
 export default connect(mapStateToProps)(NavBar)

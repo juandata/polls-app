@@ -5,6 +5,11 @@ import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageH
 import PollCreated from './PollCreated';
 import Login from './Login';
 
+//redux stuff
+import {getUserInfo} from '../redux/actions';
+import store from '../redux/store';
+//import {bindActionCreators} from 'redux';
+//import {connect} from 'react-redux';
 
 
 var elemento = < Options value="No options added yet"  />;
@@ -94,6 +99,7 @@ export default class CreatePoll extends React.Component{
       options : jsonOpt,
       id : localStorage.id
     }
+    console.log(pollInfo);
     var headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -109,6 +115,11 @@ export default class CreatePoll extends React.Component{
         })
       .then(function(jsonr){
           console.log(jsonr);
+          //update state with new poll created
+          let updUserInfo = store.getState().userInfo.userInfo;
+          updUserInfo.polls = jsonr;
+          console.log(updUserInfo);
+          store.dispatch(getUserInfo(updUserInfo))
           var respuesta = jsonr.hasOwnProperty('error');
           console.log(respuesta);
           if(respuesta){

@@ -83,6 +83,7 @@ export class Login extends React.Component{
             else {
               localStorage.setItem('token1',json.token);
               localStorage.setItem('id', json.id);
+              console.log(json);
                 store.dispatch(getUserInfo(json))
                 fetch('/PrivateRoute', {
                   headers: new Headers({
