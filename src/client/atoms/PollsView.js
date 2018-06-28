@@ -46,6 +46,8 @@ class PollsView extends React.Component {
           var polls = store.getState().userInfo.userInfo.polls;
           if(polls != undefined){
             const url = decodeURI(logic.getUrl);
+            var xxx = store.getState().userInfo.userInfo.userInfo._id;
+            console.log(xxx);
             const bodyReq = {
               id : this.props.id,
               userid : this.props.userid
@@ -54,7 +56,7 @@ class PollsView extends React.Component {
               for (var i = 0; i < polls.length; i ++){
                 if(polls[i].name == url ) {
                   bodyReq.id = polls[i]._id;
-                  bodyReq.userid = localStorage.id;
+                  bodyReq.userid = store.getState().userInfo.userInfo.userInfo._id;
                 }
               }
             }

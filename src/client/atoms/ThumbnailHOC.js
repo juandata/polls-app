@@ -19,16 +19,18 @@ var masInst = []; var pollCol = [];
     var theid = e.target.id;
     console.log("the state in thumbnail is ", store.getState());
     //var userid = store.getState().userInfo.userInfo.id;
-    var userid = localStorage.id;
+    var userid = store.getState().userInfo._id;
     console.log(store.getState(), userid);
     store.dispatch(showPoll(theid, userid));
   }
   componentWillMount(){
     masInst = [], pollCol = [];
+    console.log(this.props);
     let pollsArr = this.props.pollsInfo.polls;
     /*pollsArr.map(function(el, ind){
     });*/
     let polls = this.props.polls;
+    polls = polls == undefined ? 1 : this.props.polls;
     let div = polls / this.props.pollsPerRow, c, division = this.props.pollsPerRow;
     let rowDiv = 12 / division;
           for(polls; 0 != polls; polls --){
@@ -59,15 +61,9 @@ var masInst = []; var pollCol = [];
 
   }
   render (){
-    console.log(this.props.id, this.props.userid);
-      //if(this.props.showPoll == false){
         return(
           masInst
         )
-      //} else {
-        //return <PollsView id={this.props.id} userid={this.props.pollsInfo.id} />;
-      //}
-
  }
 }
 

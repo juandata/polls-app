@@ -117,8 +117,8 @@ export default class CreatePoll extends React.Component{
           console.log(jsonr);
           //update state with new poll created
           let updUserInfo = store.getState().userInfo.userInfo;
-          updUserInfo.polls = jsonr;
-          console.log(updUserInfo);
+          updUserInfo.polls[updUserInfo.polls.length] = jsonr;
+          //console.log(updUserInfo);
           store.dispatch(getUserInfo(updUserInfo))
           var respuesta = jsonr.hasOwnProperty('error');
           console.log(respuesta);
@@ -128,6 +128,21 @@ export default class CreatePoll extends React.Component{
               theState.setState({view : "Created"})
           }
           return jsonr;
+        }).then(function(updToken){
+            let userInfoAgain = store.getState().userInfo.userInfo;
+            let pollsUpdated = store.getState().userInfo.polls;
+            let bodyReq = {
+              userInfo : userInfoAgain,
+              polls : pollsUpdated
+            }
+            fetch('/UpdateToken', {
+              headers, method : 'POST', body : JSON.stringify(bodyReq)
+            }).then(function(finalResp){
+              return finalResp.json();
+            }).then(function(finalRespJson){
+              console.log(finalRespJson);
+              localStorage.token1 = finalRespJson.token;
+            })
         })
   }
   render(){

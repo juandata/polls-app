@@ -9,15 +9,7 @@ import { withRouter } from 'react-router-dom'
 var _= require('lodash/lang');
 
    function WelcomeUser(props) {
-     //var valor = _.isEmpty(props.info);
-     var valor = props.info.hasOwnProperty('userInfo');
-     console.log(props.info, valor);
-     let name, lastname;
-     if(!valor){
-       name = props.info.name; lastname = props.info.lastName;
-     } else {
-        name = props.info.userInfo.name; lastname = props.info.userInfo.lastName;
-     }
+     console.log(props.info);
    if(localStorage.token1){
      let answer = props.info.polls.length == 0 ?
      <AppMediumMessage />
@@ -30,7 +22,7 @@ var _= require('lodash/lang');
      return (
        <Grid>
        <Jumbotron>
-         <h1>Welcome {name} {lastname}</h1>
+         <h1>Welcome {props.info.userInfo.name} {props.info.userInfo.lastName}</h1>
          <p>
            I am glad you are back. This is a free service where you can create, edit and share custom polls with the world. <br/>
            If you like this app you can share it with your friends.

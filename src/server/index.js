@@ -204,6 +204,7 @@ app.post("/submitUser", function(req, res){
   }
 });//receive the email and password to create a jwt and send it to the client.
 app.post("/LoginUser", function(req, res){
+  //get email and password from user
   var bodyParsed = JSON.parse(req.body);
   mongoose.connect(address);
   let database = mongoose.connection;
@@ -219,7 +220,7 @@ app.post("/LoginUser", function(req, res){
   database.once('open', function(resp){
     let UserCreated = mongoose.model("users", userSquema);
     //if we get here is because the user has been authenticated with credentials.
-    //search for polls database of userid
+    //Search for the email in the users collection
 
      UserCreated.find({
           email : bodyParsed.email
@@ -236,14 +237,17 @@ app.post("/LoginUser", function(req, res){
                   let DatabaseData = mongoose.model("" + doc[0]._id + "",databaseSquema);
                   DatabaseData.find(function(err, polls){
                     if (err) console.log("the error is ", err);
+                    //I create a token to be decoded later by the app
                     let token = createAccessToken(doc[0], polls);
                     resjson = {}; resjson.token = token;
-                    resjson.name = doc[0].name;
+                    let decoded = jwt.decode(token);
+                    resjson.decoded = decoded;
+                    /*resjson.name = doc[0].name;
                     resjson.lastName = doc[0].lastName;
                     resjson.userName = doc[0].userName;
                     resjson.email = doc[0].email;
                     resjson.id = doc[0]._id;
-                    resjson.polls = polls;
+                    resjson.polls = polls;*/
                     res.json(resjson)
                   });
                 } else {
@@ -261,6 +265,15 @@ app.post("/PrivateRoute", function(req, res){
   var bodyParsed = JSON.parse(req.body);
   let decoded = jwt.decode(bodyParsed.token);
   res.json(decoded);
+})
+app.post("/UpdateToken", function(req, res){
+  console.log("UPDATED TOKEN?");
+  var bodyParsed = JSON.parse(req.body);
+  let token = createAccessToken(bodyParsed.userInfo, bodyParsed.polls);
+  console.log("UPDATED TOKEN?");
+  resjson = {}; resjson.token = token;
+  console.log(token);
+  res.json(resjson)
 })
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));

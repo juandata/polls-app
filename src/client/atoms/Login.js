@@ -82,29 +82,9 @@ export class Login extends React.Component{
             }
             else {
               localStorage.setItem('token1',json.token);
-              localStorage.setItem('id', json.id);
               console.log(json);
-                store.dispatch(getUserInfo(json))
-                fetch('/PrivateRoute', {
-                  headers: new Headers({
-                   'Authorization': 'Bearer '+ localStorage.token1
-                 }),
-                    method: "Post",
-                    body : JSON.stringify(json)}
-                  ).then(function(res){
-                      return res.json();
-                    }).then(function(jsonans){
-                      let expir = new Date(jsonans.exp * 1000);
-                      let currTime = new Date();
-                      let compDates = expir > currTime; //if true, the token is still witihn its live time (one hour);
-                      if (compDates) {
-                        store.dispatch(getTokenInfo(jsonans));
-                        store.dispatch(changeLayout());
-                      } else {
-                        currentView = undefined; localStorage.removeItem('token1');
-                      }
-
-                    })
+              //Send the userInfo to the store
+                store.dispatch(getUserInfo(json.decoded));
             }
           })// send auth header to private route
 
