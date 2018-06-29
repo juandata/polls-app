@@ -35,7 +35,7 @@ let pollTemplate = {
 }, headers: {
 'Accept': 'application/json',
 'Content-Type': 'application/json'
-};
+}, theuserid;
 class PollsView extends React.Component {
         constructor(props){
           super(props);
@@ -43,20 +43,23 @@ class PollsView extends React.Component {
           this.upd = this.upd.bind(this);
         }
         componentWillMount(){
-          var polls = store.getState().userInfo.userInfo.polls;
+          if(localStorage.token1){
+            var polls = store.getState().userInfo.userInfo.polls;
+            theuserid = store.getState().userInfo.userInfo.userInfo._id;
+            var theid = this.props.id;
+          }
           if(polls != undefined){
             const url = decodeURI(logic.getUrl);
-            var xxx = store.getState().userInfo.userInfo.userInfo._id;
-            console.log(xxx);
+            console.log(theuserid, theid);
             const bodyReq = {
-              id : this.props.id,
-              userid : this.props.userid
+              id : theid,
+              userid : theuserid
             }
             if(bodyReq.id == ""){
               for (var i = 0; i < polls.length; i ++){
                 if(polls[i].name == url ) {
                   bodyReq.id = polls[i]._id;
-                  bodyReq.userid = store.getState().userInfo.userInfo.userInfo._id;
+                  bodyReq.userid = theuserid;
                 }
               }
             }
@@ -81,7 +84,7 @@ class PollsView extends React.Component {
           let currVal = this.state.poll.options[e.target.value];
           let voto = e.target.value;
           const bodyReq = {
-            userid : localStorage.id,
+            userid : theuserid,
             id : this.state.poll._id,
             vote : "options." + e.target.value,
             voteVal : currVal

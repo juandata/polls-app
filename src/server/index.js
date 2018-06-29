@@ -242,12 +242,6 @@ app.post("/LoginUser", function(req, res){
                     resjson = {}; resjson.token = token;
                     let decoded = jwt.decode(token);
                     resjson.decoded = decoded;
-                    /*resjson.name = doc[0].name;
-                    resjson.lastName = doc[0].lastName;
-                    resjson.userName = doc[0].userName;
-                    resjson.email = doc[0].email;
-                    resjson.id = doc[0]._id;
-                    resjson.polls = polls;*/
                     res.json(resjson)
                   });
                 } else {

@@ -10,6 +10,7 @@ var _= require('lodash/lang');
 
    function WelcomeUser(props) {
      console.log(props.info);
+     console.log(props.fullinfo);
    if(localStorage.token1){
      let answer = props.info.polls.length == 0 ?
      <AppMediumMessage />
@@ -44,7 +45,8 @@ var _= require('lodash/lang');
 
    function mapStateToProps(state) {
      return {
-       info : state.userInfo.userInfo
+       info : state.userInfo.userInfo,
+       fullinfo : state.userInfo
      };
    };
    export default withRouter(connect(mapStateToProps)(WelcomeUser))

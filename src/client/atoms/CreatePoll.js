@@ -87,6 +87,7 @@ export default class CreatePoll extends React.Component{
     estado = null;
   }
   sendPoll(){
+    var theuserid = store.getState().userInfo.userInfo.userInfo._id;
     let name = document.getElementById("pollName").value;
     var descr = document.getElementById("description").value;
     var jsonOpt = {};
@@ -97,7 +98,7 @@ export default class CreatePoll extends React.Component{
       pollName : name,
       description : descr,
       options : jsonOpt,
-      id : localStorage.id
+      id : theuserid
     }
     console.log(pollInfo);
     var headers: {
@@ -118,6 +119,7 @@ export default class CreatePoll extends React.Component{
           //update state with new poll created
           let updUserInfo = store.getState().userInfo.userInfo;
           updUserInfo.polls[updUserInfo.polls.length] = jsonr;
+          console.log(updUserInfo);
           //console.log(updUserInfo);
           store.dispatch(getUserInfo(updUserInfo))
           var respuesta = jsonr.hasOwnProperty('error');
@@ -129,8 +131,8 @@ export default class CreatePoll extends React.Component{
           }
           return jsonr;
         }).then(function(updToken){
-            let userInfoAgain = store.getState().userInfo.userInfo;
-            let pollsUpdated = store.getState().userInfo.polls;
+            let userInfoAgain = store.getState().userInfo.userInfo.userInfo;
+            let pollsUpdated = store.getState().userInfo.userInfo.polls;
             let bodyReq = {
               userInfo : userInfoAgain,
               polls : pollsUpdated
