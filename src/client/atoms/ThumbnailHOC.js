@@ -31,7 +31,8 @@ var masInst = []; var pollCol = [];
     });*/
     let polls = this.props.polls;
     polls = polls == undefined ? 1 : this.props.polls;
-    let div = polls / this.props.pollsPerRow, c, division = this.props.pollsPerRow;
+    let division = this.props.pollsPerRow, div = polls / division;
+    const rowsQuantity = Math.ceil(div);
     let rowDiv = 12 / division;
           for(polls; 0 != polls; polls --){
             let unitPoll = (
@@ -49,15 +50,34 @@ var masInst = []; var pollCol = [];
                 </Col>
             );
             pollCol.push(unitPoll);
-
           }
-          let id = randomID(10);
-          let theRow = (
-            <Row key={id}>
-              {pollCol}
-            </Row>
-          );
-          masInst.push(theRow)
+
+
+          /*Adding rows*/
+          let theRows = [], finalRows = [], indice = 0;
+          for(let cero = 0; cero < rowsQuantity; cero ++){
+            // ENTRO TRES VECES
+            let columnPerRow = [];
+            for(let cero = 0; cero < division; cero ++){
+              if(indice < pollsArr.length ){
+                columnPerRow.push(pollCol[indice]);
+                indice ++;
+                //la cantidad de encuestas por row
+              }
+            }
+            console.log(columnPerRow);
+            let id = randomID(10);
+            //theRows.push(columnPerRow);//the individual rows
+            //console.log(theRows);
+            let theRow = (
+              <Row key={id}>
+                {columnPerRow}
+              </Row>
+            );
+            finalRows.push(theRow);
+          }
+          console.log(finalRows);
+          masInst.push(finalRows)
 
   }
   render (){
