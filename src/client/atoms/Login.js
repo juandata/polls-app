@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {setAuth} from '../utils/setAuthorizationHeader';
 import isEmpty from 'lodash/isEmpty';
 let jwt = require('jsonwebtoken');
-let theHeader,estado;
+let theHeader,estado, link = "/WelcomeUser/usuario";
 //redux stuff
 import {getUserInfo, getTokenInfo, wrongPassMessage, resetTooltip, changeLayout} from '../redux/actions';
 import store from '../redux/store';
@@ -78,13 +78,13 @@ export class Login extends React.Component{
               let password = document.getElementById("formHorizontalPassword");
               password.parentNode.parentNode.setAttribute('class', 'form-group has-error');
                store.dispatch(wrongPassMessage());
-
             }
             else {
               localStorage.setItem('token1',json.token);
               console.log(json);
               //Send the userInfo to the store
                 store.dispatch(getUserInfo(json.decoded));
+                link = "/WelcomeUser/usuario";
             }
           })// send auth header to private route
 
@@ -133,9 +133,9 @@ export class Login extends React.Component{
 
         <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Link to="/WelcomeUser" onClick={this.handleClick}>
-                <Button bsStyle="primary" >Sign in</Button>
-            </Link>
+          <Link to={link} onClick={this.handleClick}>
+              <Button bsStyle="primary" >Sign in</Button>
+          </Link>
           </Col>
         </FormGroup>
       </Form>
@@ -147,6 +147,10 @@ export class Login extends React.Component{
     )
     /*else {
     return(<WelcomeUser info={this.props.userInfo} />)
+    <Link to=" " onClick={this.handleClick}>
+        <Button bsStyle="primary" >Sign in</Button>
+    </Link>
+      <Button bsStyle="primary" onClick={this.handleClick} >Sign in</Button>
   }*/
   }
 

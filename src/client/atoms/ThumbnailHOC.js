@@ -27,12 +27,26 @@ var masInst = []; var pollCol = [];
     masInst = [], pollCol = [];
     console.log(this.props);
     let pollsArr = this.props.pollsInfo.polls;
-    /*pollsArr.map(function(el, ind){
-    });*/
     let polls = this.props.polls;
     polls = polls == undefined ? 1 : this.props.polls;
     let division = this.props.pollsPerRow, div = polls / division;
     const rowsQuantity = Math.ceil(div);
+    //check how many polls are available for correct output of polls and columns
+    switch(pollsArr.length) {
+          case 1:
+              division = 1;
+              break;
+          case 2:
+              division = 2;
+              break;
+          case 3:
+              division = 3;
+              break;
+          case 4:
+              division = 4;
+          default:
+              division = this.props.pollsPerRow;
+      }
     let rowDiv = 12 / division;
           for(polls; 0 != polls; polls --){
             let unitPoll = (
@@ -51,8 +65,6 @@ var masInst = []; var pollCol = [];
             );
             pollCol.push(unitPoll);
           }
-
-
           /*Adding rows*/
           let theRows = [], finalRows = [], indice = 0;
           for(let cero = 0; cero < rowsQuantity; cero ++){
