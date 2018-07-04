@@ -4,6 +4,9 @@ import '../assets/css/CreatePoll.css'
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button, PageHeader} from 'react-bootstrap';
 import PollCreated from './PollCreated';
 import Login from './Login';
+import {Link} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
+
 
 //redux stuff
 import {getUserInfo} from '../redux/actions';
@@ -144,6 +147,8 @@ export default class CreatePoll extends React.Component{
             }).then(function(finalRespJson){
               console.log(finalRespJson);
               localStorage.token1 = finalRespJson.token;
+              //window.location.href = "/PollCreated";
+              theState.setState({view : "changeView"})
             })
         })
   }
@@ -151,7 +156,7 @@ export default class CreatePoll extends React.Component{
     if(localStorage.token1){
       boton = !this.state.disabled ?
       <Button className="register" type="submit" bsStyle="primary" bsSize="large" block
-      onClick={this.sendPoll}>Create Poll</Button> :
+      onClick={this.sendPoll}>Create Poll</Button>:
       <Button className="register" type="submit" bsStyle="primary" bsSize="large" block disabled
       >Create Poll</Button>;
       if(this.state.view == "Form"){
@@ -199,8 +204,11 @@ export default class CreatePoll extends React.Component{
             {boton}
           </div>
         )
-      } else if (this.state.view == "Created"){
-        return < PollCreated /> ;
+      }
+      else if (this.state.view == "changeView"){
+        return (
+          <Redirect push to="/PollCreated" />
+        )
       }
       else {
         return <h1>There was a connection error, please try again later or verify your connection</h1>;

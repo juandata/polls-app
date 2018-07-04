@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {setAuth} from '../utils/setAuthorizationHeader';
 import isEmpty from 'lodash/isEmpty';
 let jwt = require('jsonwebtoken');
-let theHeader,estado, link = "/WelcomeUser/usuario";
+let theHeader,estado;
 //redux stuff
 import {getUserInfo, getTokenInfo, wrongPassMessage, resetTooltip, changeLayout} from '../redux/actions';
 import store from '../redux/store';
@@ -82,9 +82,10 @@ export class Login extends React.Component{
             else {
               localStorage.setItem('token1',json.token);
               console.log(json);
+              const userName = json.decoded.userInfo.userName, route = '/WelcomeUser/' + userName;
               //Send the userInfo to the store
-                store.dispatch(getUserInfo(json.decoded));
-                link = "/WelcomeUser/usuario";
+                store.dispatch(getUserInfo(json.decoded));            
+                estado.props.history.push(route)
             }
           })// send auth header to private route
 
@@ -133,9 +134,9 @@ export class Login extends React.Component{
 
         <FormGroup>
           <Col smOffset={2} sm={10}>
-          <Link to={link} onClick={this.handleClick}>
-              <Button bsStyle="primary" >Sign in</Button>
-          </Link>
+            <Link to="#" onClick={this.handleClick}>
+                <Button bsStyle="primary" >Sign in</Button>
+            </Link>
           </Col>
         </FormGroup>
       </Form>
@@ -146,6 +147,8 @@ export class Login extends React.Component{
       </div>
     )
     /*else {
+
+    <Button bsStyle="primary" onClick={this.props.history.push('/path')}> some stuff </Button>
     return(<WelcomeUser info={this.props.userInfo} />)
     <Link to=" " onClick={this.handleClick}>
         <Button bsStyle="primary" >Sign in</Button>

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-
-import logic from './logic';
-
 import './assets/css/app.css';
 
 import Header from './atoms/Header';
@@ -31,7 +28,6 @@ import {Bootstrap1} from './templates/Bootstrap1';
 import {BasicTemplate} from './templates/Bootstrap4';
 
 
-
 class Greeting extends Component {
   constructor(props) {
     super(props);
@@ -49,12 +45,11 @@ class Greeting extends Component {
 
  export default class App extends Component {
   render() {
-    let lastUrl = logic.getUrl;
     return (
       <React.Fragment>
       <Header />
       <NavBar />
-      <BreadCumb currentPage={lastUrl} />
+      <BreadCumb />
       <div className="body">
       <Switch>
         <Route exact path="/" component={GeneralPolls} />

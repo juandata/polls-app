@@ -45,6 +45,9 @@ h1 {
 .register {
   margin-bottom: 10px;
 }
+.highlighted-text {
+  color: black;
+}
 @media(max-width : 440px){
   .search-input {
     width: inherit;
