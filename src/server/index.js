@@ -9,10 +9,17 @@ const routes = [
   "/", "/signup", "/other"
 ];
 var ObjectId = require('mongodb').ObjectID;
-const address = "mongodb://pollsapp:Fray2017@ds231740.mlab.com:31740/pollsapp";
+const address = require('./mongodb.config.js');
 //var mongodb = require('mongodb');
 //var MongoClient = mongodb.MongoClient;
 var mongoose = require('mongoose');
+//images api
+var fs = require('fs');
+var Schema = mongoose.Schema;
+var multer = require('multer');
+var upload = multer({ dest: __dirname + '/uploads/' });
+let Image = require('./img.model.js');
+
 var userSquema = mongoose.Schema({
     name  : String,
     lastName : String,
@@ -56,7 +63,7 @@ app.post("/mongo", function(req, res){
     var bodyParsed = JSON.parse(req.body);
     delete mongoose.connection.models[bodyParsed.id];
     let PollCreated = mongoose.model(bodyParsed.id, pollsSquema);
-    mongoose.connect(address);
+    mongoose.connect(address.url);
     let db = mongoose.connection;
     db.on('error', function() {
       var bodyError = {
@@ -86,7 +93,7 @@ app.post("/getMongo", function(req, res){
   //get the document that belong to the user
   delete mongoose.connection.models[bodyParsed.userid];
   let PollsSet = mongoose.model(bodyParsed.userid, databaseSquema);
-  mongoose.connect(address);
+  mongoose.connect(address.url);
   var database = mongoose.connection;
   database.on('error', function(){
     var bodyError = {
@@ -114,7 +121,7 @@ app.post("/voteMongo", function(req, res){
   //get the document that belong to the user
   delete mongoose.connection.models[bodyParsed.userid];
   let PollVoted = mongoose.model(bodyParsed.userid, databaseSquema);
-  mongoose.connect(address);
+  mongoose.connect(address.url);
   var database = mongoose.connection;
   database.on('error', function(){
     var bodyError = {
@@ -147,7 +154,7 @@ app.post("/submitUser", function(req, res){
   delete mongoose.connection.models["users"];
   let UserCreated = mongoose.model("users", userSquema);
   //get the document that belong to the user
-  mongoose.connect(address);
+  mongoose.connect(address.url);
   var database = mongoose.connection;
   database.on('error', function(){
     var bodyError = {
@@ -206,7 +213,7 @@ app.post("/submitUser", function(req, res){
 app.post("/LoginUser", function(req, res){
   //get email and password from user
   var bodyParsed = JSON.parse(req.body);
-  mongoose.connect(address);
+  mongoose.connect(address.url);
   let database = mongoose.connection;
   delete mongoose.connection.models["users"];
   database.on('error', function(){
@@ -268,6 +275,29 @@ app.post("/UpdateToken", function(req, res){
   resjson = {}; resjson.token = token;
   console.log(token);
   res.json(resjson)
+})
+app.post("/api/photo", upload.single('photos'), function(req, res){
+  console.log("post request to api photo");
+  mongoose.connect(address.url);
+  let db = mongoose.connection;
+  db.on('error', function() {
+    var bodyError = {
+      error : "There was a connection error, please try again later or verify your connection"
+    }
+    console.log("There was a connection error, please try again later or verify your connection");
+    res.send(bodyError);
+    console.error.bind(console, 'connection error:')
+
+  });
+  db.once('open', function() {
+    let imageData = req.file.path;
+    console.log(imageData);
+    /*const image = new Image();
+    image.img.data = fs.readFileSync(imageData);
+    image.img.contentType = 'image/png';
+    image.save();*/
+    res.send("image saved to mongodb");
+  });
 })
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));

@@ -202,6 +202,10 @@ export default class CreatePoll extends React.Component{
               </FormGroup>
             </Form>
             {boton}
+            <form action="/api/photo" method="post" enctype="multipart/form-data">
+            <input type="file" name="photos" />
+            <input type="submit" />
+            </ form>
           </div>
         )
       }
@@ -228,3 +232,6 @@ function Options(props){
       return ( <h6>{props.index} : {props.options}</h6> )
     }
 }
+/*
+ enctype="multipart/form-data"
+<input type="file" name="pic" accept="image/*" />*/
