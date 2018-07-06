@@ -26,6 +26,7 @@ import {Error} from './pages/Error';
 import {BootstrapTest} from './templates/BootstrapTest';
 import {Bootstrap1} from './templates/Bootstrap1';
 import {BasicTemplate} from './templates/Bootstrap4';
+import ShowPhoto from './atoms/ShowPhoto';
 
 
 class Greeting extends Component {
@@ -62,6 +63,8 @@ class Greeting extends Component {
         <Route path="/PollCreated" component={PollCreated} />
         <Route path="/WelcomeUser" component={WelcomeUser} />
         <Route path="/d3" component= {Barchart} />
+        <Route path="/api/photo/showphoto" component = {ShowPhoto} />
+
 
         //Pruebas abajo
         <Route exact path="/test" component={BootstrapTest} />
@@ -78,7 +81,7 @@ class Greeting extends Component {
     );
   }
 }
-/*
+/* <Route path="/api/photo/showphoto" component = {ShowPhoto} />
 <div>
   {this.state.username ? (
     <div>

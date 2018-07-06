@@ -1,0 +1,1 @@
+This folder is a temporary directory for user image uploads. Once the image is saved to the remote mongodb server the image is deleted by the app. Please do not erase this folder. 
