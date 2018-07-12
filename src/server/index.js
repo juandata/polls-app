@@ -277,7 +277,7 @@ app.post("/UpdateToken", function(req, res){
   res.json(resjson)
 })
 app.post("/api/photo", upload.single('photos'), function(req, res){
-  console.log("post request to api photo");
+
   mongoose.connect(address.url);
   let db = mongoose.connection;
   db.on('error', function() {
@@ -291,18 +291,21 @@ app.post("/api/photo", upload.single('photos'), function(req, res){
   });
   db.once('open', function() {
     let imageData = req.file.path;
+    let mimetype = req.file.mimetype;
     const image = new Image();
-    image.contentType = 'image/png';
+    image.contentType = mimetype;
     image.data = fs.readFileSync(imageData);
     let promise = image.save();
     promise.then(function(doc, err){
       if (err) {console.log(err); res.send("there was an error");}
-      fs.unlink(imageData, (err) => {
+      /*fs.unlink(imageData, (err) => {
         if (err) throw err;
         console.log(imageData + " was deleted!")
-      })
+      })*/
+      console.log("doc", doc);
+      res.send(doc._id);
       return doc;
-    })
+    })/*
     .then(function(img,err){
       if(err) {console.log(err);}
       Image.findById(img, (err, findOutImage) => {
@@ -320,8 +323,12 @@ app.post("/api/photo", upload.single('photos'), function(req, res){
         }
       });
     })
-
+*/
   });
+  //res.send("uploaded file");
+  //res.send(doc.);
+  //res.end();
+  //res.status(404).end();
 })
 app.post("/searchImages", function(req, res){
   console.log(req.body);

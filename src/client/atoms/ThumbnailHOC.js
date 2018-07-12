@@ -77,7 +77,6 @@ var masInst = []; var pollCol = [];
                 //la cantidad de encuestas por row
               }
             }
-            console.log(columnPerRow);
             let id = randomID(10);
             //theRows.push(columnPerRow);//the individual rows
             //console.log(theRows);

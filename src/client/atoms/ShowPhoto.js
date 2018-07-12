@@ -25,13 +25,6 @@ export default class ShowPhoto extends React.Component {
     id : "5b3fdda5ce77e539a0361362"
   }
    fetch('/searchImages', { headers, method : "POST", body : JSON.stringify(reqObj)})
-   /*.then(function(res){
-    return res.json();
-   })
-   .then(function(json){
-     console.log(json);
-     thumbnail2 = "data:image/png;base64," + json.data;
-   })*/
     .then(function(img){
      img.arrayBuffer().then((function(buffer){
        console.log(buffer);

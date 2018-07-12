@@ -6,7 +6,7 @@ import PollCreated from './PollCreated';
 import Login from './Login';
 import {Link} from 'react-router-dom';
 import {Redirect} from 'react-router-dom';
-
+let sendData = require('../utils/sendFormData');
 
 //redux stuff
 import {getUserInfo} from '../redux/actions';
@@ -29,6 +29,8 @@ export default class CreatePoll extends React.Component{
     this.sendPoll = this.sendPoll.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
+    this.handleFormClick = this.handleFormClick.bind(this);
+    //this.uploadImage = this.uploadImage.bind(this);
     this.state = {options : ["No options added yet" ], change : false, disabled : true, valor : "", view :"Form"};
   }
   handleChange(e) {
@@ -101,7 +103,8 @@ export default class CreatePoll extends React.Component{
       pollName : name,
       description : descr,
       options : jsonOpt,
-      id : theuserid
+      id : theuserid,
+      image : imgUrl
     }
     console.log(pollInfo);
     var headers: {
@@ -151,6 +154,11 @@ export default class CreatePoll extends React.Component{
               theState.setState({view : "changeView"})
             })
         })
+  }
+  handleFormClick(e){
+    e.preventDefault();
+    let resp = sendData.send();
+    console.log(resp);
   }
   render(){
     if(localStorage.token1){
@@ -202,9 +210,9 @@ export default class CreatePoll extends React.Component{
               </FormGroup>
             </Form>
             {boton}
-            <form action="/api/photo" method="post" enctype="multipart/form-data">
-            <input type="file" name="photos" />
-            <input type="submit" />
+            <form id="image-form" method="post" encType="multipart/form-data">
+            <input id="file-item" type="file" name="photos" />
+            <input type="submit" onClick={this.handleFormClick} />
             </ form>
           </div>
         )
