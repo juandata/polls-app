@@ -7,7 +7,7 @@ import Login from './Login';
 import {Link} from 'react-router-dom';
 import {Redirect} from 'react-router-dom';
 let sendData = require('../utils/sendFormData');
-
+let sendData2 = require('../utils/sendFormData2');
 //redux stuff
 import {getUserInfo} from '../redux/actions';
 import store from '../redux/store';
@@ -157,7 +157,8 @@ export default class CreatePoll extends React.Component{
   }
   handleFormClick(e){
     e.preventDefault();
-    let resp = sendData.send();
+    //let resp = sendData.send();
+    let resp = sendData2.send();
     console.log(resp);
   }
   render(){

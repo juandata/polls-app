@@ -277,7 +277,7 @@ app.post("/UpdateToken", function(req, res){
   res.json(resjson)
 })
 app.post("/api/photo", upload.single('photos'), function(req, res){
-
+  console.log(req.file);
   mongoose.connect(address.url);
   let db = mongoose.connection;
   db.on('error', function() {
@@ -303,6 +303,11 @@ app.post("/api/photo", upload.single('photos'), function(req, res){
         console.log(imageData + " was deleted!")
       })*/
       console.log("doc", doc);
+      let id = doc._id;
+      fs.rename(imageData, req.file.destination + id, ()=> {
+        if (err) throw err;
+        console.log("file renamed to ", id);
+      } );
       res.send(doc._id);
       return doc;
     })/*
