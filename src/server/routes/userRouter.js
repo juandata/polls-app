@@ -1,9 +1,22 @@
 const express = require('express');
 const userRouter = express.Router();
+const path  = require("path");
+var fs = require('fs');
 let User = require('../utils/userSchema');
+let Texto = require('../utils/textSchema');
 
 userRouter
     .get('/', (req,res) => {
+      let src =  path.join(__dirname, '/archivoprueba.txt');
+      /* fs.createReadStream(src),
+    function(error, createdFile){
+      console.log("file created", createdFile);
+  });
+
+   fs.readFile(src, function(err, data){
+        console.log(data);
+      });*/
+      //
       User.find({}, (err, users) => {
             res.json(users)
         })
@@ -35,7 +48,7 @@ userRouter
         res.json(updated);
       });
     })
-    .delete('/users', (req, res)=>{
+    .delete('/users/', (req, res)=>{
       User.deleteOne({_id : req.query.id}, function(err, doc){
         if (err) return console.log(err);
         res.send("User " + req.query.id + " erased!")
