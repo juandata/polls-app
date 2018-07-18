@@ -104,7 +104,7 @@ export default class CreatePoll extends React.Component{
       description : descr,
       options : jsonOpt,
       id : theuserid,
-      image : imgUrl
+      //image : imgUrl
     }
     console.log(pollInfo);
     var headers: {
@@ -158,7 +158,7 @@ export default class CreatePoll extends React.Component{
   handleFormClick(e){
     e.preventDefault();
     //let resp = sendData.send();
-    let resp = sendData2.send();
+    let resp = sendData.send();
     console.log(resp);
   }
   render(){

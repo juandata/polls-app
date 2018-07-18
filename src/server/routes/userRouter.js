@@ -1,22 +1,16 @@
 const express = require('express');
 const userRouter = express.Router();
 const path  = require("path");
+var multer = require('multer');
 var fs = require('fs');
 let User = require('../utils/userSchema');
 let Texto = require('../utils/textSchema');
+let getGfs = require('../api_server');
+var upload = multer({ dest: __dirname + '/uploads/' });
 
 userRouter
     .get('/', (req,res) => {
       let src =  path.join(__dirname, '/archivoprueba.txt');
-      /* fs.createReadStream(src),
-    function(error, createdFile){
-      console.log("file created", createdFile);
-  });
-
-   fs.readFile(src, function(err, data){
-        console.log(data);
-      });*/
-      //
       User.find({}, (err, users) => {
             res.json(users)
         })
@@ -53,5 +47,11 @@ userRouter
         if (err) return console.log(err);
         res.send("User " + req.query.id + " erased!")
       });
+    })
+
+    //multimedia content
+    .post('/images', upload.single("file-item"), (req, res)=>{
+      let file = req.file; console.log(file);
+      res.send("response");
     })
 module.exports = userRouter

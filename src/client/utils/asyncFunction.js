@@ -9,9 +9,7 @@ let asyncFunction = (body) =>{
   xhr.onerror = () => console.log(xhr.statusText);
   xhr.setRequestHeader('Content-Type','multipart/form-data; boundary=' + 'blob');
   xhr.send(body);
-  promise.then((succ)=>{
-    console.log("succ", succ);
-  });
+
   /*return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", 'api/photo');

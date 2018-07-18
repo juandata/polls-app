@@ -6,9 +6,13 @@ let sendData = (el) => {
   let reader = new FileReader();
   // Because FileReader is asynchronous, store its
   // result when it finishes to read the file
-  reader.addEventListener("load", function () {
+
+/*  reader.addEventListener("load", function () {
     file.binary = reader.result;
-  });
+    console.log("event listener triggerd! and file binary is", file.binary);
+
+  })*/
+
   // At page load, if a file is already selected, read it.
   if(file.dom.files[0]) {
     reader.readAsBinaryString(file.dom.files[0]);
@@ -50,38 +54,27 @@ let sendData = (el) => {
        data += file.binary + '\r\n';
        // Once we are done, "close" the body's request
        data += "--" + boundary + "--";
-       /*
-       //send the data with fetch api
-       let headers = {
-         'Accept': 'image/png',
-         'Content-Type': 'image/png'
-       };
-       fetch('/api/photo',{headers, method :"Post", body : data} )
-       .then(function(el){
-         el.text();
-       })
-       .then(function(el){console.log(el)})
-       */
-       // Define what happens on successful data submission
-       //PROMISE
+
 
        XHR.addEventListener('load', function(event) {
          console.log('Yeah! Data sent and response loaded.', event.target.response);
          return event.target.response;
        });
-
-
        // Define what happens in case of error
        XHR.addEventListener('error', function(event) {
          console.log('Oops! Something went wrong.');
        });
 
        // Set up our request
-       XHR.open('POST', 'api/photo');
+       XHR.open('POST', 'http://localhost:8081/api/images');
 
        // Add the required HTTP header to handle a multipart form data POST request
        XHR.setRequestHeader('Content-Type','multipart/form-data; boundary=' + boundary);
-        XHR.send(data);
+       console.log(data);
+         XHR.send(data);
+         console.log("data is", data);
+
+       //XHR.send(data);
      }
 };
 

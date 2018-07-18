@@ -9,7 +9,7 @@ let sendData = (el) => {
 
   });*/
   var file = {
-    dom : document.getElementById('file-item'),
+    dom : document.getElementById('contenido'),
     binary : null
   };
   let reader = new FileReader();
