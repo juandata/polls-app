@@ -8,7 +8,6 @@ let User = require('./utils/userSchema');
 let bodyError = {
   error : "There was a connection error, please try again later or verify your connection"
 }
-
 //connect to mongodb
 mongoose.connect(address.url);
 let db = mongoose.connection;
