@@ -50,7 +50,7 @@ userRouter
     })
 
     //multimedia content
-    .post('/images/', /*upload.single("file-item"),*/ (req, res)=>{
+    .post('/images/', upload.single("file-item"), (req, res)=>{
       console.log(req.headers);
       //let file = req.file; console.log(file); res.send("file loaded");
     })
