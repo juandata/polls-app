@@ -31,11 +31,11 @@ module.exports = {
        }
     ]
   },
-  devServer: {
+  devServer: { 
     port: 3000,
     open: true,
     proxy: {
-      '/' : 'http://localhost:8080'
+      '/' : 'https://localserver1.herokuapp.com/'
     }
   },
   plugins: [
