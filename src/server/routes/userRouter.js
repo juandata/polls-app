@@ -15,6 +15,10 @@ userRouter
             res.json(users)
         })
     })
+    //route test
+    .get('/prueba', (req, res)=>{
+      res.send("ruta funcionando");
+    })
     .get('/users/', (req,res) => {
       console.log(req.query);
       User.findById(req.query.id, (err, user) =>{
