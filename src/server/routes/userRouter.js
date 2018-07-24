@@ -52,6 +52,7 @@ userRouter
     //multimedia content
     .post('/images/', upload.single("file-item"), (req, res)=>{
       console.log(req.headers);
+      res.end();
       //let file = req.file; console.log(file); res.send("file loaded");
     })
 module.exports = userRouter

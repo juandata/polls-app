@@ -334,8 +334,8 @@ app.post("/searchImages", function(req, res){
 
 })
 app.get("/rutaprueba", (req, res)=>{
-let puerto = app.listen().address().port;
-console.log(puerto);
+  let puerto = app.listen().address().port;
+  console.log(puerto);
   res.send("Servidor Express funcionando!");
 })
 app.use(function(req, res) {
