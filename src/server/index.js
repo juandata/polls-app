@@ -39,7 +39,7 @@ var databaseSquema = mongoose.Schema({
   options : mongoose.Schema.Types.Mixed,
   _v : Number
 });
-
+let puerto = process.env.PORT || 8080;
 function createAccessToken(userInfo, polls) {
   return jwt.sign({
     iss: config.issuer,
@@ -341,4 +341,4 @@ console.log(puerto);
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
 })
-app.listen(8080, () => console.log('Listening on port 8080! the environment is:', app.listen().address().port));
+app.listen(puerto, () => console.log('Listening on port 8080! the environment is:', app.listen().address().port));
