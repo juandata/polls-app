@@ -298,10 +298,6 @@ app.post("/api/photo", upload.single('photos'), function(req, res){
     let promise = image.save();
     promise.then(function(doc, err){
       if (err) {console.log(err); res.send("there was an error");}
-      /*fs.unlink(imageData, (err) => {
-        if (err) throw err;
-        console.log(imageData + " was deleted!")
-      })*/
       console.log("doc", doc);
       let id = doc._id;
       fs.rename(imageData, req.file.destination + id, ()=> {
@@ -310,30 +306,8 @@ app.post("/api/photo", upload.single('photos'), function(req, res){
       } );
       res.send(doc._id);
       return doc;
-    })/*
-    .then(function(img,err){
-      if(err) {console.log(err);}
-      Image.findById(img, (err, findOutImage) => {
-        if (err) throw err;
-        try{
-          console.log("found out is ", findOutImage);
-          fs.writeFileSync(__dirname + '/temp/' + findOutImage._id + '.png', findOutImage.data);
-          console.log("Stored an image 'temporalImage.png' in '/tmp' folder.");
-          // exit node.js app
-          console.log("Exit!");
-          res.contentType('image/png');
-          res.send(findOutImage.data);
-        }catch(e){
-          console.log(e);
-        }
-      });
     })
-*/
   });
-  //res.send("uploaded file");
-  //res.send(doc.);
-  //res.end();
-  //res.status(404).end();
 })
 app.post("/searchImages", function(req, res){
   console.log(req.body);
@@ -359,6 +333,9 @@ app.post("/searchImages", function(req, res){
     });
   });
 
+})
+app.get("/rutaprueba", (req, res)=>{
+  res.send("Servidor Express funcionando!");
 })
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
