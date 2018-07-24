@@ -19,7 +19,6 @@ var Schema = mongoose.Schema;
 var multer = require('multer');
 var upload = multer({ dest: __dirname + '/uploads/' });
 let Image = require('./img.model.js');
-
 var userSquema = mongoose.Schema({
     name  : String,
     lastName : String,
@@ -335,9 +334,11 @@ app.post("/searchImages", function(req, res){
 
 })
 app.get("/rutaprueba", (req, res)=>{
+let puerto = app.listen().address().port;
+console.log(puerto);
   res.send("Servidor Express funcionando!");
 })
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
 })
-app.listen(8080, () => console.log('Listening on port 8080!'));
+app.listen(8080, () => console.log('Listening on port 8080! the environment is:', app.listen().address().port));
