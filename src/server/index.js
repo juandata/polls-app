@@ -10,6 +10,7 @@ const routes = [
 ];
 var ObjectId = require('mongodb').ObjectID;
 const address = require('./mongodb.config.js');
+const userRouter = require('./routes/userRouter');
 //var mongodb = require('mongodb');
 //var MongoClient = mongodb.MongoClient;
 var mongoose = require('mongoose');
@@ -338,7 +339,13 @@ app.get("/rutaprueba", (req, res)=>{
   console.log(puerto);
   res.send("Servidor Express funcionando!");
 })
+app.use("/API", (req, res, next)=>{
+  mongoose.connect(address.url);
+  next();
+},userRouter);
 app.use(function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
 })
 app.listen(puerto, () => console.log('Listening on port 8080! the environment is:', app.listen().address().port));

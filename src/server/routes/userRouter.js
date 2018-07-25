@@ -5,7 +5,7 @@ var multer = require('multer');
 var fs = require('fs');
 let User = require('../utils/userSchema');
 let Texto = require('../utils/textSchema');
-let getGfs = require('../api_server');
+//let getGfs = require('../api_server');
 var upload = multer({ dest: __dirname + '/uploads/' });
 
 userRouter
@@ -17,6 +17,7 @@ userRouter
     })
     //route test
     .get('/prueba', (req, res)=>{
+      console.log("solicitud");
       res.send("ruta funcionando");
     })
     .get('/users/', (req,res) => {
