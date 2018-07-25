@@ -5,7 +5,7 @@ var multer = require('multer');
 var fs = require('fs');
 let User = require('../utils/userSchema');
 let Texto = require('../utils/textSchema');
-let Image = require('../utils/ImagesSchema');
+let Image = require('../utils/imagesSchema');
 //let getGfs = require('../api_server');
 var upload = multer({ dest: __dirname + '/uploads/' });
 
