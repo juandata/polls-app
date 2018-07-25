@@ -1,0 +1,1 @@
+archivo vacio para garantizar que el directorio uploads exista
