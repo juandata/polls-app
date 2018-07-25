@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const ImageSchema = mongoose.Schema({
     contentType  : String,
     data : Buffer

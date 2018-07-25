@@ -19,7 +19,6 @@ var fs = require('fs');
 var Schema = mongoose.Schema;
 var multer = require('multer');
 var upload = multer({ dest: __dirname + '/uploads/' });
-let Image = require('./img.model.js');
 var userSquema = mongoose.Schema({
     name  : String,
     lastName : String,
@@ -276,7 +275,7 @@ app.post("/UpdateToken", function(req, res){
   console.log(token);
   res.json(resjson)
 })
-app.post("/api/photo", upload.single('photos'), function(req, res){
+/*app.post("/api/photo", upload.single('photos'), function(req, res){
   console.log(req.file);
   mongoose.connect(address.url);
   let db = mongoose.connection;
@@ -333,7 +332,7 @@ app.post("/searchImages", function(req, res){
     });
   });
 
-})
+})*/
 app.get("/rutaprueba", (req, res)=>{
   let puerto = app.listen().address().port;
   console.log(puerto);

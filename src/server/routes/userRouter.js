@@ -5,6 +5,7 @@ var multer = require('multer');
 var fs = require('fs');
 let User = require('../utils/userSchema');
 let Texto = require('../utils/textSchema');
+let Image = require('../utils/ImagesSchema');
 //let getGfs = require('../api_server');
 var upload = multer({ dest: __dirname + '/uploads/' });
 
@@ -56,8 +57,12 @@ userRouter
 
     //multimedia content
     .post('/images/', upload.single("file-item"), (req, res)=>{
-      let ans = req.headers;
-      console.log(ans);
+      let ans = req.file;
+      //save image file to mongodb
+      let newImg = new Image();
+      newImg.contentType = ans.mimetype;
+      newImg.data = fs.readFileSync(ans.path);
+      newImg.save();
       res.json(ans);
       res.end();
       //let file = req.file; console.log(file); res.send("file loaded");
