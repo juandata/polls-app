@@ -56,7 +56,9 @@ userRouter
 
     //multimedia content
     .post('/images/', upload.single("file-item"), (req, res)=>{
-      console.log(req.headers);
+      let ans = req.headers;
+      console.log(ans);
+      res.json(ans);
       res.end();
       //let file = req.file; console.log(file); res.send("file loaded");
     })
