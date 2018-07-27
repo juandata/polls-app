@@ -6,7 +6,7 @@ const url = 'http://localhost:3000/API/images/';
 let file =  document.getElementById('file-item').files[0];
 let data = new FormData();
 data.append('file-item', file, file.fileName);
-axios.post(url, data, {
+return axios.post(url, data, {
   headers: {
     'accept': 'application/json',
     'Accept-Language': 'en-US,en;q=0.8',
@@ -14,7 +14,8 @@ axios.post(url, data, {
   }
 })
   .then((response) => {
-    console.log("succesfully saved to mongodb and local folder");
+    console.log(response, "succesfully saved to mongodb and local folder");
+    resolve(response);
     return response;
     //handle success
   }).catch((error) => {
@@ -23,4 +24,5 @@ axios.post(url, data, {
 
 }
 
-module.exports.send = sendData
+
+module.exports = sendData

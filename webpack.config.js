@@ -28,7 +28,18 @@ module.exports = {
            use: [{
                loader: 'url-loader'
            }]
-       }
+       },
+        {
+          test: /\.(mov|mp4)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[name].[ext]'
+              }  
+            }
+          ]
+        }
     ]
   },
   devServer: {
