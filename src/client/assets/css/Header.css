@@ -6,6 +6,17 @@
   width: 210px;
   right: 0px;
   top: 0px;
+  z-index: 100;
+}
+#header {
+  max-height: 100%;
+  transition: max-height 1s;
+}
+.hide-header {
+  max-height: 0%!important;
+}
+.reduce-forkme {
+  display: none;
 }
 @media (max-width: 400px ) {
 .header {

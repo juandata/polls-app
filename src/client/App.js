@@ -47,36 +47,51 @@ class Greeting extends Component {
 }
 
  export default class App extends Component {
+   constructor(props){
+     super(props);
+     this.state = {hide_header : false}
+     this.handleClick = this.handleClick.bind(this);
+   }
+   handleClick(){
+      /*this.setState({
+        hide_header : !this.state.hide_header
+      });*/
+    let header = document.getElementById('header'),
+    forkme = document.getElementById('forkme-logo');
+    header.className = 'hide-header';
+    forkme.className = "reduce-forkme";
+   }
   render() {
+
     return (
       <React.Fragment>
       <Header />
       <NavBar />
       <BreadCumb />
-      <div className="body">
-      <Switch>
-        <Route exact path="/" component={GeneralPolls} />
-        <Route path="/GeneralPolls" component={GeneralPolls} />
-        <Route path="/Login" component={Login} />
-        <Route path="/Logout" component={Login} />
-        <Route path="/Register" component={Register} />
-        <Route path="/PollsView" component = {PollsView } />
-        <Route path="/CreatePoll" component={CreatePoll} />
-        <Route path="/PollCreated" component={PollCreated} />
-        <Route path="/WelcomeUser" component={WelcomeUser} />
-        <Route path="/d3" component= {Barchart} />
-        <Route path="/api/photo/showphoto" component = {ShowPhoto} />
-        <Route path="/uploadTest" component={UploadTest} />
+      <div className="body" onClick={this.handleClick}>
+        <Switch >
+          <Route exact path="/" component={GeneralPolls} />
+          <Route path="/GeneralPolls" component={GeneralPolls} />
+          <Route path="/Login" component={Login} />
+          <Route path="/Logout" component={Login} />
+          <Route path="/Register" component={Register} />
+          <Route path="/PollsView" component = {PollsView } />
+          <Route path="/CreatePoll" component={CreatePoll} />
+          <Route path="/PollCreated" component={PollCreated} />
+          <Route path="/WelcomeUser" component={WelcomeUser} />
+          <Route path="/d3" component= {Barchart} />
+          <Route path="/api/photo/showphoto" component = {ShowPhoto} />
+          <Route path="/uploadTest" component={UploadTest} />
 
-        //Pruebas abajo
-        <Route exact path="/test" component={BootstrapTest} />
-        <Route path="/signup" component={SignUp} />
-        <Route path="/login" component={Login} />
-        <Route path="/template" component={BasicTemplate} />
-        <Route path="/NavBar" component={NavBar} />
-        <Route component={Error} />
-      </Switch>
-      <Footer />
+          //Pruebas abajo
+          <Route exact path="/test" component={BootstrapTest} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={Login} />
+          <Route path="/template" component={BasicTemplate} />
+          <Route path="/NavBar" component={NavBar} />
+          <Route component={Error} />
+        </Switch>
+        <Footer />
       </div>
       </React.Fragment>
 
