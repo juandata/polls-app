@@ -61,9 +61,11 @@ userRouter
       //save image file to mongodb
       let newImg = new Image();
       newImg.contentType = ans.mimetype;
-      newImg.data = fs.readFileSync(ans.path);
+      newImg.data = fs.readFileSync(ans.path); //read the file with readFileSync
+      //EXPERIMENTOS desde https://steemit.com/utopian-io/@morningtundra/storing-and-retreiving-images-in-mongodb-with-nodejs
+      let encodeFileBase64 = newImg.data.toString('base64');
       newImg.save();
-      res.json(ans);
+      res.send(encodeFileBase64);
       res.end();
       //let file = req.file; console.log(file); res.send("file loaded");
     })
