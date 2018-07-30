@@ -29,7 +29,7 @@ import {BasicTemplate} from './templates/Bootstrap4';
 import ShowPhoto from './atoms/ShowPhoto';
 
 //content upload test
-import UploadTest from './atoms/UploadTest';
+import UploadTest2 from './atoms/UploadTest2';
 
 class Greeting extends Component {
   constructor(props) {
@@ -81,7 +81,7 @@ class Greeting extends Component {
           <Route path="/WelcomeUser" component={WelcomeUser} />
           <Route path="/d3" component= {Barchart} />
           <Route path="/api/photo/showphoto" component = {ShowPhoto} />
-          <Route path="/uploadTest" component={UploadTest} />
+          <Route path="/uploadTest2" component={UploadTest2} />
 
           //Pruebas abajo
           <Route exact path="/test" component={BootstrapTest} />

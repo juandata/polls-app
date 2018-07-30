@@ -6,6 +6,7 @@ var fs = require('fs');
 let User = require('../utils/userSchema');
 let Texto = require('../utils/textSchema');
 let Image = require('../utils/imagesSchema');
+
 //let getGfs = require('../api_server');
 var upload = multer({ dest: __dirname + '/uploads/' });
 
@@ -64,9 +65,16 @@ userRouter
       newImg.data = fs.readFileSync(ans.path); //read the file with readFileSync
       //EXPERIMENTOS desde https://steemit.com/utopian-io/@morningtundra/storing-and-retreiving-images-in-mongodb-with-nodejs
       let encodeFileBase64 = newImg.data.toString('base64');
-      newImg.save();
+      newImg.save((el)=>{console.log(el)});
       res.send(encodeFileBase64);
       res.end();
       //let file = req.file; console.log(file); res.send("file loaded");
     })
+    .get('/images2/', (req, res)=>{
+      Image.find({_id : req.query.id}, (err, docs)=>{
+        let remoteBuffer = docs[0].data;
+        let encodeFileBase64 = remoteBuffer.toString('base64');
+        res.json(encodeFileBase64);
+      });
+    });
 module.exports = userRouter
