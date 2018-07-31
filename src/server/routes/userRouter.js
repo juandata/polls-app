@@ -72,9 +72,15 @@ userRouter
     })
     .get('/images2/', (req, res)=>{
       Image.find({_id : req.query.id}, (err, docs)=>{
-        let remoteBuffer = docs[0].data;
-        let encodeFileBase64 = remoteBuffer.toString('base64');
-        res.json(encodeFileBase64);
+        fs.appendFile(path.join(__dirname, '/uploads/'+ docs[0].id + '.mp4'),  docs[0].data, function (err) {
+          if (err) throw err;
+          console.log('Saved!');
+        });
+
+        //let answer = {};
+        //let remoteBuffer = docs[0].data;
+        //let encodeFileBase64 = remoteBuffer.toString('base64');
+        res.send("save success");
       });
     });
 module.exports = userRouter

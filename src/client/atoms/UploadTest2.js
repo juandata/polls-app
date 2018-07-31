@@ -1,8 +1,8 @@
 import React from 'react';
 const axios = require('axios');
 const FormData = require('form-data');
-import video from '../../server/routes/uploads/video1.mp4';
-import staticImg from '../../server/routes/uploads/certificado.png';
+import video from '../../server/routes/uploads/c4723e5ac15b357bc65f7a4103cb1bf7.mp4';
+//import staticImg from '../../server/routes/uploads/certificado.png';
 import '../assets/css/UploadTest.css';
 let sendData = require('../utils/sendFormData');
 let axiosPromise = require('../utils/axiosPromise');
@@ -46,7 +46,7 @@ export default class UploadTest extends React.Component {
   super(props);
   estado = this;
   this.state = {change : false, imgReceived : false, src : 'https://raw.githubusercontent.com/juandata/medios/master/12-2-television-png-pic.png',
-  src2 : ""
+  src2 : "", src3 : video
 }
   this.handleFormClick = this.handleFormClick.bind(this);
   this.handleChange = this.handleChange.bind(this);
@@ -54,10 +54,10 @@ export default class UploadTest extends React.Component {
   }
   componentWillMount(){
     let promesa = new Promise(function(resolve, reject){
-      resolve(axiosPromise.sendGet("5b5f9be5afb990438c666432"));
+      resolve(axiosPromise.sendGet("5b60d142fe82600ce46a6001"));
     });
     promesa.then(function(ans){
-    estado.setState({imgReceived : !estado.state.imgReceived, src2 : 'data:video/mp4;base64,' + ans.data})
+    estado.setState({imgReceived : !estado.state.imgReceived, src2 : 'data:video/mp4;base64,' + ans.data })
       },
       function(error){console.log(error)});
   }
@@ -72,14 +72,15 @@ export default class UploadTest extends React.Component {
       function(error){console.log(error)});
   }
   getRemoteVideo(e){
-    e.preventDefault();
+    /*e.preventDefault();
     let promesa = new Promise(function(resolve, reject){
       resolve(axiosPromise.sendGet("5b5f9f64c624df1b90cb04c6"));
     });
     promesa.then(function(ans){
     estado.setState({imgReceived : !estado.state.imgReceived, src2 : 'data:video/mp4;base64,' + ans.data})
       },
-      function(error){console.log(error)});
+      function(error){console.log(error)});*/
+
   }
   handleFormClick(e){
     e.preventDefault();
@@ -144,21 +145,26 @@ export default class UploadTest extends React.Component {
         <source src="https://www.videvo.net/videvo_files/converted/2014_08/preview/Earth_Zoom_In.mov35908.webm" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <video width="320" height="240" autoPlay>
-        <source src={video}  type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+
       </div>
       <hr/>
-      <RenderSpace src={staticImg} title="Image Rendered from directory"
-       alt="alternativo"/>
+
        <button onClick={this.getRemoteImage}>Get Remote Image</button>
        <RenderSpace src={this.state.src} title="Image Rendered from Database"
         alt="alternativo"/>
-        <button onClick={this.getRemoteVideo}>Get Remote Image</button>
+        <button onClick={this.getRemoteVideo}>Get Remote Video</button>
         <RenderVideo src={this.state.src2} />
+        <RenderVideo src={this.state.src3} />
     </div>
     )
   }
 }
+/*
+<RenderSpace src={staticImg} title="Image Rendered from directory"
+ alt="alternativo"/>
+ <video width="320" height="240" autoPlay>
+   <source src={video}  type="video/mp4" />
+   Your browser does not support the video tag.
+ </video>
+*/
 //src={window.location.origin + '/video1.mp4'}
