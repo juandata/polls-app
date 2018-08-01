@@ -8,7 +8,14 @@ let Texto = require('../utils/textSchema');
 let Image = require('../utils/imagesSchema');
 
 //let getGfs = require('../api_server');
-var upload = multer({ dest: __dirname + '/uploads/' });
+var storage = multer.diskStorage({
+    destination :  __dirname + '/uploads/'
+  ,
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+var upload = multer({storage: storage });
 
 userRouter
     .get('/', (req,res) => {
@@ -70,11 +77,21 @@ userRouter
       res.end();
       //let file = req.file; console.log(file); res.send("file loaded");
     })
+
+    .post('/uploadContent/', upload.single('file-item'), (req, res)=>{
+      let content = req.file;
+      console.log(content);
+      res.send("You are going to upload content");
+    })
     .get('/images2/', (req, res)=>{
       Image.find({_id : req.query.id}, (err, docs)=>{
-        fs.appendFile(path.join(__dirname, '/uploads/'+ docs[0].id + '.mp4'),  docs[0].data, function (err) {
+        fs.appendFile(path.join(__dirname, '/uploads/'+ docs[0].id + '.webm'),  docs[0].data, function (err) {
           if (err) throw err;
-          console.log('Saved!');
+            fs.copyFile(path.join(__dirname, '/uploads/'+ docs[0].id + '.webm'), path.join(__dirname, '/uploads/'+ docs[0].id + '.mp4'), (err) => {
+            if (err) throw err;
+            console.log('video buffer saved and copied!');
+          });
+          console.log('Copy and saved!');
         });
 
         //let answer = {};
