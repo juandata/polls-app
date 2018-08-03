@@ -1,8 +1,7 @@
 import React from 'react';
+import {LocalStorageImage} from './LocalStorageImage';
 const axios = require('axios');
 const FormData = require('form-data');
-import videolocal from '../../server/routes/uploads/Short intro music.mp4';
-//import staticImg from '../../server/routes/uploads/certificado.png';
 import '../assets/css/UploadTest.css';
 let sendData = require('../utils/sendFormData');
 let axiosPromise = require('../utils/axiosPromise');
@@ -42,36 +41,58 @@ let RenderVideo = (props)=>{
     </React.Fragment>
   )
 }
+let preview =   <div id="preview"></div>;
+let imageRendered = (
+  <React.Fragment>
+  <h1>The image from local storage is </h1>
+  <div id="elephant"></div>
+  </React.Fragment>
+);
 
 export default class UploadTest extends React.Component {
   constructor(props) {
   super(props);
   estado = this;
   this.state = {change : false, imgReceived : false, src : 'https://raw.githubusercontent.com/juandata/medios/master/12-2-television-png-pic.png',
-  src2 : "",  localSrcWebm : '', localSrcMp4 :  ''
+  src2 : "",  localSrcWebm : '', localSrcMp4 :  '',
+  changeView : false
 }
   this.handleFormClick = this.handleFormClick.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.getRemoteImage = this.getRemoteImage.bind(this);
   this.playVideo = this.playVideo.bind(this);
   }
-  /*componentWillMount(){
-    let promesa = new Promise(function(resolve, reject){
+  componentDidUpdate(prevProps) {
+    console.log("did update");
+    let el = document.getElementById('video');
+    el.load();
+
+  // Typical usage (don't forget to compare props):
+  /*if (this.props.userID !== prevProps.userID) {
+    this.fetchData(this.props.userID);
+  }*/
+}
+    componentWillMount(){
+  /*  let promesa = new Promise(function(resolve, reject){
       resolve(axiosPromise.sendGet("5b60d142fe82600ce46a6001"));
     });
     promesa.then(function(ans){
       falso = true;
       if(falso){
-        let newVideowebm = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.webm');
-        let newVideomp4 = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.mp4');
+        //let newVideowebm = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.webm');
+        //let newVideomp4 = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.mp4');
+        let newVideowebm = '../../server/routes/uploads/5b60d142fe82600ce46a6001.webm';
+        let newVideomp4 = '../../server/routes/uploads/5b60d142fe82600ce46a6001.mp4';
+
         estado.setState({localSrcWebm : newVideowebm, localSrcMp4 : newVideomp4});
+
       }
       },
-      function(error){console.log(error)});
-  }*/
+      function(error){console.log(error)});*/
+  }
   playVideo(){
-    let elvideo = document.getElementById('video');
-    elvideo.play();
+    //let elvideo = document.getElementById('video');
+    //elvideo.play();
   }
   getRemoteImage(e){
     /*e.preventDefault();
@@ -83,30 +104,23 @@ export default class UploadTest extends React.Component {
       },
       function(error){console.log(error)});*/
 
-  }
+  }/*
   getRemoteVideo(e){
-    /*e.preventDefault();
-    let promesa = new Promise(function(resolve, reject){
-      resolve(axiosPromise.sendGet("5b5f9f64c624df1b90cb04c6"));
-    });
-    promesa.then(function(ans){
-    estado.setState({imgReceived : !estado.state.imgReceived, src2 : 'data:video/mp4;base64,' + ans.data})
-      },
-      function(error){console.log(error)});*/
       let promesa = new Promise(function(resolve, reject){
         resolve(axiosPromise.sendGet("5b60d142fe82600ce46a6001"));
       });
       promesa.then(function(ans){
-        //let newVideowebm = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.webm');
-        //let newVideomp4 = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.mp4');
+        let newVideowebm = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.webm');
+        let newVideomp4 = require('../../server/routes/uploads/5b60d142fe82600ce46a6001.mp4');
 
       estado.setState({imgReceived : !estado.state.imgReceived, src2 : 'data:video/mp4;base64,' + ans.data,
       localSrcWebm : newVideowebm, localSrcWebm : newVideomp4
      })
+
         },
         function(error){console.log(error)});
 
-  }
+  } */
   handleFormClick(e){
     e.preventDefault();
     //promises
@@ -123,7 +137,7 @@ export default class UploadTest extends React.Component {
         }
       })
         .then((response) => {
-          console.log(response, "succesfully saved to mongodb and local folder");
+          console.log(response, "succesfully saved to mongodb");
           return response;
           //handle success
         }).catch((error) => {
@@ -135,7 +149,10 @@ export default class UploadTest extends React.Component {
     promise.then(
       function(result) {
         console.log("promise resolved and the value is ", result.data);
-        estado.setState({imgReceived : !estado.state.imgReceived, src : 'data:image/png;base64,' + result.data})
+        estado.setState({
+          changeView : !estado.state.changeView
+        });
+        //estado.setState({imgReceived : !estado.state.imgReceived, src : 'data:image/png;base64,' + result.data})
     },
       function(error) { console.log("promise rejected and the value is ", error);}
     );
@@ -143,7 +160,7 @@ export default class UploadTest extends React.Component {
   handleChange(){
     let file = document.getElementById('file-item').files[0];
     console.log(file);
-    image.classList.add("obj");
+    image.classList.add("preview-img");
     image.file = file;
     document.getElementById('preview').appendChild(image);
     var reader = new FileReader();
@@ -151,17 +168,30 @@ export default class UploadTest extends React.Component {
     reader.readAsDataURL(file);
   }
   render(){
-    let imgView = !this.state.imgReceived ?
+    /*let imgView = !this.state.imgReceived ?
     < EmptyImg src={this.state.src}
     alt="Alternativo"/> :
     < EmptyImg src={this.state.src}
-    alt="Alternativo"/>;
+    alt="Alternativo"/>;*/
+    preview = !this.state.changeView ? preview : <h1>Image sent, check it below rendered from localstorage</h1>;
 
     return (
     <div>
+      <hr />
+      <RenderVideo srcMp4='https://bitbucket.org/servidorlocalchile/cdn/raw/9deb10d86c3e8bf7847fa24616342a597254a9ad/videos/Short%20intro%20music.mp4' />
       <hr/>
-        <RenderVideo srcMp4= {videolocal} />
-        <button onClick={this.playVideo}>Play Video</button>
+      <hr />
+      <RenderVideo srcMp4='https://bitbucket.org/servidorlocalchile/cdn/raw/9deb10d86c3e8bf7847fa24616342a597254a9ad/videos/Video%20Of%20People%20Walking.mp4' />
+      <hr/>
+      <div style={{border : "black solid"}}>
+      {preview}
+      <form method="Post"  encType="multipart/form-data">
+        <input type="file" name="file-item" id="file-item" onChange={this.handleChange}/>
+        <input type="submit"   onClick={this.handleFormClick} />
+      </form>
+      </div>
+      <hr />
+     < LocalStorageImage />
       <hr />
     </div>
     )
