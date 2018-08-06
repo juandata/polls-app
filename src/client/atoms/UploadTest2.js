@@ -5,6 +5,7 @@ const FormData = require('form-data');
 import '../assets/css/UploadTest.css';
 let sendData = require('../utils/sendFormData');
 let axiosPromise = require('../utils/axiosPromise');
+let url = require('../utils/publicVariables');
 let estado;
 let image = document.createElement('img'), image2 = document.createElement('img');
 let falso = false;
@@ -73,6 +74,7 @@ export default class UploadTest extends React.Component {
   }*/
 }
     componentWillMount(){
+
   /*  let promesa = new Promise(function(resolve, reject){
       resolve(axiosPromise.sendGet("5b60d142fe82600ce46a6001"));
     });
@@ -125,11 +127,10 @@ export default class UploadTest extends React.Component {
     e.preventDefault();
     //promises
     let promise = new Promise(function(resolve, reject) {
-      const url = 'http://localhost:3000/API/images/';
       let file =  document.getElementById('file-item').files[0];
       let data = new FormData();
       data.append('file-item', file, file.fileName);
-    let elem =  axios.post(url, data, {
+    let elem =  axios.post(url.postImages, data, {
         headers: {
           'accept': 'application/json',
           'Accept-Language': 'en-US,en;q=0.8',
@@ -178,7 +179,6 @@ export default class UploadTest extends React.Component {
     return (
     <div>
       <hr />
-      <RenderVideo srcMp4='https://bitbucket.org/servidorlocalchile/cdn/raw/9deb10d86c3e8bf7847fa24616342a597254a9ad/videos/Short%20intro%20music.mp4' />
       <hr/>
       <hr />
       <RenderVideo srcMp4='https://bitbucket.org/servidorlocalchile/cdn/raw/9deb10d86c3e8bf7847fa24616342a597254a9ad/videos/Video%20Of%20People%20Walking.mp4' />
@@ -198,6 +198,10 @@ export default class UploadTest extends React.Component {
   }
 }
 /*
+
+<RenderVideo srcMp4='https://bitbucket.org/servidorlocalchile/cdn/raw/9deb10d86c3e8bf7847fa24616342a597254a9ad/videos/Short%20intro%20music.mp4' />
+
+
 <RenderSpace src={staticImg} title="Image Rendered from directory"
  alt="alternativo"/>
  <video width="320" height="240" autoPlay>

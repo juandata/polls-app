@@ -84,20 +84,9 @@ userRouter
       res.send("You are going to upload content");
     })
     .get('/images2/', (req, res)=>{
-      Image.find({_id : req.query.id}, (err, docs)=>{
-        fs.appendFile(path.join(__dirname, '/uploads/'+ docs[0].id + '.webm'),  docs[0].data, function (err) {
-          if (err) throw err;
-            fs.copyFile(path.join(__dirname, '/uploads/'+ docs[0].id + '.webm'), path.join(__dirname, '/uploads/'+ docs[0].id + '.mp4'), (err) => {
-            if (err) throw err;
-            console.log('video buffer saved and copied!');
-          });
-          console.log('Copy and saved!');
-        });
-
-        //let answer = {};
-        //let remoteBuffer = docs[0].data;
-        //let encodeFileBase64 = remoteBuffer.toString('base64');
-        res.send("save success");
-      });
+      Image.find((err, docs)=>{
+        console.log(docs);
+        res.json(docs);
     });
+  });
 module.exports = userRouter
