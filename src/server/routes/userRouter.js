@@ -84,9 +84,14 @@ userRouter
       res.send("You are going to upload content");
     })
     .get('/images2/', (req, res)=>{
+      let answer = {};
       Image.find((err, docs)=>{
-        console.log(docs);
-        res.json(docs);
+        //console.log(docs);
+        docs.map((el, ind)=>{
+          console.log(el);
+          answer[ind] =  { base64  : el.data.toString('base64'), id : el._id}
+        });
+        res.json(answer);
     });
   });
 module.exports = userRouter

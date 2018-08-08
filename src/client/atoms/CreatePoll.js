@@ -203,7 +203,7 @@ export default class CreatePoll extends React.Component{
                 </Col >
                 <Col sm={2}>
                   <Button type="submit" onClick={this.submitOptions}>Add options</Button><br/><br/>
-                  <Button type="submit" onClick={this.clearOptions}>Clear</Button>
+                  <Button type="reset" >Clear</Button>
                 </Col>
                 <Col sm={2}>
                 { elemento }

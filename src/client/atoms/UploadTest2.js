@@ -57,7 +57,7 @@ export default class UploadTest extends React.Component {
   this.state = {change : false, imgReceived : false, src : 'https://raw.githubusercontent.com/juandata/medios/master/12-2-television-png-pic.png',
   src2 : "",  localSrcWebm : '', localSrcMp4 :  '',
   changeView : false
-}
+    }
   this.handleFormClick = this.handleFormClick.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.getRemoteImage = this.getRemoteImage.bind(this);
@@ -72,9 +72,8 @@ export default class UploadTest extends React.Component {
   /*if (this.props.userID !== prevProps.userID) {
     this.fetchData(this.props.userID);
   }*/
-}
+    }
     componentWillMount(){
-
   /*  let promesa = new Promise(function(resolve, reject){
       resolve(axiosPromise.sendGet("5b60d142fe82600ce46a6001"));
     });
