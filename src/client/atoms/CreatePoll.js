@@ -92,19 +92,23 @@ export default class CreatePoll extends React.Component{
     estado = null;
   }
   sendPoll(){
-    var theuserid = store.getState().userInfo.userInfo.userInfo._id;
+    let theuserid = store.getState().userInfo.userInfo.userInfo._id;
     let name = document.getElementById("pollName").value;
-    var descr = document.getElementById("description").value;
-    var jsonOpt = {};
+    let descr = document.getElementById("description").value;
+    let theimage = document.getElementById("file-item").files[0];
+    console.log(theimage);
+    let jsonOpt = {};
+    let image = {};
      this.state.options.map(function(el, ind){
        return jsonOpt[el] = 0;
     });
+
     var pollInfo = {
       pollName : name,
       description : descr,
       options : jsonOpt,
       id : theuserid,
-      //image : imgUrl
+      image : {contentType : theimage.type, name : theimage.name }
     }
     console.log(pollInfo);
     var headers: {
@@ -158,7 +162,7 @@ export default class CreatePoll extends React.Component{
   handleFormClick(e){
     e.preventDefault();
     //let resp = sendData.send();
-    let resp = sendData.send();
+    let resp = sendData();
     console.log(resp);
   }
   render(){

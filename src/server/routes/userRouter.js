@@ -82,6 +82,12 @@ userRouter
       console.log(content);
       res.send("You are going to upload content");
     })
+    .post('/createaPoll/', upload.single('file-item'), (req, res)=>{
+      let ans = req.file;
+      console.log(ans);
+      res.send("xxxx");
+      res.end();
+    })
     .get('/images2/', (req, res)=>{
       console.log("request to image2")
       let answer = {};

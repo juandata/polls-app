@@ -30,13 +30,24 @@ var userSquema = mongoose.Schema({
 var pollsSquema = mongoose.Schema({
   name: String,
   description : String,
-  options : mongoose.Schema.Types.Mixed
+  options : mongoose.Schema.Types.Mixed,
+  image : {
+    name : String,
+    contentType  : String,
+    data : Buffer
+  }
 });
 var databaseSquema = mongoose.Schema({
   _id : mongoose.Schema.Types.ObjectId,
   name : String,
   description : String,
   options : mongoose.Schema.Types.Mixed,
+//  image : mongoose.Schema.Types.Mixed,
+  image : {
+    name : String,
+    contentType  : String,
+    data : Buffer
+  },
   _v : Number
 });
 let puerto = process.env.PORT || 8080;
@@ -78,7 +89,12 @@ app.post("/mongo", function(req, res){
         name: bodyParsed.pollName,
         description : bodyParsed.description,
         options : bodyParsed.options,
-        user : bodyParsed.user
+        user : bodyParsed.user,
+        image : {
+          name : String,
+          contentType  : String, //obtener tipo
+          data : Buffer //obtener buffer
+        }
       });
       newPoll.save(function (err, polls) {
         if (err) return console.error(err);
