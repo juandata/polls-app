@@ -7,8 +7,6 @@ let webHelper = require('../utils/webStorageHelper');
 let theanswer = [];
 let pruebaarray = [];
 let estado;
-let prueba = [1, 2, 3, 4, 5]
-
 function ImageContainer(props){
   return (
     <figure>
@@ -36,7 +34,6 @@ export class LocalStorageImage extends React.Component {
          <ImageContainer src={'data:image/png;base64,' +  value.base64}   alt={value.id} key={value.id} caption="rendered from mongodb"/>
         );
       }
-      console.log("cambiando estado");
       estado.setState({
         render : !estado.state.render
       })
@@ -62,11 +59,6 @@ export class LocalStorageImage extends React.Component {
 
   }
   render(){
-    let arreglorender = prueba.map(function(el, ind){
-      return <h4>{`${el}`}</h4>;
-    });
-    console.log( theanswer);
-
     return (
       <div>
         <h1>Local Storage Content Rendered</h1>
@@ -75,7 +67,6 @@ export class LocalStorageImage extends React.Component {
         alt="alt"  caption="rendered from bitbucket"/>
         <hr/>
         <h1>Iterating the answer</h1>
-        {arreglorender}
         {theanswer.map((el)=>el)}
         <hr />
       </div>

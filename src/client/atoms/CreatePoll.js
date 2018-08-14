@@ -212,7 +212,7 @@ export default class CreatePoll extends React.Component{
             </Form>
             {boton}
             <form id="image-form" method="post" encType="multipart/form-data">
-            <input id="file-item" type="file" name="photos" />
+            <input id="file-item" type="file" name="file-item" />
             <input type="submit" onClick={this.handleFormClick} />
             </ form>
           </div>
