@@ -14,7 +14,7 @@ function ImageContainer(props){
     <figure>
       <img src={props.src}
       alt={props.alt} className="img-container" />
-      <figcaption>Rendered from bitbucket cdn</figcaption>
+      <figcaption>{props.caption}</figcaption>
     </figure>
   )
 }
@@ -29,14 +29,14 @@ export class LocalStorageImage extends React.Component {
     axios.get(url.getImages)
     .then((ans)=>{
       console.log(ans.data);
-      console.log(webHelper());
+      //console.log(webHelper());
       for(const key in ans.data){
         let value = ans.data[key];
         theanswer.push(
-         <ImageContainer src={'data:image/png;base64,' +  value.base64}   alt={value.id} key={value.id} />
+         <ImageContainer src={'data:image/png;base64,' +  value.base64}   alt={value.id} key={value.id} caption="rendered from mongodb"/>
         );
       }
-
+      console.log("cambiando estado");
       estado.setState({
         render : !estado.state.render
       })
@@ -65,21 +65,18 @@ export class LocalStorageImage extends React.Component {
     let arreglorender = prueba.map(function(el, ind){
       return <h4>{`${el}`}</h4>;
     });
-    let elemen = function(){ <React.Fragment>{theanswer[0]}</React.Fragment>}
-
-    console.log( theanswer[0]);
+    console.log( theanswer);
 
     return (
       <div>
         <h1>Local Storage Content Rendered</h1>
         <hr/>
         <ImageContainer src="https://bitbucket.org/servidorlocalchile/cdn/raw/9deb10d86c3e8bf7847fa24616342a597254a9ad/images/universe/via%20lactea.jpg"
-        alt="alt" />
-        <ImageContainer src={this.state.srcUrl}   alt="alt" />
+        alt="alt"  caption="rendered from bitbucket"/>
         <hr/>
         <h1>Iterating the answer</h1>
         {arreglorender}
-        {elemen}
+        {theanswer.map((el)=>el)}
         <hr />
       </div>
     )

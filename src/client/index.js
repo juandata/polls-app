@@ -13,7 +13,7 @@ var x = location.pathname;
 console.log(x);
 
 import App from './App';
- if(localStorage.token1){
+ if(localStorage.token1 && localStorage.token1 != "undefined"){
   let decoded = jwt.decode(localStorage.token1);
   console.log(decoded.userInfo);
   let expir = new Date(decoded.exp * 1000);
@@ -28,5 +28,5 @@ import App from './App';
     localStorage.removeItem('token1');localStorage.removeItem('id');
     console.log('local Storage deleted');
   }
-}
+} else {console.log("local Storage is : " + localStorage.token1)}
 ReactDOM.render(<Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>, document.getElementById('root'));

@@ -84,6 +84,7 @@ userRouter
       res.send("You are going to upload content");
     })
     .get('/images2/', (req, res)=>{
+      console.log("request to image2")
       let answer = {};
       Image.find((err, docs)=>{
         //console.log(docs);

@@ -2,6 +2,8 @@ import React from 'react';
 import {LocalStorageImage} from './LocalStorageImage';
 const axios = require('axios');
 const FormData = require('form-data');
+//javascript ninja practice
+//import '../utils/JavaScriptNinja';
 import '../assets/css/UploadTest.css';
 let sendData = require('../utils/sendFormData');
 let axiosPromise = require('../utils/axiosPromise');
@@ -90,7 +92,7 @@ export default class UploadTest extends React.Component {
       }
       },
       function(error){console.log(error)});*/
-  }
+    }
   playVideo(){
     //let elvideo = document.getElementById('video');
     //elvideo.play();
