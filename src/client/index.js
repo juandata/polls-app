@@ -17,8 +17,8 @@ console.log(x);
 
 import App from './App';
   //get all polls from users and store them in redux and localStorage
-  const url = 'http://localhost:8080/API/'
-  const url2 = 'http://localhost:8080/API/publicPolls/'
+  const url = 'http://localhost:3000/API/'
+  const url2 = 'http://localhost:3000/API/publicPolls/'
   console.log(url, url2);
   axios.get(url)
   .then((resp)=>{
