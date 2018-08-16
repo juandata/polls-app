@@ -98,15 +98,6 @@ userRouter
       console.log("Poll saved to mongo");
       res.send("Encuesta con imagen guardada satisfactoriamente!");
     });
-
-      //save image file to mongodb
-      //let newPoll = new Polls();
-      //newPoll.image.contentType = valor.;
-      //newPoll.data = fs.readFileSync(ans.path); //read the file with readFileSync
-      //EXPERIMENTOS desde https://steemit.com/utopian-io/@morningtundra/storing-and-retreiving-images-in-mongodb-with-nodejs
-      //newPoll.save((el)=>{console.log(el)});
-      //res.send("image saved to mongodb");
-      //let file = req.file; console.log(file); res.send("file loaded");
     })
 
     .post('/uploadContent/', upload.single('file-item'), (req, res)=>{

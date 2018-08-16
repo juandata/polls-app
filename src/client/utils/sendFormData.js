@@ -2,7 +2,7 @@ const axios = require('axios');
 const FormData = require('form-data');
 
 let sendData = (pollData) => {
-const url = 'http://localhost:3000/API/images/';
+const url = 'http://localhost:8080/API/images/';
 let file =  document.getElementById('file-item').files[0];
 let data = new FormData();
 
