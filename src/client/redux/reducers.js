@@ -21,6 +21,9 @@ const changePoll = {
   id : "",
   userid : ""
 }
+const publicPollsState = {
+  lasencuestaspublicas : {}
+}
  let changeView = (state = initialState, action) => {
     switch(action.type){
       case 'change_view' :
@@ -108,11 +111,23 @@ let showPoll = (state = changePoll, action) => {
     return state
   }
 }
+let publicPolls = (state = publicPollsState, action)=>{
+  switch (action.type) {
+    case "save_public_polls" :
+      console.log("save_public_poll");
+      return Object.assign({}, state, {
+        lasencuestaspublicas : action.polls
+      })
+    default:
+    return state
+  }
+}
 export const reducer = combineReducers({
   changeView,
   errorMessage,
   userInfo,
   tokenInfo,
   changeLayout,
-  showPoll
+  showPoll,
+  publicPolls
 })

@@ -34,7 +34,7 @@ var pollsSquema = mongoose.Schema({
   image : {
     name : String,
     contentType  : String,
-    data : Buffer
+    data : mongoose.Schema.Types.Mixed
   }
 });
 var databaseSquema = mongoose.Schema({
@@ -91,9 +91,9 @@ app.post("/mongo", function(req, res){
         options : bodyParsed.options,
         user : bodyParsed.user,
         image : {
-          name : String,
-          contentType  : String, //obtener tipo
-          data : Buffer //obtener buffer
+          name : "String",
+          contentType  : "String", //obtener tipo
+          data : {id : "value"} //obtener buffer
         }
       });
       newPoll.save(function (err, polls) {

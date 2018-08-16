@@ -1,11 +1,13 @@
 const axios = require('axios');
 const FormData = require('form-data');
 
-let sendData = () => {
+let sendData = (pollData) => {
 const url = 'http://localhost:3000/API/images/';
 let file =  document.getElementById('file-item').files[0];
 let data = new FormData();
+
 data.append('file-item', file, file.fileName);
+data.append("otracosa", JSON.stringify(pollData));
 return axios.post(url, data, {
   headers: {
     'accept': 'application/json',

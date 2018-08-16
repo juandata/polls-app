@@ -56,3 +56,9 @@ export function showPoll(id, userid){
     userid
   }
 }
+export function savePublicPolls(polls){
+  return {
+    type : "save_public_polls",
+    polls
+  }
+}

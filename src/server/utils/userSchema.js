@@ -2,10 +2,9 @@ let mongoose = require('mongoose');
 let userSquema = mongoose.Schema({
     name  : String,
     lastName : String,
-    email : String,
-    cellphone : String,
-    city : String,
     userName: String,
-    gender :  String
+    email : String,
+    pass : String,
+    gender :  String,
 });
-module.exports = mongoose.model("Usuarios", userSquema);
+module.exports = mongoose.model("users", userSquema);

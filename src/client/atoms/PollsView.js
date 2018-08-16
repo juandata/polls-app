@@ -16,7 +16,7 @@ function SmallThumbnail(props){
   return (
     <Media>
     <Media.Left>
-      <img width={64} height={64} src={thumbnail} alt="thumbnail" />
+      <img width={64} height={64} src={'data:image/png;base64,' + props.src} alt="thumbnail" />
     </Media.Left>
     <Media.Body>
       <Media.Heading>{props.title} </Media.Heading>
@@ -31,15 +31,20 @@ var el;
 let pollTemplate = {
   name : "No Poll Found",
   description : "Description of the Poll",
-  options : ["1", "2", "3"]
-}, headers: {
-'Accept': 'application/json',
-'Content-Type': 'application/json'
-}, theuserid;
+  options : ["1", "2", "3"],
+  image: {
+       name: "aurora.jpeg",
+       contentType : "image/jpeg",
+       base64 : "string"
+     }
+  }, headers: {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+  }, theuserid;
 class PollsView extends React.Component {
         constructor(props){
           super(props);
-          this.state = {poll : pollTemplate, vote : "you have not voted yet" };
+          this.state = {poll : pollTemplate, vote : "you have not voted yet"};
           this.upd = this.upd.bind(this);
         }
         componentWillMount(){
@@ -115,11 +120,10 @@ class PollsView extends React.Component {
                   Object.entries(this.state.poll.options).map(function(el, ind){
                     return <option value={el[0]} key={ind}> {el[0]}</option>;
                   })
-
                 }
                 </FormControl>
               </FormGroup>
-              < SmallThumbnail title={this.state.poll.name} descr={this.state.poll.description}/>
+              < SmallThumbnail title={this.state.poll.name} descr={this.state.poll.description} src={this.state.poll.image.base64}/>
               </Col>
               <Col xs={12} md={8} style={{textAlign : "center"}}>
                 Graph Area <br/>
@@ -133,10 +137,10 @@ class PollsView extends React.Component {
                 }
                 </ul>
                 <h2>the id is: </h2>
-                {this.state.poll._id}
-              </Col>
-            </Row>
-          </Grid>
+                  {this.state.poll._id}
+                </Col>
+              </Row>
+            </Grid>
           )
         }
         else {
@@ -149,7 +153,6 @@ function mapStateToProps(state) {
     showPoll : state.showPoll.showPoll,
     id : state.showPoll.id,
     userid : state.showPoll.userid
-
   };
 };
 export default withRouter(connect(mapStateToProps)(PollsView))

@@ -4,15 +4,36 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 let jwt = require('jsonwebtoken');
+const axios = require('axios');
+
 //redux stuff
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import {getUserInfo} from './redux/actions';
+import {savePublicPolls} from './redux/actions';
 
 var x = location.pathname;
 console.log(x);
 
 import App from './App';
+  //get all polls from users and store them in redux and localStorage
+  const url = 'http://localhost:3000/API/';
+  const url2 = 'http://localhost:3000/API/publicPolls/';
+  axios.get(url)
+  .then((resp)=>{
+    let usersIdArray = [];
+    for(var prop in resp.data){usersIdArray.push(resp.data[prop]._id)}
+    console.log(usersIdArray);
+    return usersIdArray;
+  })
+  .then((resp)=>{
+    axios.post(url2, { polls : resp}, {headers : {contentType : 'application/json'}})
+    .then((resp)=>{store.dispatch(savePublicPolls(resp.data))}) //save public polls to store state
+
+  })
+  .catch((err)=>{console.log(err)})
+
+  //
  if(localStorage.token1 && localStorage.token1 != "undefined"){
   let decoded = jwt.decode(localStorage.token1);
   console.log(decoded.userInfo);

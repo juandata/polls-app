@@ -26,7 +26,7 @@ var masInst = []; var pollCol = [];
   componentWillMount(){
     masInst = [], pollCol = [];
     console.log(this.props);
-    let pollsArr = this.props.pollsInfo.polls;
+    let pollsArr = this.props.pollsInfo.polls; console.log(pollsArr);
     let polls = this.props.polls;
     polls = polls == undefined ? 1 : this.props.polls;
     let division = this.props.pollsPerRow, div = polls / division;
@@ -51,7 +51,7 @@ var masInst = []; var pollCol = [];
           for(polls; 0 != polls; polls --){
             let unitPoll = (
               <Col xs={12} md={rowDiv} key={pollsArr[polls -1]._id}>
-                  <Thumbnail src={thumbnail}  alt="242x200" >
+                  <Thumbnail src={"data:image/png;base64," + pollsArr[polls -1].image.base64}  alt="242x200" >
                     <h3>{pollsArr[polls - 1].name}</h3>
                     <p>{pollsArr[polls - 1].description}</p>
                     <p>
@@ -102,7 +102,8 @@ function mapStateToProps(state) {
   return {
     showPoll : state.showPoll.showPoll,
     id : state.showPoll.id,
-    userid : state.showPoll.userid
+    userid : state.showPoll.userid,
+    lasencuestas : state.publicPolls.lasencuestaspublicas
 
   };
 };
