@@ -30,6 +30,7 @@ var upload = multer({storage: storage });
 
 userRouter
     .get('/', (req,res) => {
+      console.log("alguien quiere algo en la raiz")
       let src =  path.join(__dirname, '/archivoprueba.txt');
       User.find({}, (err, users) => {
             res.json(users)
