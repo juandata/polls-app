@@ -14,7 +14,7 @@ import PollCreated from './atoms/PollCreated';
 
 
 //components
-import {GeneralPolls} from './templates/GeneralPolls';
+import GeneralPolls from './templates/GeneralPolls';
 import {BreadCumb} from './atoms/BreadCumb';
 import {Barchart} from './atoms/d3practice';
 

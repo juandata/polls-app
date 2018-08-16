@@ -150,7 +150,7 @@ userRouter
             descr :  el.description,
             imageName :  el.image.name,
             imageType :  el.image.contentType,
-            //imageBase64 :  el.image.base64
+            imageBase64 :  el.image.base64
             }
           );
 
