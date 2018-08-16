@@ -31,7 +31,10 @@ let componente;
     console.log(componente.props.lasencuestas.length);
     if(componente.props.lasencuestas.length){
       return (
+      <React.Fragment>
+        <h2 style={{textAlign: "center"}}>Public Polls</h2>
        < ThumbnailHOC2 polls={this.props.lasencuestas.length} pollsPerRow={4} pollsInfo={this.props.lasencuestas}/>
+      </React.Fragment >
       )
     } else {
       return (
