@@ -13,7 +13,6 @@ let componente;
   constructor(props){
     super(props);
     componente = this;
-
   }
   componentDidUpdate() {
     console.log("componentDidUpdate");
@@ -47,7 +46,8 @@ let componente;
 }
 const mapStateToProps = (state) => {
     return {
-      lasencuestas : state.publicPolls.lasencuestaspublicas
+      lasencuestas : state.publicPolls.lasencuestaspublicas,
+      error : state.sendErrorReducer.error
     }
 }
 //wrap App in connect and pass in mapStateToProps

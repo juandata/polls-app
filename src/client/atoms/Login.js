@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {setAuth} from '../utils/setAuthorizationHeader';
 import isEmpty from 'lodash/isEmpty';
 let jwt = require('jsonwebtoken');
-let theHeader,estado;
+let theHeader,estado, componente;
 //redux stuff
 import {getUserInfo, getTokenInfo, wrongPassMessage, resetTooltip, changeLayout} from '../redux/actions';
 import store from '../redux/store';
@@ -26,14 +26,65 @@ export class Login extends React.Component{
     this.handleClick = this.handleClick.bind(this);
     this.getValidationState = this.getValidationState.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
-    this.state = {value : ''};
+    this.state = {value : '', change : false};
     estado = this;
+  }
+  componentWillMount(){
+    componente = (
+      <div className="container">
+      <PageHeader className="header-margins">
+        Please login with your username and password
+      </PageHeader>
+      <Form  horizontal>
+        <FormGroup controlId="formHorizontalEmail" validationState={this.getValidationState("formHorizontalEmail")}>
+          <Col componentClass={ControlLabel} sm={2}>
+            Email
+          </Col>
+          <Col sm={10}>
+            <FormControl type="email" placeholder="Email" />
+          </Col>
+        </FormGroup>
+
+        <FormGroup controlId="formHorizontalPassword" validationState={this.getValidationState("formHorizontalPassword")}>
+          <Col componentClass={ControlLabel} sm={2}>
+            Password
+          </Col>
+          <Col sm={10}>
+            <FormControl type="password" placeholder="Password" onFocus={this.handleFocus} />
+            <Atooltip opacity={this.props.tooltipOpacity} />
+          </Col>
+        </FormGroup>
+
+        <FormGroup>
+          <Col smOffset={2} sm={10}>
+            <Checkbox>Remember me</Checkbox>
+          </Col>
+        </FormGroup>
+
+        <FormGroup>
+          <Col smOffset={2} sm={10}>
+            <Link to="#" onClick={this.handleClick}>
+                <Button bsStyle="primary" >Sign in</Button>
+            </Link>
+          </Col>
+        </FormGroup>
+      </Form>
+      <PageHeader className="header-margins">
+        Not a user? You can register for free!
+      </PageHeader>
+      <Button className="register" href="/Register" bsStyle="primary" bsSize="large" block>Register</Button>
+      </div>
+    )
   }
   handleFocus(){
     store.dispatch(resetTooltip());
   }
   handleClick(e){
     //e.preventDefault();
+    componente = <h1>Cargando...</h1>;
+      this.setState({
+        change : !this.state.change
+      });
     let formArr = ["formHorizontalEmail", "formHorizontalPassword"],info = [], inputValues = 0;
       formArr.map(function(el, ind){
         let elem = document.getElementById(el);
@@ -84,15 +135,25 @@ export class Login extends React.Component{
               console.log(json);
               const userName = json.decoded.userInfo.userName, route = '/WelcomeUser/' + userName;
               //Send the userInfo to the store
-                store.dispatch(getUserInfo(json.decoded));            
+                store.dispatch(getUserInfo(json.decoded));
                 estado.props.history.push(route)
             }
           })// send auth header to private route
-
-
+          .catch((err)=>{
+            console.log(err)
+            componente = (
+            <div>
+              <h1>There was a connection error, please verify your connection</h1>
+                <p>The error was : error</p>
+            </div>
+            )
+            this.setState({
+              change : !this.state.change
+            });
+          })
       }
   }
-    getValidationState(e) {
+  getValidationState(e) {
       if(e == this.state.target){
       let length = this.state.value.length;
       if (length > 0) return 'success';
@@ -100,63 +161,10 @@ export class Login extends React.Component{
         }
       }
   render(){
-    //if (isEmpty(this.props.tokenInfo))
     return (
-      <div className="container">
-      <PageHeader className="header-margins">
-        Please login with your username and password
-      </PageHeader>
-      <Form  horizontal>
-        <FormGroup controlId="formHorizontalEmail" validationState={this.getValidationState("formHorizontalEmail")}>
-          <Col componentClass={ControlLabel} sm={2}>
-            Email
-          </Col>
-          <Col sm={10}>
-            <FormControl type="email" placeholder="Email" />
-          </Col>
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalPassword" validationState={this.getValidationState("formHorizontalPassword")}>
-          <Col componentClass={ControlLabel} sm={2}>
-            Password
-          </Col>
-          <Col sm={10}>
-            <FormControl type="password" placeholder="Password" onFocus={this.handleFocus} />
-            <Atooltip opacity={this.props.tooltipOpacity} />
-          </Col>
-        </FormGroup>
-
-        <FormGroup>
-          <Col smOffset={2} sm={10}>
-            <Checkbox>Remember me</Checkbox>
-          </Col>
-        </FormGroup>
-
-        <FormGroup>
-          <Col smOffset={2} sm={10}>
-            <Link to="#" onClick={this.handleClick}>
-                <Button bsStyle="primary" >Sign in</Button>
-            </Link>
-          </Col>
-        </FormGroup>
-      </Form>
-      <PageHeader className="header-margins">
-        Not a user? You can register for free!
-      </PageHeader>
-      <Button className="register" href="/Register" bsStyle="primary" bsSize="large" block>Register</Button>
-      </div>
+      componente
     )
-    /*else {
-
-    <Button bsStyle="primary" onClick={this.props.history.push('/path')}> some stuff </Button>
-    return(<WelcomeUser info={this.props.userInfo} />)
-    <Link to=" " onClick={this.handleClick}>
-        <Button bsStyle="primary" >Sign in</Button>
-    </Link>
-      <Button bsStyle="primary" onClick={this.handleClick} >Sign in</Button>
-  }*/
   }
-
 }
 function mapStateToProps(state) {
   return {

@@ -24,6 +24,9 @@ const changePoll = {
 const publicPollsState = {
   lasencuestaspublicas : {}
 }
+const errorInicialState = {
+  error : "no error since initial state"
+}
  let changeView = (state = initialState, action) => {
     switch(action.type){
       case 'change_view' :
@@ -122,6 +125,17 @@ let publicPolls = (state = publicPollsState, action)=>{
     return state
   }
 }
+let sendErrorReducer = (state = errorInicialState, action)=>{
+  switch(action.type){
+    case "send_error" :
+    console.log("send_error", action.error);
+    return Object.assign({}, state, {
+      error : action.error
+    })
+    default :
+    return state
+  }
+}
 export const reducer = combineReducers({
   changeView,
   errorMessage,
@@ -129,5 +143,6 @@ export const reducer = combineReducers({
   tokenInfo,
   changeLayout,
   showPoll,
-  publicPolls
+  publicPolls,
+  sendErrorReducer
 })

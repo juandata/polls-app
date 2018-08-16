@@ -62,3 +62,10 @@ export function savePublicPolls(polls){
     polls
   }
 }
+
+export function error(err){
+  return {
+    type : "send_error",
+    error : err
+  }
+}

@@ -31,12 +31,14 @@ var upload = multer({storage: storage });
 userRouter
     .get('/', (req,res) => {
       User.find({}, (err, users) => {
+        if(err){console.log(err)}
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.json(users)
         })
     })
     //route test
+    //.catch((err)=>{console.log(err) res.send("connection error : " + err)})
     .get('/prueba', (req, res)=>{
       console.log("solicitud");
       res.send("ruta funcionando");
@@ -145,19 +147,17 @@ userRouter
             imageBase64 :  el.image.base64
             }
           );
-
         });
         inicio ++;
-        let promesa = new Promise((reso, rej)=>{
+        let promesa = new Promise((resolve, reject)=>{
           if(inicio < polls.length ) {} else {
-            reso(resp)
+            resolve(resp)
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             res.json(resp);
           }
-        });
+        })
       })
-        }
-
+    }
   })
 module.exports = userRouter

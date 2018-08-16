@@ -7,12 +7,10 @@ var _   = require('lodash'), config  = require('./config'), jwt = require('jsonw
 const bodyParser = require('body-parser');
 const routes = [
   "/", "/signup", "/other"
-];
+  ];
 var ObjectId = require('mongodb').ObjectID;
 const address = require('./mongodb.config.js');
 const userRouter = require('./routes/userRouter');
-//var mongodb = require('mongodb');
-//var MongoClient = mongodb.MongoClient;
 var mongoose = require('mongoose');
 //images api
 var fs = require('fs');
@@ -38,18 +36,17 @@ var pollsSquema = mongoose.Schema({
   }
 });
 var databaseSquema = mongoose.Schema({
-  _id : mongoose.Schema.Types.ObjectId,
-  name : String,
-  description : String,
-  options : mongoose.Schema.Types.Mixed,
-//  image : mongoose.Schema.Types.Mixed,
-  image : {
-    name : String,
-    contentType  : String,
-    data : Buffer
-  },
-  _v : Number
-});
+      _id : mongoose.Schema.Types.ObjectId,
+      name : String,
+      description : String,
+      options : mongoose.Schema.Types.Mixed,
+      image : {
+        name : String,
+        contentType  : String,
+        data : Buffer
+      },
+      _v : Number
+    });
 let puerto = process.env.PORT || 8080;
 function createAccessToken(userInfo, polls) {
   return jwt.sign({
@@ -270,9 +267,7 @@ app.post("/LoginUser", function(req, res){
                   resjson = { token : "Password is wrong"}
                   res.json(resjson)
                 }
-
-      }
-
+              }
     });
   })
 })
@@ -291,64 +286,6 @@ app.post("/UpdateToken", function(req, res){
   console.log(token);
   res.json(resjson)
 })
-/*app.post("/api/photo", upload.single('photos'), function(req, res){
-  console.log(req.file);
-  mongoose.connect(address.url);
-  let db = mongoose.connection;
-  db.on('error', function() {
-    var bodyError = {
-      error : "There was a connection error, please try again later or verify your connection"
-    }
-    console.log("There was a connection error, please try again later or verify your connection");
-    res.send(bodyError);
-    console.error.bind(console, 'connection error:')
-
-  });
-  db.once('open', function() {
-    let imageData = req.file.path;
-    let mimetype = req.file.mimetype;
-    const image = new Image();
-    image.contentType = mimetype;
-    image.data = fs.readFileSync(imageData);
-    let promise = image.save();
-    promise.then(function(doc, err){
-      if (err) {console.log(err); res.send("there was an error");}
-      console.log("doc", doc);
-      let id = doc._id;
-      fs.rename(imageData, req.file.destination + id, ()=> {
-        if (err) throw err;
-        console.log("file renamed to ", id);
-      } );
-      res.send(doc._id);
-      return doc;
-    })
-  });
-})
-app.post("/searchImages", function(req, res){
-  console.log(req.body);
-  var bodyParsed = req.body;
-  console.log("post request to search images");
-  mongoose.connect(address.url);
-  let db = mongoose.connection;
-  db.on('error', function() {
-    var bodyError = {
-      error : "There was a connection error, please try again later or verify your connection"
-    }
-    console.log("There was a connection error, please try again later or verify your connection");
-    res.send(bodyError);
-    console.error.bind(console, 'connection error:')
-
-  });
-  db.once('open', function() {
-    Image.findById(bodyParsed.id, (err, theImageFound) => {
-      if (err) throw err;
-      console.log("the image found is", theImageFound);
-      //res.send("image found");
-      res.send(theImageFound.data);
-    });
-  });
-
-})*/
 app.get("/rutaprueba", (req, res)=>{
   let puerto = app.listen().address().port;
   console.log(puerto);
